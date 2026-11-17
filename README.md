@@ -25,13 +25,18 @@ assets/js/events.js   Evenementenlijsten, evenementpagina, delen, agenda, SEO-ge
 assets/js/contact.js  Contactformulier
 assets/data/events.js      EVENEMENTEN (nu leeg: er worden geen evenementen verzonnen)
 assets/data/categories.js  EVENTCONCEPTEN (onbeperkt uit te breiden)
-assets/img/           Logo (logo.svg), icoon (icon.svg + png), deelafbeelding (og-image.png)
+assets/img/           Logo (logo.svg), icoon (icon.svg + png), deelafbeelding (og-image.jpg)
 tools/check-site.ps1  Controle: links, SEO-basis, afbeeldingen, JavaScript-fouten
 ```
 
 ## Huisstijl
 
-- **Logo:** woordmerk "VΛIGA". De V en de twee A's zonder dwarsstreep (Λ) spiegelen elkaar: omlaag en omhoog, "let's go". Boven de eerste Λ staat een gouden **spark**, het moment van het feest. Het icoon is de Λ met de spark.
+- **Logo:** gebaseerd op de VAIGA-header. De V is een lint in goud-oranje-magenta dat als boog over "AIGA" omhoog zwiept: "let's go". "AIGA" staat in wit-zilver.
+  - `logo.svg`: compact, voor de menubalk.
+  - `logo-full.svg`: met "EVENTS & EXPERIENCES", voor de footer.
+  - `icon.svg`, `icon-180.png` en `icon-512.png`: de lint-V als app-icoon.
+  - **Header:** `header-800/1400/2172.jpg`, de banner bovenaan elke pagina.
+  - **Deelafbeelding:** `og-image.jpg`, 1200×630, uitgesneden uit de banner.
 - **Kleuren:**
 
   | Kleur | Code | Gebruik |

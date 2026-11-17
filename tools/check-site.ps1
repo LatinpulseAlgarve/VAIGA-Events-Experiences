@@ -27,7 +27,7 @@ foreach ($p in $pages) {
         if (-not (Test-Path (Join-Path $root $f))) { $fail += "$($p.Name): broken link/file '$u'" }
     }
 }
-foreach ($f in 'CNAME', 'robots.txt', 'sitemap.xml', 'site.webmanifest', '.nojekyll', 'assets/img/og-image.png') { if (-not (Test-Path (Join-Path $root $f))) { $fail += "missing $f" } }
+foreach ($f in 'CNAME', 'robots.txt', 'sitemap.xml', 'site.webmanifest', '.nojekyll', 'assets/img/og-image.jpg') { if (-not (Test-Path (Join-Path $root $f))) { $fail += "missing $f" } }
 if ((Get-Content (Join-Path $root 'CNAME') -Raw).Trim() -ne 'vaiga.eu') { $fail += 'CNAME is not vaiga.eu' }
 Write-Host "Static checks done for $($pages.Count) pages."
 

@@ -103,7 +103,7 @@ p { margin: 0 0 1em; }
 .site-header .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 12px 0; }
 .site-header::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--celebrate); }
 .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
-.brand img { height: 30px; width: auto; }
+.brand img { height: 32px; width: auto; }
 .nav ul { list-style: none; display: flex; gap: clamp(14px, 2vw, 30px); margin: 0; padding: 0; }
 .nav a { text-decoration: none; font-weight: 700; font-size: .92rem; letter-spacing: .04em; padding: 8px 0; position: relative; }
 .nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 0; height: 3px; border-radius: 3px; background: var(--celebrate); transition: right .3s var(--ease); }
@@ -284,7 +284,7 @@ textarea { min-height: 150px; resize: vertical; }
 /* ---------- footer ---------- */
 .site-footer { background: var(--ink); color: var(--on-dark-muted); padding: clamp(56px, 8vw, 96px) 0 32px; }
 .site-footer .top { display: grid; gap: 36px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); padding-bottom: 40px; border-bottom: 1px solid var(--ink-3); }
-.site-footer .brand img { height: 34px; }
+.site-footer .brand img { height: 74px; }
 .site-footer .slogan { font: 900 1.15rem/1.2 var(--font-display); color: var(--on-dark); margin: 16px 0 0; text-transform: uppercase; }
 .site-footer h4 { color: var(--on-dark); font-size: .78rem; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 14px; }
 .site-footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
