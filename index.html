@@ -20,13 +20,17 @@
 <link rel="apple-touch-icon" href="assets/img/icon-180.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="stylesheet" href="assets/css/vaiga.css">
+<link rel="preload" as="image" href="assets/img/header-1400.jpg" imagesrcset="assets/img/header-800.jpg 800w, assets/img/header-1400.jpg 1400w, assets/img/header-2172.jpg 2172w" imagesizes="100vw">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"VAIGA – Events & Experiences","alternateName":"VAIGA","url":"https://vaiga.eu/","logo":"https://vaiga.eu/assets/img/icon-512.png","slogan":"Let's go. Let's celebrate.","description":"An international event organisation bringing people together through music, entertainment and unforgettable experiences."}</script>
 </head>
 <body data-page="home">
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
+  <a class="banner" href="index.html" aria-label="VAIGA – home">
+    <img src="assets/img/header-1400.jpg" srcset="assets/img/header-800.jpg 800w, assets/img/header-1400.jpg 1400w, assets/img/header-2172.jpg 2172w" sizes="100vw" width="2172" height="724" alt="VAIGA – Events &amp; Experiences. Let's go. Let's celebrate." fetchpriority="high">
+  </a>
   <div class="wrap bar">
-    <a class="brand" href="index.html" aria-label="VAIGA – home"><img src="assets/img/logo.svg" alt="VAIGA" width="150" height="38"></a>
+    <a class="brand" href="index.html" aria-label="VAIGA – home"><img src="assets/img/logo.svg" alt="VAIGA" width="110" height="28"></a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><span></span><span></span><span></span></button>
     <nav class="nav" id="nav" aria-label="Main">
       <ul>
@@ -49,9 +53,8 @@
     <i class="spark" style="top:30%;left:6%;animation-delay:-2.2s;width:14px;height:14px" aria-hidden="true"></i>
     <div class="wrap">
       <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-      <span class="eyebrow">VAIGA · Events &amp; Experiences</span>
-      <h1><span class="line"><span>Let's go.</span></span><span class="line"><span class="grad">Let's celebrate.</span></span></h1>
-      <p class="lead">An international event organisation bringing people together through music, entertainment and unforgettable experiences.</p>
+      <h1 class="sr-only">VAIGA – Events &amp; Experiences. Let's go. Let's celebrate.</h1>
+      <p class="hero-intro">An international event organisation bringing people together through <span class="grad">music, entertainment</span> and <span class="grad">unforgettable experiences.</span></p>
       <div class="btn-row" style="margin-top:30px">
         <a class="btn arrow" href="events.html">Upcoming events </a>
         <a class="btn ghost" href="categories.html">Our event concepts</a>
