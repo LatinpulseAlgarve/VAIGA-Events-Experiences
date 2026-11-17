@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="VAIGA">
+  <defs>
+    <linearGradient id="ig" gradientUnits="userSpaceOnUse" x1="20" y1="40" x2="108" y2="112">
+      <stop offset="0" stop-color="#FF5A36"/><stop offset=".5" stop-color="#E5338C"/><stop offset="1" stop-color="#7B4DFF"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="30" fill="#0E0A24"/>
+  <!-- the VAIGA Λ with the spark: "let's go, let's celebrate" -->
+  <polygon points="20,110 52,38 76,38 108,110 84,110 64,62 44,110" fill="url(#ig)"/>
+  <path d="M64 8 L68.5 19.5 L80 24 L68.5 28.5 L64 40 L59.5 28.5 L48 24 L59.5 19.5 Z" fill="#FFB21E"/>
+</svg>

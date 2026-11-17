@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 590 150" role="img" aria-labelledby="t">
+  <title id="t">VAIGA</title>
+  <defs>
+    <linearGradient id="vg" gradientUnits="userSpaceOnUse" x1="0" y1="30" x2="590" y2="140">
+      <stop offset="0" stop-color="#FF5A36"/>
+      <stop offset=".5" stop-color="#E5338C"/>
+      <stop offset="1" stop-color="#7B4DFF"/>
+    </linearGradient>
+  </defs>
+  <!-- VAIGA wordmark. V and the two crossbar-less A's (Λ) mirror each other: down and up – "let's go". -->
+  <g fill="url(#vg)">
+    <polygon points="0,30 36,30 64,104 92,30 128,30 82,140 46,140"/>
+    <polygon points="142,140 188,30 224,30 270,140 234,140 206,70 178,140"/>
+    <rect x="286" y="30" width="34" height="110"/>
+    <polygon points="452,140 498,30 534,30 580,140 544,140 516,70 488,140"/>
+  </g>
+  <path d="M418.5 56.5 A38 38 0 1 0 428 85 L397 85" fill="none" stroke="url(#vg)" stroke-width="34" stroke-linejoin="miter"/>
+  <!-- spark: the moment of celebration above the first Λ -->
+  <path d="M206 0 L211 12 L223 17 L211 22 L206 34 L201 22 L189 17 L201 12 Z" fill="#FFB21E"/>
+</svg>
