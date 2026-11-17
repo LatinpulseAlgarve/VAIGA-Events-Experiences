@@ -38,25 +38,44 @@
   var params = new URLSearchParams(location.search);
   $$("[data-events]").forEach(function (box) {
     var limit = +box.getAttribute("data-limit") || 0;
-    var chips = $("[data-filters]");
-    var current = params.get("cat") && V.cat(params.get("cat")) ? params.get("cat") : "";
+    var holder = $("[data-filters]");
+    // selected concepts (multiple choice), from ?cat=latin,retro
+    var sel = (params.get("cat") || "").split(",").filter(function (id) { return id && V.cat(id); });
     function draw() {
-      var list = upcoming().filter(function (e) { return !current || e.category === current; });
+      var list = upcoming().filter(function (e) { return !sel.length || sel.indexOf(e.category) >= 0; });
       if (limit) list = list.slice(0, limit);
-      box.innerHTML = list.length ? '<div class="grid g3">' + list.map(card).join("") + "</div>" : empty(current ? V.cat(current).name : "");
+      box.innerHTML = list.length ? '<div class="grid g3">' + list.map(card).join("") + "</div>" : empty(sel.length === 1 ? V.cat(sel[0]).name : "");
       if (!list.length) fillSocial(box);
       V.reveal();
     }
-    if (chips) {
+    if (holder) {
       var cats = window.VAIGA_CATEGORIES || [];
-      chips.innerHTML = '<button class="chip" type="button" data-c="">All events</button>' + cats.map(function (c) { return '<button class="chip" type="button" data-c="' + c.id + '">' + esc(c.name) + "</button>"; }).join("");
-      var sync = function () { $$(".chip", chips).forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-c") === current)); }); };
-      $$(".chip", chips).forEach(function (b) {
-        b.addEventListener("click", function () {
-          current = b.getAttribute("data-c"); sync(); draw();
-          var u = new URL(location.href); if (current) u.searchParams.set("cat", current); else u.searchParams.delete("cat"); history.replaceState(null, "", u);
+      holder.innerHTML = '<div class="dd">' +
+        '<button type="button" class="dd-btn" aria-expanded="false" aria-controls="dd-panel"><span class="dd-label"></span><span class="dd-caret" aria-hidden="true">▾</span></button>' +
+        '<div class="dd-panel" id="dd-panel" role="group" aria-label="Choose event concepts" hidden>' +
+        cats.map(function (c) { return '<label class="dd-opt"><input type="checkbox" value="' + c.id + '"><span class="dd-dot" style="background:' + c.bg + '"></span>' + esc(c.name) + "</label>"; }).join("") +
+        '<div class="dd-actions"><button type="button" class="chip" data-clear>Clear</button><button type="button" class="btn small" data-done>Show events</button></div></div></div>';
+      var btn = $(".dd-btn", holder), panel = $(".dd-panel", holder), label = $(".dd-label", holder);
+      var boxes = $$('input[type="checkbox"]', panel);
+      var open = function (on) { panel.hidden = !on; btn.setAttribute("aria-expanded", String(on)); if (on && boxes[0]) boxes[0].focus(); };
+      var sync = function () {
+        boxes.forEach(function (b) { b.checked = sel.indexOf(b.value) >= 0; });
+        var names = sel.map(function (id) { return V.cat(id).name; });
+        label.textContent = "Event concepts: " + (!names.length ? "All" : names.length <= 2 ? names.join(", ") : names.length + " selected");
+        btn.classList.toggle("active", names.length > 0);
+        var u = new URL(location.href); if (sel.length) u.searchParams.set("cat", sel.join(",")); else u.searchParams.delete("cat"); history.replaceState(null, "", u);
+      };
+      btn.addEventListener("click", function () { open(panel.hidden); });
+      boxes.forEach(function (b) {
+        b.addEventListener("change", function () {
+          sel = boxes.filter(function (x) { return x.checked; }).map(function (x) { return x.value; });
+          sync(); draw();
         });
       });
+      $("[data-clear]", panel).addEventListener("click", function () { sel = []; sync(); draw(); });
+      $("[data-done]", panel).addEventListener("click", function () { open(false); btn.focus(); });
+      document.addEventListener("click", function (e) { if (!panel.hidden && !holder.contains(e.target)) open(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panel.hidden) { open(false); btn.focus(); } });
       sync();
     }
     draw();
