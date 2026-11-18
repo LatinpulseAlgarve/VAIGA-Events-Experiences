@@ -21,7 +21,8 @@ foreach ($p in $pages) {
     if ($h -notmatch '<title>[^<]{5,}</title>') { $fail += "$($p.Name): no title" }
     if ($h -notmatch '<meta name="description" content="[^"]{20,}">') { $fail += "$($p.Name): no description" }
     if ($h -notmatch ('<link rel="canonical" href="https://' + [regex]::Escape($domain) + '/')) { $fail += "$($p.Name): no canonical for $domain" }
-    if ($h -notmatch '<meta http-equiv="Content-Security-Policy" content="default-src ''self''; script-src ''self'';') { $fail += "$($p.Name): no Content-Security-Policy" }
+    # script-src: only 'self', or 'self' + Cloudflare Turnstile (the "I am not a robot" check on forms)
+    if ($h -notmatch '<meta http-equiv="Content-Security-Policy" content="default-src ''self''; script-src ''self''( https://challenges\.cloudflare\.com)?;') { $fail += "$($p.Name): no Content-Security-Policy" }
     if ($h -notmatch '<meta name="referrer" content="strict-origin-when-cross-origin">') { $fail += "$($p.Name): no referrer policy" }
     if ($domain -ne 'vaiga.eu' -and $h -notmatch '<meta name="robots" content="noindex') { $fail += "$($p.Name): demo page without noindex" }
     if ($h -match '<script>|\son[a-z]+="') { $fail += "$($p.Name): inline script or event handler (blocked by the CSP)" }
@@ -57,7 +58,7 @@ else {
                 $h = [IO.File]::ReadAllText($p.FullName)
                 $h = $h.Replace('<head>', '<head>' + $trap).Replace('</body>', $report + '</body>')
                 # test copy only: allow the two injected check scripts; all other CSP rules stay active
-                $h = $h.Replace("script-src 'self';", "script-src 'self' 'unsafe-inline';")
+                $h = $h -replace "script-src 'self'( https://challenges\.cloudflare\.com)?;", 'script-src ''self''$1 ''unsafe-inline'';'
                 if ($p.Name -eq '404.html') { $h = $h -replace '(href|src)="/', ('$1="' + ([Uri]($root + '\')).AbsoluteUri) }
                 $copy = Join-Path $root ('__check_' + $p.Name)
                 [IO.File]::WriteAllText($copy, $h, (New-Object Text.UTF8Encoding($false)))

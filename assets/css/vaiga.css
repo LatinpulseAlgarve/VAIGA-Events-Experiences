@@ -519,3 +519,10 @@ main { position: relative; }
 /* footer "Jump to": all menu links in 2 columns (2026-11-18) */
 .site-footer .foot-links { grid-template-columns: 1fr 1fr; gap: 8px 20px; }
 .site-footer .foot-links a[aria-current=page] { color: var(--on-dark); font-weight: 700; }
+
+/* "I am not a robot" box in the contact form and Plan your party (Cloudflare Turnstile, see contact.js) */
+.robot-box { padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }
+.robot-box .check { margin: 0; font-weight: 700; }
+.robot-st { margin: 6px 0 0 32px; font-size: .9rem; color: var(--muted); }
+.robot-st:empty { display: none; }
+.robot-ts:not(:empty) { margin-top: 10px; display: flex; justify-content: center; }

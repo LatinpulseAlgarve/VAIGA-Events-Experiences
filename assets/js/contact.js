@@ -15,6 +15,62 @@
   }
   function show(type, text) { msg.innerHTML = '<p class="msg ' + type + '" role="' + (type === "err" ? "alert" : "status") + '">' + V.esc(text) + "</p>"; }
 
+  /* ---------- "I am not a robot" (same as the community sign-up): an EMPTY box the visitor ticks; only then
+     Cloudflare Turnstile checks in the background (privacy-friendly, no Google, no tracking cookies).
+     Note: this site is static, so the token cannot be verified on a server of our own; it stops automatic
+     form-filling bots in the browser. The form service (FormSubmit) also filters spam itself. ---------- */
+  var tsKey = C.turnstileSiteKey || "", tsId = null, tsTok = "", tsFailed = false;
+  var RB = {
+    robot: "I am not a robot", busy: "Checking…", ok: "Checked ✓",
+    need: "Please confirm that you are not a robot.", wait: "One moment: the check is still running.",
+    load: "The \"I am not a robot\" check could not load. Check your connection and reload the page."
+  };
+  var sendWrap = f.querySelector('button[type="submit"]') && f.querySelector('button[type="submit"]').parentNode;
+  if (tsKey && sendWrap) {
+    var rb = document.createElement("div");
+    rb.className = "robot-box";
+    rb.innerHTML = '<label class="check"><input type="checkbox" name="not_robot" value="1"> <span><span>' + V.esc(RB.robot) + '</span> *</span></label><p class="robot-st" aria-live="polite"></p><div class="robot-ts"></div>';
+    f.insertBefore(rb, msg && msg.parentNode === f ? msg : sendWrap);
+  }
+  var cbRobot = f.querySelector('input[name="not_robot"]');
+  function tsStatus(t) { var st = f.querySelector(".robot-st"); if (st) st.textContent = t || ""; }
+  function tsLoad(done) {
+    if (window.turnstile) { done(); return; }
+    window.vaigaTsReady = done;
+    if (document.getElementById("vaiga-ts-js")) return;
+    var s = document.createElement("script"); s.id = "vaiga-ts-js"; s.async = true; s.defer = true;
+    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=vaigaTsReady";
+    s.onerror = function () { tsFailed = true; tsStatus(RB.load); };
+    document.head.appendChild(s);
+  }
+  function tsStart() {
+    var el = f.querySelector(".robot-ts"); if (!el) return;
+    tsTok = ""; tsStatus(RB.busy);
+    tsLoad(function () {
+      try {
+        if (tsId !== null) { window.turnstile.reset(tsId); return; }
+        tsId = window.turnstile.render(el, {
+          sitekey: tsKey, theme: "dark", appearance: "interaction-only", language: (document.documentElement.lang || "en").slice(0, 2),
+          callback: function (t) { if (!cbRobot || !cbRobot.checked) { tsTok = ""; return; } tsTok = t; tsStatus(RB.ok); },
+          "expired-callback": function () { tsStop(); },
+          "error-callback": function () { tsTok = ""; tsStatus(RB.load); }
+        });
+      } catch (x) { tsStatus(RB.load); }
+    });
+  }
+  function tsStop() {
+    tsTok = ""; tsStatus("");
+    if (cbRobot) cbRobot.checked = false;
+    try { if (tsId !== null && window.turnstile) window.turnstile.reset(tsId); } catch (x) {}
+  }
+  if (cbRobot) cbRobot.addEventListener("change", function () { msg.innerHTML = ""; if (cbRobot.checked) tsStart(); else tsStop(); });
+  function robotOk() {
+    if (!cbRobot) return true;                       // no key configured: no check
+    if (!cbRobot.checked) { show("err", RB.need); return false; }
+    if (!tsTok) { show("err", tsFailed ? RB.load : RB.wait); return false; }
+    return true;
+  }
+
   f.addEventListener("submit", function (e) {
     e.preventDefault();
     if (F("website").value) return;                                   // spam trap (hidden field)
@@ -25,6 +81,7 @@
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { show("err", "Please enter a valid e-mail address."); F("email").focus(); return; }
     if (!/^\+?[0-9()\s.\-]{6,25}$/.test(phone) || phone.replace(/\D/g, "").length < 6) { show("err", "Please enter a valid phone number (with country code if outside Portugal, e.g. +351 ...)."); F("phone").focus(); return; }
     if (!F("consent").checked) { show("err", "Please agree that we use your details to answer your message."); return; }
+    if (!robotOk()) return;
     var topicLabel = F("topic").options[F("topic").selectedIndex].text;
     var subject = "[VAIGA] " + topicLabel + " – " + name;
     // extra fields of a form (e.g. Plan your party: date, guests, place); label from data-extra (English, for VAIGA)
@@ -44,7 +101,7 @@
       fd.append("message", body);
       fetch(C.formEndpoint, { method: "POST", headers: { "Accept": "application/json" }, body: fd })
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || (j && (j.success === false || j.success === "false"))) throw new Error(); }); })
-        .then(function () { f.reset(); show("ok", "Thank you! Your message has been sent. We will get back to you as soon as possible."); })
+        .then(function () { f.reset(); tsStop(); show("ok", "Thank you! Your message has been sent. We will get back to you as soon as possible."); })
         .catch(function () { show("err", "Sending did not work. Please try again later" + (C.email ? " or e-mail " + C.email : "") + "."); })
         .then(function () { btn.disabled = false; });
       return;
