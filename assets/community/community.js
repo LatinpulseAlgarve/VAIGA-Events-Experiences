@@ -60,6 +60,9 @@
     mg_joined: "You are going", mg_full: "Full", mg_who: "Who is going (only visible to participants)",
     mg_meet_at: "Meet at", mg_noevents: "There are no upcoming events at the moment.",
     mg_rule_time: "At most {h} hours before the event starts.",
+    mg_next: "Coming up: Meet & Go", mg_all: "All Meet & Go's", mg_add: "+ New Meet & Go",
+    mg_order: "Always in date order: the first meeting is at the top. Past meetings disappear automatically.",
+    d_today: "Today", d_tomorrow: "Tomorrow", d_in: "In {n} days",
     e_login_failed: "E-mail address or password is not correct.", e_unverified: "Please confirm your e-mail address first with the link in your mailbox.",
     e_face: "Please add a photo of your face.", e_country: "Please choose your country.", e_town: "Please enter your town (2–60 characters).",
     e_adult: "You must be 18 or older to join.",
@@ -82,6 +85,17 @@
   var LOC = window.VAIGA_LOCALE || "en-GB";
   function when(iso) { try { return new Date(iso).toLocaleString(LOC, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } }
   function day(d) { try { return new Date(d + "T12:00:00Z").toLocaleDateString(LOC, { weekday: "short", day: "numeric", month: "short" }); } catch (e) { return d; } }
+  /* Meet & Go in date order (agenda principle): never sorted by when it was posted, so nothing sinks away */
+  function todayIso() { var t = new Date(); return t.getFullYear() + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + ("0" + t.getDate()).slice(-2); }
+  function relDay(d) {
+    var n = Math.round((Date.parse(d + "T12:00:00Z") - Date.parse(todayIso() + "T12:00:00Z")) / 864e5);
+    return n <= 0 ? tx("d_today") : n === 1 ? tx("d_tomorrow") : tx("d_in", { n: n });
+  }
+  function upcomingMg() {
+    var t = todayIso();
+    return (state.mg || []).filter(function (m) { return m.event && m.event.date >= t; })
+      .sort(function (a, b) { return (a.event.date + " " + a.meet_time).localeCompare(b.event.date + " " + b.meet_time) || a.id - b.id; });
+  }
   var COUNTRIES = "AD AE AF AG AI AL AM AO AR AT AU AW AZ BA BB BD BE BF BG BH BI BJ BM BN BO BR BS BT BW BY BZ CA CD CF CG CH CI CL CM CN CO CR CU CV CW CY CZ DE DJ DK DM DO DZ EC EE EG ER ES ET FI FJ FR GA GB GD GE GH GI GM GN GQ GR GT GW GY HK HN HR HT HU ID IE IL IN IQ IR IS IT JM JO JP KE KG KH KM KN KR KW KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MG MK ML MM MN MO MR MT MU MV MW MX MY MZ NA NE NG NI NL NO NP NZ OM PA PE PG PH PK PL PR PS PT PY QA RO RS RU RW SA SC SD SE SG SI SK SL SM SN SO SR ST SV SY SZ TD TG TH TJ TL TM TN TR TT TW TZ UA UG US UY UZ VA VC VE VN YE ZA ZM ZW".split(" ");
   function flag(cc) { return /^[A-Z]{2}$/.test(cc || "") ? String.fromCodePoint(127397 + cc.charCodeAt(0), 127397 + cc.charCodeAt(1)) : ""; }
   function cname(cc) { try { return new Intl.DisplayNames([LOC], { type: "region" }).of(cc) || cc; } catch (e) { return cc; } }
@@ -323,9 +337,32 @@
       actions(p, true) +
       '<div class="vc-comments">' + top.map(function (c) { return commentHtml(c, p.comments.filter(function (r) { return r.parent_id === c.id; })); }).join("") + "</div></article>";
   }
+  /* "Coming up" block at the top of the feed: the next Meet & Go's stay visible, whatever is posted after them */
+  function nextBox() {
+    var list = upcomingMg().slice(0, 3);
+    if (!list.length) return "";
+    return '<section class="vc-card vc-next"><h3><span aria-hidden="true">📅</span> <span>' + esc(tx("mg_next")) + '</span></h3><ul>' + list.map(function (m) {
+      return '<li><button type="button" class="vc-next-i" data-goto="' + m.id + '"><span class="vc-next-d"><b>' + esc(relDay(m.event.date)) + "</b> · " + esc(day(m.event.date)) + "</span>" +
+        '<span class="vc-next-t">' + esc(m.meet_time) + " · <span>" + esc(m.event.title) + "</span>" + (m.joined ? ' <span class="vc-next-ok">✓</span>' : "") + "</span></button></li>";
+    }).join("") + '</ul><p class="vc-next-all"><button type="button" class="vc-lnk" data-goto="all"><span>' + esc(tx("mg_all")) + "</span> →</button></p></section>";
+  }
+  function bindNext(v) {
+    v.querySelectorAll("[data-goto]").forEach(function (b) {
+      b.onclick = function () {
+        var id = b.dataset.goto;
+        state.view = "mg"; render();
+        loadMg().then(function () {
+          var c = id !== "all" && document.querySelector('.vc-mg[data-id="' + id + '"]');
+          var t = c || document.getElementById("vc-view");
+          if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+          if (c) { c.classList.add("vc-hl"); setTimeout(function () { c.classList.remove("vc-hl"); }, 2200); }
+        });
+      };
+    });
+  }
   function renderFeed() {
     var v = document.getElementById("vc-view"); if (!v) return;
-    v.innerHTML = '<form class="vc-card vc-compose" id="vc-compose"><textarea name="body" maxlength="2000" rows="3" placeholder="' + esc(tx("ph_post")) + '"></textarea>' +
+    v.innerHTML = nextBox() + '<form class="vc-card vc-compose" id="vc-compose"><textarea name="body" maxlength="2000" rows="3" placeholder="' + esc(tx("ph_post")) + '"></textarea>' +
       '<div class="vc-row"><label class="btn ghost small vc-file">📷 ' + esc(tx("photo")) + '<input type="file" name="photo" accept="image/jpeg,image/png,image/webp" hidden></label><span class="vc-fname" data-no-i18n></span><button class="btn small" type="submit">' + esc(tx("post_btn")) + '</button></div><div class="vc-msg" role="status"></div></form>' +
       '<div id="vc-posts">' + (state.posts.length ? state.posts.map(postHtml).join("") : '<p class="vc-empty">' + esc(tx("empty")) + "</p>") + "</div>" +
       (state.more ? '<p class="vc-center"><button type="button" class="btn ghost" id="vc-more">' + esc(tx("more")) + "</button></p>" : "") + rulesBox();
@@ -340,6 +377,7 @@
       api("POST", "posts", fd).then(function () { loadFeed(true); }).catch(function (e) { msg.innerHTML = note("err", errText(e)); b.disabled = false; b.textContent = tx("post_btn"); });
     };
     var m = document.getElementById("vc-more");
+    bindNext(v);
     if (m) m.onclick = function () { var last = state.posts[state.posts.length - 1]; api("GET", "feed?before=" + (last ? last.id : 0)).then(function (j) { state.posts = state.posts.concat(j.posts); state.more = j.more; renderFeed(); }); };
     bindItems(v);
   }
@@ -406,16 +444,21 @@
     var v = document.getElementById("vc-view"); if (!v) return;
     var r = state.rules || { min_people: 2, max_people: 20, max_hours_before: 4 };
     var opts = state.events.map(function (e, i) { return '<option value="' + i + '">' + esc(evLabel(e)) + "</option>"; }).join("");
+    var up = upcomingMg(), last = "", list = up.map(function (m) {
+      var head = m.event.date !== last ? '<h3 class="vc-day"><b>' + esc(relDay(m.event.date)) + "</b> · " + esc(day(m.event.date)) + "</h3>" : "";
+      last = m.event.date; return head + mgHtml(m);
+    }).join("");
     v.innerHTML = '<p class="vc-intro2">' + esc(tx("mg_intro")) + ' <a href="community-rules.html#meet-go">' + esc(tx("mg_rules")) + " →</a></p>" +
-      (state.events.length ? '<form class="vc-card vc-mgform" id="vc-mgform"><h3>' + esc(tx("mg_new")) + "</h3>" +
+      (state.events.length ? '<details class="vc-card vc-mgnew"><summary>' + esc(tx("mg_add")) + '</summary><form class="vc-mgform" id="vc-mgform">' +
         '<label>' + esc(tx("mg_event")) + '<select name="ev">' + opts + "</select></label>" +
         '<div class="vc-grid2"><label>' + esc(tx("mg_time")) + '<input type="time" name="meet_time" required><small class="vc-hint"></small></label>' +
         '<label>' + esc(tx("mg_max")) + '<input type="number" name="max_people" min="' + r.min_people + '" max="' + r.max_people + '" value="6" required></label></div>' +
         '<label>' + esc(tx("mg_point")) + '<input name="meeting_point" maxlength="160" required></label>' +
         '<label class="vc-chk"><input type="checkbox" name="public_place" value="1"> <span>' + esc(tx("mg_public")) + "</span></label>" +
-        '<div class="vc-msg" role="status"></div><button class="btn" type="submit">' + esc(tx("mg_create")) + "</button></form>"
+        '<div class="vc-msg" role="status"></div><button class="btn" type="submit">' + esc(tx("mg_create")) + "</button></form></details>"
         : '<p class="vc-empty">' + esc(tx("mg_noevents")) + "</p>") +
-      '<div id="vc-mglist">' + (state.mg.length ? state.mg.map(mgHtml).join("") : '<p class="vc-empty">' + esc(tx("mg_none")) + "</p>") + "</div>";
+      (up.length ? '<p class="vc-order">' + esc(tx("mg_order")) + "</p>" : "") +
+      '<div id="vc-mglist">' + (up.length ? list : '<p class="vc-empty">' + esc(tx("mg_none")) + "</p>") + "</div>";
     var f = document.getElementById("vc-mgform");
     if (f) {
       var setTime = function () {
@@ -442,7 +485,11 @@
   }
 
   /* ---------- loading ---------- */
-  function loadFeed(redraw) { return api("GET", "feed").then(function (j) { state.posts = j.posts; state.more = j.more; if (redraw !== false) renderFeed(); }); }
+  function loadFeed(redraw) {
+    return Promise.all([api("GET", "feed"), api("GET", "meetgo").catch(function () { return { items: state.mg }; })]).then(function (r) {
+      state.posts = r[0].posts; state.more = r[0].more; state.mg = r[1].items || []; if (redraw !== false) renderFeed();
+    });
+  }
   function loadMg() {
     return Promise.all([api("GET", "events"), api("GET", "meetgo")]).then(function (r) { state.events = r[0].events; state.rules = r[0].rules; state.mg = r[1].items; renderMg(); });
   }
