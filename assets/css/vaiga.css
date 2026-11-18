@@ -516,9 +516,6 @@ main { position: relative; }
 .legal-doc th { background: var(--paper-2); font-weight: 800; }
 .legal-doc [hidden] { display: none !important; }
 
-/* full menu at the bottom of every page (2026-11-18) */
-.site-footer .foot-nav { padding-bottom: 32px; margin-bottom: 36px; border-bottom: 1px solid var(--line); }
-.site-footer .foot-nav ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-.site-footer .foot-nav a { display: inline-block; padding: 9px 16px; border-radius: 99px; border: 1px solid var(--line); color: var(--on-dark); font-weight: 800; font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; }
-.site-footer .foot-nav a:hover { border-color: var(--on-dark-muted); text-decoration: none; }
-.site-footer .foot-nav a[aria-current=page] { background: var(--celebrate); border-color: transparent; color: #fff; }
+/* footer "Jump to": all menu links in 2 columns (2026-11-18) */
+.site-footer .foot-links { grid-template-columns: 1fr 1fr; gap: 8px 20px; }
+.site-footer .foot-links a[aria-current=page] { color: var(--on-dark); font-weight: 700; }
