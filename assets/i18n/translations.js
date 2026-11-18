@@ -19,6 +19,7 @@ window.VAIGA_TRANSLATIONS = {
   "Breadcrumb": ["Navegação", "Ruta de navegación", "Kruimelpad"],
   "Back to top": ["Voltar ao topo", "Volver arriba", "Naar boven"],
   "Explore": ["Explorar", "Explorar", "Ontdekken"],
+  "Jump to": ["Ir para", "Ir a", "Spring naar"],
   "Work with us": ["Trabalhe connosco", "Trabaja con nosotros", "Werk met ons"],
   "Become a partner": ["Torne-se parceiro", "Hazte socio", "Word partner"],
   "Follow VAIGA": ["Siga a VAIGA", "Sigue a VAIGA", "Volg VAIGA"],
