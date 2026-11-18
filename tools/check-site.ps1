@@ -7,6 +7,9 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $fail = @()
 $pages = Get-ChildItem $root -Filter *.html | Sort-Object Name
+# Domain from CNAME: demo.vaiga.eu (demo, noindex) or vaiga.eu (live site)
+$domain = (Get-Content (Join-Path $root 'CNAME') -Raw).Trim()
+if ($domain -notin 'demo.vaiga.eu', 'vaiga.eu') { $fail += "CNAME is '$domain' (expected demo.vaiga.eu or vaiga.eu)" }
 
 # 1. static checks
 foreach ($p in $pages) {
@@ -14,7 +17,12 @@ foreach ($p in $pages) {
     if ($h -notmatch '<html lang="[a-z]{2}">') { $fail += "$($p.Name): no lang" }
     if ($h -notmatch '<title>[^<]{5,}</title>') { $fail += "$($p.Name): no title" }
     if ($h -notmatch '<meta name="description" content="[^"]{20,}">') { $fail += "$($p.Name): no description" }
-    if ($h -notmatch '<link rel="canonical" href="https://vaiga\.eu/') { $fail += "$($p.Name): no canonical" }
+    if ($h -notmatch ('<link rel="canonical" href="https://' + [regex]::Escape($domain) + '/')) { $fail += "$($p.Name): no canonical for $domain" }
+    if ($h -notmatch '<meta http-equiv="Content-Security-Policy" content="default-src ''self''; script-src ''self'';') { $fail += "$($p.Name): no Content-Security-Policy" }
+    if ($h -notmatch '<meta name="referrer" content="strict-origin-when-cross-origin">') { $fail += "$($p.Name): no referrer policy" }
+    if ($domain -ne 'vaiga.eu' -and $h -notmatch '<meta name="robots" content="noindex') { $fail += "$($p.Name): demo page without noindex" }
+    if ($h -match '<script>|\son[a-z]+="') { $fail += "$($p.Name): inline script or event handler (blocked by the CSP)" }
+    foreach ($m in [regex]::Matches($h, '<a\b[^>]*target="_blank"[^>]*>')) { if ($m.Value -notmatch 'noopener') { $fail += "$($p.Name): target=_blank without rel=noopener" } }
     $h1 = ([regex]::Matches($h, '<h1[\s>]')).Count
     if ($h1 -ne 1) { $fail += "$($p.Name): $h1 h1 headings (expected 1)" }
     foreach ($m in [regex]::Matches($h, '<img\b[^>]*>')) { if ($m.Value -notmatch '\balt="') { $fail += "$($p.Name): image without alt: $($m.Value)" } }
@@ -28,7 +36,7 @@ foreach ($p in $pages) {
     }
 }
 foreach ($f in 'CNAME', 'robots.txt', 'sitemap.xml', 'site.webmanifest', '.nojekyll', 'assets/img/og-image.jpg') { if (-not (Test-Path (Join-Path $root $f))) { $fail += "missing $f" } }
-if ((Get-Content (Join-Path $root 'CNAME') -Raw).Trim() -ne 'vaiga.eu') { $fail += 'CNAME is not vaiga.eu' }
+foreach ($f in 'sitemap.xml', 'assets/js/config.js') { if ((Get-Content (Join-Path $root $f) -Raw) -match 'https://(?!' + [regex]::Escape($domain) + ')[a-z.]*vaiga\.eu') { $fail += "$f points to another vaiga.eu address than $domain" } }
 Write-Host "Static checks done for $($pages.Count) pages."
 
 # 2. runtime checks in headless Chrome (JavaScript errors, rendered content)
@@ -45,6 +53,8 @@ else {
                 if ($p.Name -eq '404.html' -and $mode) { continue }
                 $h = [IO.File]::ReadAllText($p.FullName)
                 $h = $h.Replace('<head>', '<head>' + $trap).Replace('</body>', $report + '</body>')
+                # test copy only: allow the two injected check scripts; all other CSP rules stay active
+                $h = $h.Replace("script-src 'self';", "script-src 'self' 'unsafe-inline';")
                 if ($p.Name -eq '404.html') { $h = $h -replace '(href|src)="/', ('$1="' + ([Uri]($root + '\')).AbsoluteUri) }
                 $copy = Join-Path $root ('__check_' + $p.Name)
                 [IO.File]::WriteAllText($copy, $h, (New-Object Text.UTF8Encoding($false)))

@@ -8,7 +8,8 @@
   var F = function (n) { return f.elements.namedItem(n); };   // form fields by name (form.name would be the form's own name attribute)
   var msg = f.querySelector(".msg-box"), started = Date.now();
   var topic = new URLSearchParams(location.search).get("topic");
-  if (topic && F("topic").querySelector('option[value="' + topic + '"]')) F("topic").value = topic;
+  // only accept a topic that exists in the list (no URL text in a selector, so a crafted link cannot break the form)
+  if (topic && Array.prototype.some.call(F("topic").options, function (o) { return o.value === topic; })) F("topic").value = topic;
   if (!C.formEndpoint && !C.email) {
     msg.innerHTML = '<p class="msg err">The contact form is not connected yet <span class="placeholder-note">[add an e-mail address or form service in assets/js/config.js]</span>.</p>';
   }

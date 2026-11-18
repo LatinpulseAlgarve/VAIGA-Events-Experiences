@@ -1,4 +1,4 @@
 User-agent: *
-Allow: /
+Disallow:
 
-Sitemap: https://vaiga.eu/sitemap.xml
+# Demo site (demo.vaiga.eu): pages carry noindex. The live site will be vaiga.eu.

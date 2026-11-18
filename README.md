@@ -16,7 +16,7 @@ contact.html          Contact (formulier)
 privacy.html          Privacyverklaring (CONCEPT, placeholders)
 legal.html            Juridische informatie / colofon (CONCEPT, placeholders)
 404.html              "Pagina niet gevonden" (GitHub Pages gebruikt dit vanzelf)
-CNAME                 vaiga.eu (eigen domein voor GitHub Pages)
+CNAME                 demo.vaiga.eu (domein voor GitHub Pages; later vaiga.eu)
 robots.txt, sitemap.xml, site.webmanifest, .nojekyll
 assets/css/vaiga.css  Volledige huisstijl (kleuren, typografie, onderdelen)
 assets/js/config.js   INSTELLINGEN: e-mail, telefoon, social media, formulierdienst
@@ -108,27 +108,36 @@ Dit controleert:
 
 Het resultaat moet **ALL OK** zijn.
 
-## Publiceren naar GitHub Pages met vaiga.eu
+## Demo: demo.vaiga.eu (GitHub Pages)
 
-Er is nog niets gepubliceerd. Doe dit pas als je er klaar voor bent.
+- Repository: https://github.com/LatinpulseAlgarve/VAIGA-Events-Experiences (openbaar), branch `main`, map `/ (root)`.
+- Elke wijziging in `main` staat binnen ~1 minuut op https://demo.vaiga.eu. Werk op een eigen branch en voeg samen via een pull request (`main` is beschermd).
+- `CNAME` = `demo.vaiga.eu`. DNS bij OVH: CNAME-record `demo` → `latinpulsealgarve.github.io`.
+- De demo heeft op elke pagina `noindex` (niet in Google). Absolute adressen (canonical, og, sitemap) wijzen naar `https://demo.vaiga.eu/`.
+- De oude, eenvoudige demo staat bewaard op tag `backup-oude-demo-2026-11-18`.
 
-1. **Repository maken:** maak op GitHub een nieuwe repository aan, bijvoorbeeld `vaiga-website`.
-   - Gratis GitHub Pages werkt alleen met een **openbare** repository; voor een privé-repository met Pages heb je GitHub Pro nodig.
-   - Dit is een keuze die jij maakt.
-2. **Bestanden uploaden:** stuur de bestanden van deze map naar die repository, vanuit deze map:
-   ```
-   git remote add origin https://github.com/<account>/vaiga-website.git
-   git push -u origin main
-   ```
-3. **Pages aanzetten:** ga op GitHub naar **Settings → Pages**.
-   - Bij Source kies je "Deploy from a branch", met branch `main` en map `/ (root)`. Klik Save.
-   - Bij Custom domain staat `vaiga.eu` al, via het bestand `CNAME`. Zet **Enforce HTTPS** aan zodra dat kan.
+### Beveiliging
+
+GitHub Pages kan geen eigen HTTP-headers sturen. Daarom staat de beveiliging in `<meta>`-tags op elke pagina:
+- **Content-Security-Policy:** alleen scripts, stijlen, afbeeldingen en lettertypes van de site zelf. Geen inline scripts of `onclick=` gebruiken (dat wordt geblokkeerd). Een formulierdienst in `config.js` → het adres ook toevoegen aan `connect-src` in `contact.html`.
+- **Referrer-Policy:** `strict-origin-when-cross-origin`.
+- Externe links altijd met `target="_blank" rel="noopener"`.
+- HTTPS wordt afgedwongen (Settings → Pages → Enforce HTTPS).
+- `tools/check-site.ps1` bewaakt dit allemaal.
+
+## Later: livegang op vaiga.eu
+
+Doe dit pas als je er klaar voor bent. vaiga.eu draait nu nog op een andere server (OVH).
+
+1. In `CNAME` `demo.vaiga.eu` vervangen door `vaiga.eu`.
+2. In alle pagina's, `sitemap.xml` en `robots.txt` `https://demo.vaiga.eu/` vervangen door `https://vaiga.eu/`, de regel `<meta name="robots" content="noindex, nofollow">` weghalen en in `robots.txt` weer `Sitemap: https://vaiga.eu/sitemap.xml` zetten.
+3. `tools/check-site.ps1` moet ALL OK geven.
 4. **DNS instellen:** stel dit in bij de registrar van vaiga.eu.
    - Maak vier **A-records** voor `@`, naar `185.199.108.153`, `185.199.109.153`, `185.199.110.153` en `185.199.111.153`.
    - Maak voor IPv6 eventueel ook **AAAA-records** voor `@`, naar `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153` en `2606:50c0:8003::153`.
    - Maak een **CNAME-record** voor `www`, naar `<account>.github.io`.
    - Het kan tot 24 uur duren voordat dit werkt. Daarna staat de site op https://vaiga.eu.
-5. **Domein verifiëren:** verifieer vaiga.eu ook onder GitHub **Settings → Pages → Verified domains**. Dan kan niemand anders je domein claimen.
+5. **Domein verifiëren:** verifieer vaiga.eu ook onder GitHub **Settings → Pages → Verified domains**. Dan kan niemand anders je domein (en subdomeinen zoals demo.vaiga.eu) claimen.
 6. **Zoekmachines:** meld de site aan bij Google Search Console, met `https://vaiga.eu/sitemap.xml`.
 
 ## Vóór livegang invullen
