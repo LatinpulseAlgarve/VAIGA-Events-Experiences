@@ -360,3 +360,20 @@ a.collab-btn:hover, a.collab-btn:focus-visible { transform: translateY(-2px); bo
   .js .reveal { opacity: 1; transform: none; }
 }
 @media print { .site-header, .site-footer, .band, .share, .btn { display: none !important; } .hero, .page-hero, .dark { background: #fff !important; color: #000 !important; } }
+
+/* event concepts: every concept image the same size (square), about as tall as the text next to it */
+.concept.split { grid-template-columns: minmax(0, 360px) minmax(0, 1fr); }
+.concept .frame, .concept .frame.wide, .concept .frame.wide.concept-photo { aspect-ratio: 1 / 1; width: 100%; }
+.concept .concept-banner b { font-size: clamp(1.5rem, 3vw, 2.2rem); }
+@media (max-width: 760px) {
+  .concept.split { grid-template-columns: 1fr; }
+  .concept .frame { max-width: 300px; }
+}
+
+/* back-to-top button (added by main.js on every page) */
+.to-top { position: fixed; right: 18px; bottom: 18px; z-index: 40; width: 52px; height: 52px; border: 0; border-radius: 50%; display: grid; place-items: center; background: var(--celebrate); color: #fff; box-shadow: var(--shadow-glow); cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity .3s var(--ease), visibility .3s, transform .3s var(--ease); }
+.to-top.show { opacity: 1; visibility: visible; transform: none; }
+.to-top:hover, .to-top:focus-visible { transform: translateY(-3px); }
+.to-top svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+body.menu-open .to-top { display: none; }
+@media print { .to-top { display: none !important; } }
