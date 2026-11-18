@@ -39,19 +39,32 @@
     whatsapp: "M17.5 14.4c-.3-.2-1.8-.9-2-1s-.5-.2-.7.2-.8 1-.9 1.2-.3.2-.6.1a8 8 0 0 1-2.4-1.5 9 9 0 0 1-1.6-2c-.2-.3 0-.5.1-.6l.5-.5.3-.5a.5.5 0 0 0 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.6.9 3.6.7a3 3 0 0 0 2-1.4 2.4 2.4 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.4ZM12 21.8a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4a9.8 9.8 0 1 1 8.3 4.6ZM20.5 3.5A11.8 11.8 0 0 0 1.9 17.7L.2 24l6.4-1.7a11.8 11.8 0 0 0 5.4 1.4 11.8 11.8 0 0 0 8.5-20.2Z"
   };
   var LABEL = { instagram: "Instagram", facebook: "Facebook", tiktok: "TikTok", youtube: "YouTube", whatsapp: "WhatsApp" };
-  var soc = C.social || {}, any = false;
-  $$("[data-social]").forEach(function (box) {
-    var h = "";
+  // Filled in config.js = real link; empty = button marked "coming soon" (clicking shows a short note)
+  var soc = C.social || {};
+  function socialHtml() {
+    var h = "", soon = 0;
     Object.keys(ICONS).forEach(function (k) {
-      if (soc[k]) { any = true; h += '<a href="' + esc(soc[k]) + '" target="_blank" rel="noopener" aria-label="VAIGA on ' + LABEL[k] + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + ICONS[k] + '"/></svg></a>'; }
+      var svg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + ICONS[k] + '"/></svg>';
+      if (soc[k]) h += '<a href="' + esc(soc[k]) + '" target="_blank" rel="noopener" aria-label="VAIGA on ' + LABEL[k] + '">' + svg + "</a>";
+      else { soon++; h += '<button type="button" class="soon" data-soon="' + LABEL[k] + '" aria-label="VAIGA on ' + LABEL[k] + ' – coming soon">' + svg + "</button>"; }
     });
-    box.innerHTML = h || '<span class="placeholder-note">[Social media links – add them in assets/js/config.js]</span>';
+    return h + (soon ? '<p class="social-soon" aria-live="polite">Our social media channels will be activated soon.</p>' : "");
+  }
+  window.VAIGA.socialHtml = socialHtml;
+  $$("[data-social]").forEach(function (box) { box.innerHTML = socialHtml(); });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-soon]");
+    if (!b) return;
+    var note = b.parentNode.querySelector(".social-soon");
+    if (note) note.textContent = b.getAttribute("data-soon") + " – coming soon. Our social media channels will be activated soon.";
   });
 
   /* ---------- contact details (only when filled in) ---------- */
   $$("[data-contact-email]").forEach(function (el) { el.innerHTML = C.email ? '<a href="mailto:' + esc(C.email) + '">' + esc(C.email) + "</a>" : '<span class="placeholder-note">[E-mail address]</span>'; });
   $$("[data-contact-phone]").forEach(function (el) { el.innerHTML = C.phone ? '<a href="tel:' + esc(C.phone.replace(/\s+/g, "")) + '">' + esc(C.phone) + "</a>" : '<span class="placeholder-note">[Phone number]</span>'; });
-  $$("[data-contact-city]").forEach(function (el) { el.innerHTML = C.city ? esc(C.city) : '<span class="placeholder-note">[Location]</span>'; });
+  var mapUrl = C.city ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(C.city) : "";
+  $$("[data-contact-city]").forEach(function (el) { el.innerHTML = C.city ? '<a href="' + esc(mapUrl) + '" target="_blank" rel="noopener">' + esc(C.city) + " ↗</a>" : '<span class="placeholder-note">[Location]</span>'; });
+  $$("[data-map-link]").forEach(function (a) { if (mapUrl) a.setAttribute("href", mapUrl); });
 
   /* ---------- event concepts ---------- */
   var CATS = window.VAIGA_CATEGORIES || [];
@@ -65,7 +78,13 @@
         return '<a class="card cat reveal" style="--cat-bg:' + c.bg + '" href="categories.html#' + c.id + '"><span class="num">' + n + '</span><span class="ico">' + window.VAIGA.icon(c) + "</span><h3>" + esc(c.name) + "</h3><p>" + esc(c.short) + '</p><span class="go arrow">Discover </span></a>';
       }
       var p = c.partner, purl = p && c.concept === "latinpulse" ? C.latinpulseUrl : "";
-      var lp = p
+      var shortUrl = function (u) { return String(u).replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, ""); };
+      var lp = c.collab
+        ? '<div class="collab">' + c.collab.map(function (x) {
+            var u = C[x.urlKey];
+            return '<div class="collab-item"><b>' + esc(x.name) + "</b>" + (u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(shortUrl(u)) + " ↗</a>" : "") + "</div>";
+          }).join("") + "</div>"
+        : p
         ? '<p class="concept-note"><b>Concept:</b> ' + esc(p.name) + " – " + esc(p.tagline) + (purl ? ' · <a href="' + esc(purl) + '" target="_blank" rel="noopener">Visit ' + esc(p.name) + " ↗</a>" : "") + "</p>" : "";
       var photo = p && p.image
         ? (purl ? '<a class="frame wide partner-frame" href="' + esc(purl) + '" target="_blank" rel="noopener" aria-label="Visit ' + esc(p.name) + ' (opens in a new tab)">' : '<div class="frame wide partner-frame">') +

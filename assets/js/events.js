@@ -81,9 +81,8 @@
     draw();
   });
   function fillSocial(root) {
-    // the empty state contains a social box: let main.js logic render it again
-    var soc = C.social || {}, any = Object.keys(soc).some(function (k) { return soc[k]; });
-    $$("[data-social]", root).forEach(function (b) { if (!any) b.innerHTML = '<span class="placeholder-note">[Social media links – add them in assets/js/config.js]</span>'; else { var src = $("footer [data-social]"); if (src) b.innerHTML = src.innerHTML; } });
+    // the empty state contains a social box: render it with the same buttons as everywhere else (main.js)
+    $$("[data-social]", root).forEach(function (b) { b.innerHTML = V.socialHtml ? V.socialHtml() : ""; });
   }
 
   /* ---------- event detail page ---------- */
