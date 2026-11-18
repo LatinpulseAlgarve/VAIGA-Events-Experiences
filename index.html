@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VAIGA Events &amp; Experiences</title>
+  <meta name="description" content="VAIGA Events & Experiences — unforgettable events and curated experiences in the Algarve.">
+  <link rel="canonical" href="https://demo.vaiga.eu/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sand: #f6efe4;
+      --ink: #1d2a2f;
+      --ocean: #0f5c6e;
+      --sun: #e08a3c;
+      --muted: #5b6b70;
+      --card: #ffffff;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--sand);
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+    .demo-banner {
+      background: var(--ink); color: #fff; text-align: center;
+      font-size: 13px; padding: 6px 16px;
+    }
+    .demo-banner a { color: var(--sun); }
+
+    header.nav {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(246, 239, 228, .92); backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(29, 42, 47, .08);
+    }
+    header.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .logo { font-family: "Cormorant Garamond", serif; font-size: 28px; font-weight: 600; letter-spacing: .12em; text-decoration: none; }
+    .logo span { color: var(--sun); }
+    nav a { text-decoration: none; margin-left: 24px; font-size: 15px; font-weight: 500; color: var(--muted); }
+    nav a:hover { color: var(--ocean); }
+
+    .hero {
+      background:
+        linear-gradient(180deg, rgba(15, 92, 110, .55), rgba(29, 42, 47, .75)),
+        radial-gradient(circle at 70% 20%, #f3b46b 0, #e08a3c 18%, #0f5c6e 60%, #0b3f4c 100%);
+      color: #fff; padding: 120px 0 110px; text-align: center;
+    }
+    .hero h1 {
+      font-family: "Cormorant Garamond", serif; font-weight: 600;
+      font-size: clamp(40px, 7vw, 72px); line-height: 1.05; margin: 0 0 18px;
+    }
+    .hero p { font-size: clamp(17px, 2.2vw, 20px); max-width: 640px; margin: 0 auto 34px; opacity: .92; }
+    .btn {
+      display: inline-block; padding: 14px 28px; border-radius: 999px;
+      background: var(--sun); color: #fff; text-decoration: none; font-weight: 600;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.18); }
+    .btn.ghost { background: transparent; border: 2px solid rgba(255,255,255,.8); margin-left: 10px; }
+
+    section { padding: 90px 0; }
+    .eyebrow { color: var(--sun); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; font-size: 13px; }
+    h2 { font-family: "Cormorant Garamond", serif; font-size: clamp(32px, 4.5vw, 46px); margin: 6px 0 16px; line-height: 1.1; }
+    .lead { color: var(--muted); max-width: 640px; }
+
+    .grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 40px; }
+    .card {
+      background: var(--card); border-radius: var(--radius); padding: 28px;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(15, 92, 110, .06);
+    }
+    .card .icon { font-size: 30px; }
+    .card h3 { margin: 12px 0 8px; font-size: 19px; }
+    .card p { margin: 0; color: var(--muted); font-size: 15px; }
+
+    .split { display: grid; gap: 48px; grid-template-columns: 1fr 1fr; align-items: center; }
+    .visual {
+      aspect-ratio: 4 / 3; border-radius: var(--radius);
+      background: linear-gradient(135deg, #0f5c6e, #e08a3c);
+      display: grid; place-items: center; color: #fff;
+      font-family: "Cormorant Garamond", serif; font-size: 30px; text-align: center; padding: 20px;
+    }
+    .steps { list-style: none; padding: 0; margin: 24px 0 0; counter-reset: s; }
+    .steps li { counter-increment: s; padding-left: 48px; position: relative; margin-bottom: 18px; }
+    .steps li::before {
+      content: counter(s); position: absolute; left: 0; top: 0;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--ocean); color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 14px;
+    }
+
+    .contact { background: var(--ocean); color: #fff; }
+    .contact .lead { color: rgba(255,255,255,.85); }
+    form { display: grid; gap: 14px; margin-top: 30px; max-width: 560px; }
+    input, select, textarea {
+      font: inherit; padding: 13px 15px; border-radius: 10px; border: 0; width: 100%;
+    }
+    textarea { min-height: 110px; resize: vertical; }
+    .form-note { font-size: 14px; min-height: 1.4em; }
+
+    footer { background: var(--ink); color: rgba(255,255,255,.7); padding: 30px 0; font-size: 14px; }
+    footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+    @media (max-width: 760px) {
+      nav { display: none; }
+      .split { grid-template-columns: 1fr; }
+      .btn.ghost { margin: 12px 0 0; }
+      section { padding: 64px 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-banner">Demo version — the official website is at <a href="https://vaiga.eu">vaiga.eu</a></div>
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="logo" href="#top">VAIGA<span>.</span></a>
+      <nav>
+        <a href="#events">Events</a>
+        <a href="#experiences">Experiences</a>
+        <a href="#how">How it works</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="hero">
+      <div class="wrap">
+        <h1>Events &amp; Experiences<br>in the Algarve</h1>
+        <p>From intimate gatherings to unforgettable celebrations. We design, plan and host moments your guests will talk about for years.</p>
+        <a class="btn" href="#contact">Plan your event</a>
+        <a class="btn ghost" href="#experiences">Discover experiences</a>
+      </div>
+    </div>
+
+    <section id="events">
+      <div class="wrap">
+        <div class="eyebrow">Events</div>
+        <h2>Every occasion, perfectly crafted</h2>
+        <p class="lead">Whether it’s a private celebration or a corporate retreat, we handle every detail so you can enjoy the moment.</p>
+        <div class="grid">
+          <div class="card"><div class="icon">🥂</div><h3>Private celebrations</h3><p>Birthdays, anniversaries and parties at stunning locations along the coast.</p></div>
+          <div class="card"><div class="icon">💍</div><h3>Weddings</h3><p>Barefoot beach ceremonies or elegant quinta receptions, tailored to you.</p></div>
+          <div class="card"><div class="icon">💼</div><h3>Corporate &amp; retreats</h3><p>Team events, incentive trips and offsites that combine work with the Algarve sun.</p></div>
+          <div class="card"><div class="icon">🎶</div><h3>Music &amp; dance nights</h3><p>Live music, DJs and dance evenings with a vibrant Latin pulse.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experiences" style="background:#fff">
+      <div class="wrap split">
+        <div class="visual">Sunsets, sea &amp; stories</div>
+        <div>
+          <div class="eyebrow">Experiences</div>
+          <h2>Curated moments you’ll never forget</h2>
+          <p class="lead">Explore the Algarve with hand-picked experiences for groups, couples and companies.</p>
+          <div class="grid" style="grid-template-columns:1fr 1fr; margin-top:24px">
+            <div class="card"><h3>⛵ Sunset cruises</h3><p>Sail along the golden cliffs.</p></div>
+            <div class="card"><h3>🍷 Wine &amp; food tours</h3><p>Taste local flavours.</p></div>
+            <div class="card"><h3>💃 Dance workshops</h3><p>Salsa, bachata &amp; kizomba.</p></div>
+            <div class="card"><h3>🏖️ Beach days</h3><p>Hidden coves, fully arranged.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="wrap split">
+        <div>
+          <div class="eyebrow">How it works</div>
+          <h2>From idea to unforgettable</h2>
+          <ol class="steps">
+            <li><strong>Tell us your idea.</strong> Share the occasion, date and group size.</li>
+            <li><strong>Receive a tailored proposal.</strong> Locations, programme and a clear budget.</li>
+            <li><strong>We take care of everything.</strong> Suppliers, logistics and on-site coordination.</li>
+            <li><strong>Enjoy the moment.</strong> You and your guests simply celebrate.</li>
+          </ol>
+        </div>
+        <div class="visual" style="background:linear-gradient(135deg,#e08a3c,#1d2a2f)">Your story,<br>our craft</div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="wrap">
+        <div class="eyebrow">Contact</div>
+        <h2>Let’s plan something special</h2>
+        <p class="lead">Leave your details and we’ll get back to you within 48 hours.</p>
+        <form id="contact-form">
+          <input name="name" placeholder="Your name" required>
+          <input name="email" type="email" placeholder="Email address" required>
+          <select name="type">
+            <option>Private celebration</option>
+            <option>Wedding</option>
+            <option>Corporate event</option>
+            <option>Experience / activity</option>
+            <option>Other</option>
+          </select>
+          <textarea name="message" placeholder="Tell us about your plans"></textarea>
+          <button class="btn" type="submit" style="border:0;cursor:pointer;justify-self:start">Send request</button>
+          <div class="form-note" id="form-note" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© <span id="year"></span> VAIGA Events &amp; Experiences · Algarve, Portugal</span>
+      <a href="https://vaiga.eu">vaiga.eu</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('contact-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.getElementById('form-note').textContent =
+        'Thank you! This is a demo — your request was not sent.';
+      this.reset();
+    });
+  </script>
+</body>
+</html>
