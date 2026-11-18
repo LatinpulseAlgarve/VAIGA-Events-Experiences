@@ -41,19 +41,38 @@
   var LABEL = { instagram: "Instagram", facebook: "Facebook", tiktok: "TikTok", youtube: "YouTube", whatsapp: "WhatsApp" };
   // Filled in config.js = real link; empty = button marked "coming soon" (clicking shows a short note)
   var soc = C.social || {};
-  function socialHtml() {
+  /* contact channels as black buttons: WhatsApp (config or the phone number), e-mail, location */
+  var CONTACT_ICONS = {
+    mail: "M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1.4 2L12 12.2 19.6 7H4.4ZM20 8.6l-7.4 5.1a1 1 0 0 1-1.2 0L4 8.6V17h16V8.6Z",
+    pin: "M12 2a7 7 0 0 1 7 7c0 5.2-7 13-7 13S5 14.2 5 9a7 7 0 0 1 7-7Zm0 4.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z"
+  };
+  var waUrl = soc.whatsapp || (C.phone ? "https://wa.me/" + C.phone.replace(/\D/g, "") : "");
+  var mapUrl = C.city ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(C.city) : "";
+  var ico = function (d) { return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + d + '"/></svg>'; };
+  function contactBtn(kind) {
+    if (kind === "whatsapp" && waUrl) return '<a class="black-btn" href="' + esc(waUrl) + '" target="_blank" rel="noopener" aria-label="WhatsApp VAIGA (opens in a new tab)" title="WhatsApp VAIGA">' + ico(ICONS.whatsapp) + "</a>";
+    if (kind === "mail" && C.email) return '<a class="black-btn" href="mailto:' + esc(C.email) + '" aria-label="E-mail VAIGA: ' + esc(C.email) + '" title="E-mail VAIGA: ' + esc(C.email) + '">' + ico(CONTACT_ICONS.mail) + "</a>";
+    if (kind === "location" && mapUrl) return '<a class="black-btn" href="' + esc(mapUrl) + '" target="_blank" rel="noopener" aria-label="' + esc(C.city) + ' – open in Google Maps (opens in a new tab)" title="' + esc(C.city) + '">' + ico(CONTACT_ICONS.pin) + "</a>";
+    return "";
+  }
+  /* social row: Instagram, Facebook, TikTok, YouTube; then the black WhatsApp and e-mail buttons.
+     data-social="no-whatsapp" = without WhatsApp (contact page "Follow us", the "new dates" block) */
+  function socialHtml(box) {
+    var mode = box && box.getAttribute ? box.getAttribute("data-social") : "";
     var h = "", soon = 0;
     Object.keys(ICONS).forEach(function (k) {
-      var svg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + ICONS[k] + '"/></svg>';
+      if (k === "whatsapp") return;
+      var svg = ico(ICONS[k]);
       if (soc[k]) h += '<a href="' + esc(soc[k]) + '" target="_blank" rel="noopener" aria-label="VAIGA on ' + LABEL[k] + '">' + svg + "</a>";
       else { soon++; h += '<button type="button" class="soon" data-soon="' + LABEL[k] + '" aria-label="VAIGA on ' + LABEL[k] + ' – coming soon">' + svg + "</button>"; }
     });
-    // e-mail: same round button as the social icons, an envelope without text, right after WhatsApp
-    if (C.email) h += '<a class="mail-ico" href="mailto:' + esc(C.email) + '" aria-label="E-mail VAIGA: ' + esc(C.email) + '" title="E-mail VAIGA: ' + esc(C.email) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1.4 2L12 12.2 19.6 7H4.4ZM20 8.6l-7.4 5.1a1 1 0 0 1-1.2 0L4 8.6V17h16V8.6Z"/></svg></a>';
+    if (mode !== "no-whatsapp") h += contactBtn("whatsapp");
+    h += contactBtn("mail");
     return h + (soon ? '<p class="social-soon" aria-live="polite">Our social media channels will be activated soon.</p>' : "");
   }
   window.VAIGA.socialHtml = socialHtml;
-  $$("[data-social]").forEach(function (box) { box.innerHTML = socialHtml(); });
+  $$("[data-social]").forEach(function (box) { box.innerHTML = socialHtml(box); });
+  $$("[data-contact-buttons]").forEach(function (box) { box.innerHTML = contactBtn("whatsapp") + contactBtn("mail") + contactBtn("location"); });
   document.addEventListener("click", function (e) {
     var b = e.target.closest && e.target.closest("[data-soon]");
     if (!b) return;
@@ -64,7 +83,6 @@
   /* ---------- contact details (only when filled in) ---------- */
   $$("[data-contact-email]").forEach(function (el) { el.innerHTML = C.email ? '<a href="mailto:' + esc(C.email) + '">' + esc(C.email) + "</a>" : '<span class="placeholder-note">[E-mail address]</span>'; });
   $$("[data-contact-phone]").forEach(function (el) { el.innerHTML = C.phone ? '<a href="tel:' + esc(C.phone.replace(/\s+/g, "")) + '">' + esc(C.phone) + "</a>" : '<span class="placeholder-note">[Phone number]</span>'; });
-  var mapUrl = C.city ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(C.city) : "";
   $$("[data-contact-city]").forEach(function (el) { el.innerHTML = C.city ? '<a href="' + esc(mapUrl) + '" target="_blank" rel="noopener">' + esc(C.city) + " ↗</a>" : '<span class="placeholder-note">[Location]</span>'; });
   $$("[data-map-link]").forEach(function (a) { if (mapUrl) a.setAttribute("href", mapUrl); });
 

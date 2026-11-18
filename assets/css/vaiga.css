@@ -460,3 +460,27 @@ a.cat.has-photo:hover .cat-photo { transform: scale(1.06); }
 /* homepage "Bringing people together": event photo fills the 1080×450 frame */
 .photo-frame { background: var(--ink); }
 .photo-frame img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+/* ---------- black contact buttons: WhatsApp, e-mail, location (2026-11-18) ---------- */
+.black-btn, .social a.black-btn { width: 48px; height: 48px; border-radius: 16px; display: inline-grid; place-items: center; background: #06040F; border: 1px solid rgba(255,255,255,.14); color: #fff; box-shadow: 0 10px 24px -14px rgba(0,0,0,.9); transition: background .25s, transform .25s var(--ease), border-color .25s; }
+.black-btn svg { width: 22px; height: 22px; fill: currentColor; }
+.black-btn:hover, .black-btn:focus-visible, .social a.black-btn:hover { background: var(--celebrate); border-color: transparent; transform: translateY(-3px); }
+.social.light a.black-btn, .empty .social a.black-btn { background: #06040F; border-color: rgba(255,255,255,.14); color: #fff; }
+.contact-btns { display: flex; flex-wrap: wrap; gap: 14px; margin: 6px 0 8px; }
+.contact-btns .black-btn { width: 64px; height: 64px; border-radius: 20px; }
+.contact-btns .black-btn svg { width: 28px; height: 28px; }
+
+/* ---------- seamless section transitions (2026-11-18) ----------
+   Cause of the visible seams: .hero and .page-hero had overflow:hidden, so their blurred
+   glow circles (.orb) were cut off in a straight line at the bottom edge of the section, and
+   the thin vertical lines of the home hero stopped abruptly. Now the glows are not clipped:
+   they fade out softly over the section border (the page clips sideways overflow itself via
+   html/body overflow-x:clip), and the decorative lines fade out before the section ends.
+   All sections are transparent on one shared body background, so the colour underneath is
+   always the same on both sides of a border. */
+.hero, .page-hero { overflow: visible; }
+.hero .orb, .page-hero .orb { pointer-events: none; }
+.page-hero .o2 { bottom: -12vmax; opacity: .32; }
+.hero .o3 { bottom: -16vmax; opacity: .4; }
+.hero::after { -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%); mask-image: linear-gradient(180deg, #000 55%, transparent 100%); }
+main { position: relative; }

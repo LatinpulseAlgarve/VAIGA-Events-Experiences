@@ -30,7 +30,7 @@
   }
   function empty(catName) {
     return '<div class="empty reveal"><span class="eyebrow">Stay tuned</span><h3>' + (catName ? "New " + esc(catName) + " dates coming soon" : "New dates are coming soon") +
-      '</h3><p class="lead" style="margin-inline:auto">We are preparing the next VAIGA events. Follow us on social media or get in touch to be the first to know.</p><div data-social class="social" style="justify-content:center;margin:18px 0"></div><div class="btn-row" style="justify-content:center"><a class="btn arrow" href="contact.html">Get in touch </a></div></div>';
+      '</h3><p class="lead" style="margin-inline:auto">We are preparing the next VAIGA events. Follow us on social media or get in touch to be the first to know.</p><div data-social="no-whatsapp" class="social" style="justify-content:center;margin:18px 0"></div><div class="btn-row" style="justify-content:center"><a class="btn arrow" href="contact.html">Get in touch </a></div></div>';
   }
 
   /* ---------- lists ---------- */
@@ -81,7 +81,7 @@
   });
   function fillSocial(root) {
     // the empty state contains a social box: render it with the same buttons as everywhere else (main.js)
-    $$("[data-social]", root).forEach(function (b) { b.innerHTML = V.socialHtml ? V.socialHtml() : ""; });
+    $$("[data-social]", root).forEach(function (b) { b.innerHTML = V.socialHtml ? V.socialHtml(b) : ""; });
   }
 
   /* ---------- event detail page ---------- */
