@@ -4,8 +4,7 @@ Demo website for VAIGA Events & Experiences, published at **https://demo.vaiga.e
 
 ## Publishing (GitHub Pages)
 
-Every push to `main` copies the site files to the `gh-pages` branch
-(`.github/workflows/pages.yml`), and GitHub Pages serves that branch.
+GitHub Pages serves the `main` branch directly: every push to `main` updates the site.
 The `CNAME` file sets the custom domain `demo.vaiga.eu`.
 
 One-time setup:
@@ -16,7 +15,6 @@ One-time setup:
    |-------|--------|-------------------------------|
    | CNAME | `demo` | `latinpulsealgarve.github.io` |
 
-2. If the site does not appear: repo *Settings → Pages* → Source: **Deploy from a branch**, branch `gh-pages`, folder `/ (root)`.
-3. Once DNS works, tick **Enforce HTTPS** in *Settings → Pages*.
+2. Once DNS works, tick **Enforce HTTPS** in repo *Settings → Pages*.
 
 The main site at vaiga.eu is not affected.
