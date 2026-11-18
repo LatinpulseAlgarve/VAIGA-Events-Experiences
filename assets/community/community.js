@@ -43,7 +43,7 @@
     mg_public: "This is a public place.", mg_max: "Maximum number of people", mg_create: "Create Meet & Go",
     mg_none: "No Meet & Go's yet for upcoming events.", mg_join: "Join", mg_leave: "Leave", mg_cancel: "Cancel this Meet & Go",
     mg_joined: "You are going", mg_full: "Full", mg_who: "Who is going (only visible to participants)",
-    mg_meet: "Meet at {t} · {p}", mg_noevents: "There are no upcoming events at the moment.",
+    mg_meet_at: "Meet at", mg_noevents: "There are no upcoming events at the moment.",
     mg_rule_time: "At most {h} hours before the event starts.",
     e_login: "Please log in again.", e_no_access: "You have no access to the community.", e_rate: "Too many actions in a short time. Please wait a moment.",
     e_too_long: "The text is too long.", e_empty: "Please write something.", e_photo: "This photo cannot be used (JPEG, PNG or WebP, max. 3 MB).",
@@ -58,8 +58,8 @@
   function tx(k, v) { var s = TX[k] !== undefined ? TX[k] : k; if (v) for (var x in v) s = s.split("{" + x + "}").join(v[x]); return s; }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function multiline(s) { return esc(s).replace(/\n/g, "<br>"); }
-  function when(iso) { try { return new Date(iso).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } }
-  function day(d) { try { return new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }); } catch (e) { return d; } }
+  function when(iso) { try { return new Date(iso).toLocaleString(window.VAIGA_LOCALE || "en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } }
+  function day(d) { try { return new Date(d + "T12:00:00Z").toLocaleDateString(window.VAIGA_LOCALE || "en-GB", { weekday: "short", day: "numeric", month: "short" }); } catch (e) { return d; } }
 
   /* ---------- API ---------- */
   function api(method, path, body) {
@@ -221,7 +221,7 @@
   function who(m) { return m.participants ? '<div class="vc-who"><b>' + esc(tx("mg_who")) + "</b><ul>" + m.participants.map(function (n) { return "<li>" + esc(n) + "</li>"; }).join("") + "</ul></div>" : ""; }
   function mgHtml(m) {
     var e = m.event, h = '<article class="vc-card vc-mg" data-kind="meetgo" data-id="' + m.id + '"><div class="vc-mg-ev"><b>' + esc(e.title) + "</b><span>" + esc(day(e.date)) + " · " + esc(e.start) + " · " + esc(e.venue) + ", " + esc(e.city) + "</span></div>" +
-      '<p class="vc-mg-meet">🕒 ' + esc(tx("mg_meet", { t: m.meet_time, p: m.meeting_point })) + "</p>";
+      '<p class="vc-mg-meet">🕒 <span>' + esc(tx("mg_meet_at")) + '</span> <b>' + esc(m.meet_time) + '</b> · ' + esc(m.meeting_point) + "</p>";
     if (m.joined) {
       h += '<p class="vc-badge">✓ ' + esc(tx("mg_joined")) + "</p>" + who(m);
       h += '<div class="vc-row">' + (m.mine ? "" : '<button type="button" class="btn ghost small" data-mg="leave">' + esc(tx("mg_leave")) + "</button>") + "</div>";
