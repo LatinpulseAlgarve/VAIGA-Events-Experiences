@@ -153,3 +153,12 @@
 .vc-invite[open] summary::after { content: " ▴"; }
 .vc-card input.vc-invurl { font-size: 14px; margin: 4px 0 10px; }
 .vc-invbtns { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* animated VAIGA door picture (GIF, 2026-11-18) instead of the drawn door */
+.vc-door.vc-gifdoor { width: 100%; max-width: 360px; margin: 26px auto 8px; }
+.vc-gifdoor img { display: block; width: 100%; height: auto; border-radius: 22px; box-shadow: 0 0 0 2px rgba(255,178,30,.55), 0 18px 44px -14px rgba(229,51,140,.7); transition: transform .3s var(--ease), filter .6s ease; }
+.vc-gifdoor:hover img, .vc-gifdoor:focus-visible img { transform: scale(1.02); }
+.vc-gifdoor:focus-visible { outline: 3px solid var(--gold); outline-offset: 5px; border-radius: 24px; }
+.vc-gifdoor.vc-knock img { animation: vc-knock .45s ease; }
+.vc-gifdoor.vc-open img { filter: brightness(1.3) saturate(1.2); transform: scale(1.04); }
+@media (prefers-reduced-motion: reduce) { .vc-gifdoor.vc-knock img { animation: none; } }

@@ -148,9 +148,8 @@
       '<p class="vc-links"><a href="community-rules.html" target="_blank" rel="noopener">' + esc(tx("l_rules")) + '</a> · <a href="privacy.html" target="_blank" rel="noopener">' + esc(tx("l_privacy")) + "</a></p>" +
       '<input name="website" class="vc-hp" tabindex="-1" autocomplete="off" aria-hidden="true"><input type="hidden" name="ref" value="' + esc(REF) + '">' +
       '<div class="vc-msg" role="status"></div>' +
-      /* the DOOR is the send button, directly under the sign-up form */
-      '<button class="vc-door" type="submit" aria-label="' + esc(tx("door_label")) + '"><span class="vc-sign" aria-hidden="true"><b>' + esc(tx("door_knock")) + "</b><i>" + esc(tx("door_welcome")) + "</i></span>" +
-      '<span class="vc-df" aria-hidden="true"><span class="vc-dlight"></span><span class="vc-dp"></span><span class="vc-dk"></span></span></button></form>';
+      /* the DOOR is the send button, directly under the sign-up form: the animated VAIGA door ("Welkom bij VAIGA – Knock here", GIF of the user) */
+      '<button class="vc-door vc-gifdoor" type="submit" aria-label="' + esc(tx("door_label")) + '"><img src="assets/community/img/vaiga-door.gif" alt="" width="414" height="414" decoding="async"></button></form>';
   }
   function remember() { try { localStorage.setItem("vc_key", "1"); } catch (e) {} }
   function remembered() { try { return localStorage.getItem("vc_key") === "1"; } catch (e) { return false; } }
