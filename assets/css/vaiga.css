@@ -519,3 +519,8 @@ main { position: relative; }
 /* footer "Jump to": all menu links in 2 columns (2026-11-18) */
 .site-footer .foot-links { grid-template-columns: 1fr 1fr; gap: 8px 20px; }
 .site-footer .foot-links a[aria-current=page] { color: var(--on-dark); font-weight: 700; }
+
+/* Geanimeerd logo (GIF van de gebruiker) in de menubalk naast de vlaggen (2026-11-18).
+   Achtergrond van het GIF is zwart; 'screen' maakt zwart onzichtbaar op de donkere balk. */
+.site-header .bar .brand img { height: 50px; width: auto; mix-blend-mode: screen; }
+@media (max-width: 600px) { .site-header .bar .brand img { height: 44px; } }
