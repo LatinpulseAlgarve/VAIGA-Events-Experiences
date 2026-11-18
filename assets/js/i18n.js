@@ -156,7 +156,7 @@
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
   }
   var s = document.createElement("script");
-  s.src = (document.currentScript && document.currentScript.src || "assets/js/i18n.js").replace(/js\/i18n\.js(\?.*)?$/, "i18n/translations.js");
+  s.src = (document.currentScript && document.currentScript.src || "assets/js/i18n.js").replace(/js\/i18n\.js(\?.*)?$/, function (m, q) { return "i18n/translations.js" + (q || ""); });   // same ?v= as i18n.js, so a new version is never stuck in a cache
   s.onload = ready;
   s.onerror = function () { reveal(); if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addMenu); else addMenu(); };
   document.head.appendChild(s);

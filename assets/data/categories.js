@@ -7,8 +7,8 @@ window.VAIGA_CATEGORIES = [
     id: "latin",
     name: "Latin Parties",
     styles: ["Salsa", "Bachata", "Merengue", "Reggaeton"],
-    short: "Salsa, bachata, merengue and reggaeton nights full of rhythm, warmth and dancing.",
-    long: "Latin events and experiences for everyone who loves Latin music, culture, food and more. A collaboration between Latinpulse Algarve and Tropicaliente.",
+    short: "Meet people, dance together and enjoy the warm Latin vibe – with salsa, bachata, merengue and reggaeton.",
+    long: "Latin events and experiences for everyone who loves meeting people, good company and the warmth of Latin culture – with music, dance, food and more. A collaboration between Latinpulse Algarve and Tropicaliente.",
     concept: "latinpulse",
     // concept photo (collaboration artwork Tropicaliente × Latinpulse Algarve)
     image: "assets/img/latin-parties.jpg",
@@ -25,8 +25,8 @@ window.VAIGA_CATEGORIES = [
     id: "retro",
     name: "Disco & Retro",
     styles: ["70s", "80s", "90s", "00s"],
-    short: "The greatest hits of the 70s, 80s, 90s and 00s – glitter, classics and pure nostalgia.",
-    long: "Back to the dance floors of the 70s, 80s, 90s and 00s. Disco classics, pop anthems and the songs everybody knows by heart, with the look and feel of each decade.",
+    short: "Meet up, catch up and celebrate together – with glitter, nostalgia and the greatest hits of the 70s, 80s, 90s and 00s.",
+    long: "A night out with friends and new faces, full of nostalgia and good vibes. Everyone sings along to the disco classics and pop anthems of the 70s, 80s, 90s and 00s, with the look and feel of each decade.",
     // concept photo (disco ball, 70s/80s/90s/00s outfits)
     image: "assets/img/disco-retro.jpg",
     imageAlt: "Dancing in 70s, 80s, 90s and 00s outfits under a disco ball",
@@ -37,8 +37,8 @@ window.VAIGA_CATEGORIES = [
     id: "forty-plus",
     name: "40+ Parties",
     styles: ["40+", "Classics", "Dance"],
-    short: "Relaxed, stylish party nights for the 40+ crowd – great music and good company.",
-    long: "Party nights made for the 40+ crowd: a relaxed atmosphere, music to dance to and an easy place to meet people – without the late-night student crowd.",
+    short: "Relaxed, sociable party nights for the 40+ crowd – good company, a great atmosphere and music to dance to.",
+    long: "Party nights made for the 40+ crowd: an easy place to meet new people, a relaxed and friendly atmosphere and music to dance to – without the late-night student crowd.",
     // concept photo (40+ Party – Dance · Meet · Enjoy)
     image: "assets/img/forty-plus.jpg",
     imageAlt: "40+ Party – dance, meet, enjoy: people in their forties and fifties dancing and celebrating",
@@ -46,20 +46,11 @@ window.VAIGA_CATEGORIES = [
     icon: "M5 4h3v7h3V8h3v3h2v3h-2v6h-3v-6H5V4Zm13 3h3v3h3v3h-3v3h-3v-3h-3v-3h3V7Z"
   },
   {
-    id: "festivals",
-    name: "Festivals",
-    styles: ["Open air", "Multi-day", "Music"],
-    short: "Festivals and open-air events that bring music, culture and people together.",
-    long: "Festivals and open-air events: more music, more stages, more time to celebrate together – from one-day events to weekends.",
-    bg: "linear-gradient(140deg,#12C2B4 0%,#7B4DFF 100%)",
-    icon: "M12 2 22 20H2L12 2Zm0 5L6.5 17h11L12 7Zm-1 4h2v4h-2v-4Z"
-  },
-  {
     id: "themed",
     name: "Themed Parties",
     styles: ["Dress code", "Concepts", "Decor"],
-    short: "Parties with a theme, a dress code and a story – the full experience.",
-    long: "Themed parties where music, decor, dress code and atmosphere tell one story. A different experience every time.",
+    short: "Parties with a theme, a dress code and a story – a sociable night out to share together.",
+    long: "Themed parties where people, decor, dress code and atmosphere tell one story. A different experience every time – and an easy way to meet new people.",
     // concept photo (festive Christmas dinner party outdoors)
     image: "assets/img/themed-parties.jpg",
     imageAlt: "Friends toasting at a festive candlelit Christmas table under fairy lights",
@@ -70,8 +61,11 @@ window.VAIGA_CATEGORIES = [
     id: "special",
     name: "Special Events",
     styles: ["New Year", "Seasonal", "One-off"],
-    short: "One-off celebrations and special dates that deserve something extra.",
-    long: "Special events for special moments: seasonal celebrations, unique locations and one-off nights.",
+    short: "One-off celebrations and special dates to share with friends and new people.",
+    long: "Special events for special moments: seasonal celebrations, unique locations and one-off nights to celebrate together.",
+    // concept photo (grape-stomping harvest party at a vineyard at sunset)
+    image: "assets/img/special-events.jpg",
+    imageAlt: "Grape-stomping harvest party at a vineyard at sunset: couples dancing in wooden barrels with wine, cheese and fairy lights",
     bg: "linear-gradient(140deg,#FF5A36 0%,#7B4DFF 100%)",
     icon: "M12 2l2.9 6.6L22 9.3l-5.4 4.8L18.2 21 12 17.3 5.8 21l1.6-6.9L2 9.3l7.1-.7L12 2Z"
   },
@@ -79,8 +73,8 @@ window.VAIGA_CATEGORIES = [
     id: "live",
     name: "Live Music & Entertainment",
     styles: ["Bands", "Artists", "Shows"],
-    short: "Live bands, artists and shows – the energy of real musicians on stage.",
-    long: "Live music and entertainment: bands, singers, DJs and performers who turn a night into a show.",
+    short: "Live bands and artists in a sociable setting – meet up, enjoy the atmosphere and celebrate together.",
+    long: "Live music and entertainment as the backdrop for a great night out together: bands, singers, DJs and performers, with plenty of room to meet people and enjoy the atmosphere.",
     // concept photo (singer, conga player and guitarist on an open-air stage at night)
     image: "assets/img/live-music.jpg",
     imageAlt: "Live music at night: a singer in a red dress with a conga player on an open-air stage",
