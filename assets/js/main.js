@@ -26,15 +26,13 @@
   /* ---------- current page in the menu ---------- */
   var page = document.body.getAttribute("data-page");
   $$("#nav a[data-page]").forEach(function (a) { if (a.getAttribute("data-page") === page) a.setAttribute("aria-current", "page"); });
-  /* full main menu also at the bottom of every page, above the footer columns (2026-11-18); built from the
-     header menu so both always stay the same */
+  /* footer column "Jump to": all links of the main menu, in 2 columns (2026-11-18); built from the header menu so
+     both always stay the same (the static list in the HTML is only a fallback) */
   (function () {
-    var fw = document.querySelector(".site-footer .wrap"), links = $$("#nav > ul a[data-page]");
-    if (!fw || !links.length || fw.querySelector(".foot-nav")) return;
-    var nav = document.createElement("nav"); nav.className = "foot-nav"; nav.setAttribute("aria-label", "Menu");
-    var ul = document.createElement("ul");
+    var ul = document.querySelector("[data-foot-menu]"), links = $$("#nav > ul a[data-page]");
+    if (!ul || !links.length) return;
+    ul.innerHTML = "";
     links.forEach(function (a) { var li = document.createElement("li"), c = a.cloneNode(true); c.removeAttribute("id"); li.appendChild(c); ul.appendChild(li); });
-    nav.appendChild(ul); fw.insertBefore(nav, fw.firstChild);
   })();
 
   /* ---------- year ---------- */
