@@ -30,10 +30,12 @@ window.VAIGA_COMMUNITY_CFG = { demo: true };   // preview: no server
     return ("0" + Math.floor(m / 60)).slice(-2) + ":" + ("0" + (m % 60)).slice(-2);
   }
   var mg = [
-    { id: 11, ev: EV[0], meet_time: mt(EV[0], 60), meeting_point: "Café on the main square (example)", max: 6, people: ["João", "Marta"], mineCreator: false },
-    { id: 12, ev: EV[1], meet_time: mt(EV[1], 45), meeting_point: "Terrace at the marina (example)", max: 4, people: ["Sofia", "Pieter", "Ana", "Rui"], mineCreator: false },
-    { id: 13, ev: EV[2], meet_time: mt(EV[2], 60), meeting_point: "Bar near the beach (example)", max: 8, people: ["Ana"], mineCreator: false },
-    { id: 14, ev: EV[0], meet_time: mt(EV[0], 120), meeting_point: "Ice-cream shop by the bridge (example)", max: 5, people: ["Rui", "Pieter"], mineCreator: false }
+    { id: 11, ev: EV[0], meet_time: mt(EV[0], 60), meeting_point: "Café on the main square (example)", max: 6, people: ["João", "Marta"], mineCreator: false, comments: [
+      { id: 111, parent_id: 0, author: "Ana", mine: false, can_delete: false, created: iso(90), body: "Is the café easy to find? I do not know Tavira very well." },
+      { id: 112, parent_id: 111, author: "João", mine: false, can_delete: false, created: iso(70), body: "Yes, it is right on the square with the big fountain. I will wait at the terrace 🙂" } ] },
+    { id: 12, ev: EV[1], meet_time: mt(EV[1], 45), meeting_point: "Terrace at the marina (example)", max: 4, people: ["Sofia", "Pieter", "Ana", "Rui"], mineCreator: false, comments: [] },
+    { id: 13, ev: EV[2], meet_time: mt(EV[2], 60), meeting_point: "Bar near the beach (example)", max: 8, people: ["Ana"], mineCreator: false, comments: [] },
+    { id: 14, ev: EV[0], meet_time: mt(EV[0], 120), meeting_point: "Ice-cream shop by the bridge (example)", max: 5, people: ["Rui", "Pieter"], mineCreator: false, comments: [] }
   ];
   var ME = (function () { try { return sessionStorage.getItem("vc_demo_name") || "You"; } catch (e) { return "You"; } })();
   /* example members: illustrated avatars (no real people), town and country */
@@ -58,13 +60,14 @@ window.VAIGA_COMMUNITY_CFG = { demo: true };   // preview: no server
   function view(m) {
     var joined = m.people.indexOf(ME) >= 0, o = { id: m.id, event: m.ev, meet_time: m.meet_time, meeting_point: m.meeting_point, joined: joined, full: m.people.length >= m.max, mine: m.mineCreator, can_delete: m.mineCreator };
     if (joined) { o.max_people = m.max; o.participants = m.people.map(prof); }   // participants only for participants
+    o.comments = (m.comments || []).map(function (c) { var x = JSON.parse(JSON.stringify(c)); x.who = prof(x.author); return x; });   // messages: every member can write
     return o;
   }
   function fail(code) { var e = new Error(code); e.code = code; return Promise.reject(e); }
   function ok(v) { return new Promise(function (r) { setTimeout(function () { r(JSON.parse(JSON.stringify(v))); }, 120); }); }
   function get(b, k) { return b instanceof FormData ? b.get(k) : b ? b[k] : null; }
   function findPost(id) { return posts.filter(function (p) { return p.id === id; })[0]; }
-  function findComment(id) { var r = null; posts.forEach(function (p) { p.comments.forEach(function (c) { if (c.id === id) r = { p: p, c: c }; }); }); return r; }
+  function findComment(id) { var r = null; posts.concat(mg).forEach(function (p) { p.comments = p.comments || []; p.comments.forEach(function (c) { if (c.id === id) r = { p: p, c: c }; }); }); return r; }
 
   window.VAIGA_COMMUNITY_MOCK = function (method, path, body) {
     var m, q = path.split("?")[0];
@@ -106,6 +109,14 @@ window.VAIGA_COMMUNITY_CFG = { demo: true };   // preview: no server
     }
     if (q === "reports") { var rs = String(get(body, "reason") || "").trim(); if (rs.length < 3) return fail("reason"); return ok({ ok: true }); }
     if (q === "events") return ok({ events: EV, rules: { min_people: 2, max_people: 20, max_hours_before: 4 } });
+    if ((m = /^meetgo\/(\d+)\/comments$/.exec(q))) {
+      var g0 = mg.filter(function (x) { return x.id === +m[1]; })[0], t0 = String(get(body, "body") || "").trim(), p0 = +(get(body, "parent_id") || 0);
+      if (!g0) return fail("not_found"); if (!t0) return fail("empty"); if (t0.length > 1000) return fail("too_long");
+      g0.comments = g0.comments || [];
+      if (p0) { var pc0 = findComment(p0); if (!pc0 || pc0.p !== g0 || pc0.c.parent_id) return fail("bad_parent"); }
+      g0.comments.push({ id: ++seq, parent_id: p0, author: ME, mine: true, can_delete: true, created: new Date().toISOString(), body: t0 });
+      return ok({ id: seq });
+    }
     if (q === "meetgo" && method === "GET") return ok({ items: mg.map(view) });
     if (q === "meetgo" && method === "POST") {
       var e = EV.filter(function (x) { return x.id === body.event && x.date === body.date; })[0];

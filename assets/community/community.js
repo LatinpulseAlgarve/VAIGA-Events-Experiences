@@ -62,6 +62,7 @@
     mg_rule_time: "At most {h} hours before the event starts.",
     mg_next: "Coming up: Meet & Go", mg_all: "All Meet & Go's", mg_add: "+ New Meet & Go",
     mg_order: "Always in date order: the first meeting is at the top. Past meetings disappear automatically.",
+    mg_write: "Write a message", mg_msgs: "Messages about this Meet & Go", ph_mg: "A question or message about this Meet & Go…",
     d_today: "Today", d_tomorrow: "Tomorrow", d_in: "In {n} days",
     e_login_failed: "E-mail address or password is not correct.", e_unverified: "Please confirm your e-mail address first with the link in your mailbox.",
     e_face: "Please add a photo of your face.", e_country: "Please choose your country.", e_town: "Please enter your town (2–60 characters).",
@@ -390,12 +391,12 @@
         b.onclick = function () {
           var act = b.dataset.act;
           if (act === "reply") {
-            box.innerHTML = '<form class="vc-mini"><textarea maxlength="1000" rows="2" placeholder="' + esc(tx("comment_ph")) + '"></textarea><div class="vc-row"><button class="btn small" type="submit">' + esc(tx("send")) + '</button><button class="btn ghost small" type="button" data-x>' + esc(tx("cancel")) + '</button></div><div class="vc-msg"></div></form>';
+            var host = kind === "comment" ? item.closest(".vc-post, .vc-mg") : item, onMg = host.dataset.kind === "meetgo";
+            box.innerHTML = '<form class="vc-mini"><textarea maxlength="1000" rows="2" placeholder="' + esc(tx(onMg && kind === "meetgo" ? "ph_mg" : "comment_ph")) + '"></textarea><div class="vc-row"><button class="btn small" type="submit">' + esc(tx("send")) + '</button><button class="btn ghost small" type="button" data-x>' + esc(tx("cancel")) + '</button></div><div class="vc-msg"></div></form>';
             var fm = box.querySelector("form"), ta = fm.querySelector("textarea"); ta.focus();
             fm.onsubmit = function (ev) {
               ev.preventDefault();
-              var postId = kind === "post" ? id : +item.closest(".vc-post").dataset.id;
-              api("POST", "posts/" + postId + "/comments", { body: ta.value, parent_id: kind === "comment" ? id : 0 }).then(function () { loadFeed(true); })
+              api("POST", (onMg ? "meetgo/" : "posts/") + host.dataset.id + "/comments", { body: ta.value, parent_id: kind === "comment" ? id : 0 }).then(function () { if (onMg) reloadMgAt(host.dataset.id); else loadFeed(true); })
                 .catch(function (e) { fm.querySelector(".vc-msg").innerHTML = note("err", errText(e)); });
             };
           } else if (act === "del") {
@@ -405,7 +406,8 @@
             fd.onsubmit = function (ev) {
               ev.preventDefault();
               var r = fd.querySelector("input"), path = (kind === "post" ? "posts/" : kind === "comment" ? "comments/" : "meetgo/") + id + (r ? "?reason=" + encodeURIComponent(r.value) : "");
-              api("DELETE", path).then(function () { if (kind === "meetgo") loadMg(); else loadFeed(true); })
+              var inMg = kind === "meetgo" || !!item.closest(".vc-mg");
+              api("DELETE", path).then(function () { if (inMg) { if (kind === "meetgo") loadMg(); else reloadMgAt(item.closest(".vc-mg").dataset.id); } else loadFeed(true); })
                 .catch(function (e) { fd.querySelector(".vc-msg").innerHTML = note("err", errText(e)); });
             };
           } else if (act === "report") {
@@ -437,7 +439,9 @@
     } else {
       h += '<div class="vc-row"><button type="button" class="btn small" data-mg="join">' + esc(tx("mg_join")) + "</button></div>" + whoList(m);
     }
-    h += '<div class="vc-acts">' + (m.can_delete ? '<button type="button" class="vc-a" data-act="del">' + esc(m.mine ? tx("mg_cancel") : tx("del")) + "</button>" : "") + (m.mine ? "" : '<button type="button" class="vc-a" data-act="report">' + esc(tx("report")) + "</button>") + '</div><div class="vc-inline"></div><div class="vc-msg"></div></article>';
+    var mc = m.comments || [], mtop = mc.filter(function (c) { return !c.parent_id; });
+    h += '<div class="vc-acts"><button type="button" class="vc-a" data-act="reply"><span aria-hidden="true">💬</span> <span>' + esc(tx("mg_write")) + "</span></button>" + (m.can_delete ? '<button type="button" class="vc-a" data-act="del">' + esc(m.mine ? tx("mg_cancel") : tx("del")) + "</button>" : "") + (m.mine ? "" : '<button type="button" class="vc-a" data-act="report">' + esc(tx("report")) + "</button>") + '</div><div class="vc-inline"></div><div class="vc-msg"></div>' +
+      (mtop.length ? '<div class="vc-comments vc-mgmsgs"><p class="vc-mgmsgs-h">' + esc(tx("mg_msgs")) + "</p>" + mtop.map(function (c) { return commentHtml(c, mc.filter(function (r) { return r.parent_id === c.id; })); }).join("") + "</div>" : "") + "</article>";
     return h;
   }
   function renderMg() {
@@ -492,6 +496,9 @@
   }
   function loadMg() {
     return Promise.all([api("GET", "events"), api("GET", "meetgo")]).then(function (r) { state.events = r[0].events; state.rules = r[0].rules; state.mg = r[1].items; renderMg(); });
+  }
+  function reloadMgAt(id) {
+    return loadMg().then(function () { var c = document.querySelector('.vc-mg[data-id="' + id + '"]'); if (c) c.scrollIntoView({ block: "nearest" }); });
   }
   function load() {
     if (!state.me || state.me.state !== "member") return;
