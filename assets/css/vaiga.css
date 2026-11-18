@@ -289,6 +289,8 @@ textarea { min-height: 150px; resize: vertical; }
 .social .social-soon { flex-basis: 100%; margin: 4px 0 0; font-size: .85rem; opacity: .8; }
 
 /* designed concept banner (instead of a photo) */
+.frame.wide.concept-photo { aspect-ratio: 1 / 1; background: var(--ink); }   /* square artwork: nothing is cut off */
+.concept-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .concept-banner { position: relative; aspect-ratio: 1080 / 450; background: var(--ph-bg); display: grid; place-items: center; overflow: hidden; color: #fff; text-align: center; isolation: isolate; }
 .concept-banner::before { content: ""; position: absolute; inset: -40% -10% auto auto; width: 70%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(255,178,30,.55), transparent 65%); z-index: -1; }
 .concept-banner::after { content: ""; position: absolute; inset: auto auto -50% -15%; width: 65%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(123,77,255,.55), transparent 65%); z-index: -1; }

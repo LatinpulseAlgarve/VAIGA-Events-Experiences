@@ -86,7 +86,9 @@
           }).join("") + "</div>"
         : p
         ? '<p class="concept-note"><b>Concept:</b> ' + esc(p.name) + " – " + esc(p.tagline) + (purl ? ' · <a href="' + esc(purl) + '" target="_blank" rel="noopener">Visit ' + esc(p.name) + " ↗</a>" : "") + "</p>" : "";
-      var photo = c.banner
+      var photo = c.image
+        ? '<div class="frame wide concept-photo"><img src="' + esc(c.image) + '" alt="' + esc(c.imageAlt || c.name) + '" loading="lazy" decoding="async" width="1000" height="1000"></div>'
+        : c.banner
         ? '<div class="frame wide concept-banner" style="--ph-bg:' + c.bg + '"><div class="cb-in"><span class="cb-ico" aria-hidden="true">' + window.VAIGA.icon(c) + '</span><b>' + esc(c.banner.title) + "</b><span>" + esc(c.banner.sub) + "</span></div></div>"
         : p && p.image
         ? (purl ? '<a class="frame wide partner-frame" href="' + esc(purl) + '" target="_blank" rel="noopener" aria-label="Visit ' + esc(p.name) + ' (opens in a new tab)">' : '<div class="frame wide partner-frame">') +
