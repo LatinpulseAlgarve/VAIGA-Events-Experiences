@@ -23,10 +23,9 @@ window.VAIGA_COMMUNITY_CFG = { demo: true };   // preview: no server
     return ("0" + Math.floor(m / 60)).slice(-2) + ":" + ("0" + (m % 60)).slice(-2);
   }
   var mg = [
-    { id: 11, ev: EV[0], meet_time: mt(EV[0], 60), meeting_point: "Café on the main square (example)", max: 6, people: ["João", "Marta"], mineCreator: false, comments: [
-      { id: 111, parent_id: 0, author: "Ana", mine: false, can_delete: false, created: iso(90), body: "Is the café easy to find? I do not know Tavira very well." },
-      { id: 112, parent_id: 111, author: "João", mine: false, can_delete: false, created: iso(70), body: "Yes, it is right on the square with the big fountain. I will wait at the terrace 🙂" } ] },
-    { id: 12, ev: EV[1], meet_time: mt(EV[1], 45), meeting_point: "Terrace at the marina (example)", max: 4, people: ["Sofia", "Pieter", "Ana", "Rui"], mineCreator: false, comments: [] },
+    { id: 11, ev: EV[0], meet_time: mt(EV[0], 60), meeting_point: "Café on the main square (example)", max: 6, people: [], mineCreator: false, comments: [
+      { id: 111, parent_id: 0, author: "Ana", mine: false, can_delete: false, created: iso(90), body: "Is the café easy to find? I do not know Tavira very well." } ] },
+    { id: 12, ev: EV[1], meet_time: mt(EV[1], 45), meeting_point: "Terrace at the marina (example)", max: 4, people: ["Pieter", "Ana", "Rui"], mineCreator: false, comments: [] },
     { id: 13, ev: EV[2], meet_time: mt(EV[2], 60), meeting_point: "Bar near the beach (example)", max: 8, people: ["Ana"], mineCreator: false, comments: [] },
     { id: 14, ev: EV[0], meet_time: mt(EV[0], 120), meeting_point: "Ice-cream shop by the bridge (example)", max: 5, people: ["Rui", "Pieter"], mineCreator: false, comments: [] }
   ];
