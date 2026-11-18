@@ -22,24 +22,13 @@ window.VAIGA_COMMUNITY_CFG = { demo: true };   // preview: no server
     var p = e.start.split(":"), m = Math.max(0, +p[0] * 60 + +p[1] - before);
     return ("0" + Math.floor(m / 60)).slice(-2) + ":" + ("0" + (m % 60)).slice(-2);
   }
-  var mg = [
-    { id: 11, ev: EV[0], meet_time: mt(EV[0], 60), meeting_point: "Café on the main square (example)", max: 6, people: [], mineCreator: false, comments: [] },
-    { id: 12, ev: EV[1], meet_time: mt(EV[1], 45), meeting_point: "Terrace at the marina (example)", max: 4, people: ["Pieter", "Ana", "Rui"], mineCreator: false, comments: [] },
-    { id: 13, ev: EV[2], meet_time: mt(EV[2], 60), meeting_point: "Bar near the beach (example)", max: 8, people: ["Ana"], mineCreator: false, comments: [] },
-    { id: 14, ev: EV[0], meet_time: mt(EV[0], 120), meeting_point: "Ice-cream shop by the bridge (example)", max: 5, people: ["Rui", "Pieter"], mineCreator: false, comments: [] }
-  ];
+  var mg = [];   // example Meet & Gos removed (user, 2026-11-18)
   var ME = (function () { try { return sessionStorage.getItem("vc_demo_name") || "You"; } catch (e) { return "You"; } })();
-  /* example members: illustrated avatars (no real people), town and country */
-  function pic(bg, fg) { return "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="' + bg + '"/><circle cx="32" cy="25" r="12" fill="' + fg + '"/><path d="M10 64c3-14 12-21 22-21s19 7 22 21z" fill="' + fg + '"/></svg>'); }
-  var PROFILES = {
-    "Pieter": { avatar: pic("#CFE0F7", "#1F4F9C"), town: "Albufeira", country: "NL" },
-    "Ana": { avatar: pic("#F8C8E0", "#B0216A"), town: "Portimão", country: "ES" },
-    "Rui": { avatar: pic("#C9F0EC", "#0E8C82"), town: "Loulé", country: "PT" }
-  };
+  var PROFILES = {};   // example members removed (user, 2026-11-18)
   function myProfile() { try { var j = JSON.parse(sessionStorage.getItem("vc_demo_me") || "null"); if (j) return j; } catch (e) {} return { avatar: "", town: "", country: "" }; }
   function prof(n) { var p = n === ME ? myProfile() : (PROFILES[n] || {}); return { name: n, avatar: p.avatar || "", town: p.town || "", country: p.country || "" }; }
   function withWho(list) { return list.map(function (p) { var o = JSON.parse(JSON.stringify(p)); o.who = prof(o.author); (o.comments || []).forEach(function (c) { c.who = prof(c.author); }); return o; }); }
-  var TAKEN = ["Pieter", "Ana", "Rui", "PartyAna"];   // names of the example members (+ one example)
+  var TAKEN = ["PartyAna"];   // the example name from the sign-up hint
   function nkey(n) { return String(n).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[\s._-]+/g, ""); }
   function nickOk(n) { n = String(n || "").trim(); return n.length >= 3 && n.length <= 20 && /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ0-9 ._-]*$/.test(n) && !/\d{5,}/.test(n) && !/admin|moderat|vaiga|support|staff|oficial|official/i.test(nkey(n)); }
   function taken(n) { return TAKEN.some(function (t) { return nkey(t) === nkey(n); }); }
