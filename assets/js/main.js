@@ -78,12 +78,11 @@
         return '<a class="card cat reveal" style="--cat-bg:' + c.bg + '" href="categories.html#' + c.id + '"><span class="num">' + n + '</span><span class="ico">' + window.VAIGA.icon(c) + "</span><h3>" + esc(c.name) + "</h3><p>" + esc(c.short) + '</p><span class="go arrow">Discover </span></a>';
       }
       var p = c.partner, purl = p && c.concept === "latinpulse" ? C.latinpulseUrl : "";
-      var shortUrl = function (u) { return String(u).replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, ""); };
       var lp = c.collab
         ? '<div class="collab">' + c.collab.map(function (x) {
             var u = C[x.urlKey];
             return u
-              ? '<a class="collab-btn" href="' + esc(u) + '" target="_blank" rel="noopener" aria-label="' + esc(x.name) + ' – ' + esc(shortUrl(u)) + ' (opens in a new tab)"><b>' + esc(x.name) + "</b><span>" + esc(shortUrl(u)) + " ↗</span></a>"
+              ? '<a class="collab-btn" href="' + esc(u) + '" target="_blank" rel="noopener" aria-label="' + esc(x.name) + ' (opens in a new tab)"><b>' + esc(x.name) + "</b></a>"
               : '<span class="collab-btn is-off"><b>' + esc(x.name) + "</b></span>";
           }).join("") + "</div>"
         : p
@@ -113,6 +112,20 @@
     place(); window.addEventListener("resize", place);
     $$("a[href]").forEach(function (a) { var h = a.getAttribute("href"); if (/^[a-z-]+\.html/.test(h) && h.indexOf("preview=1") < 0) a.setAttribute("href", h.replace(/(\.html)(\?[^#]*)?/, function (m, p, q) { return p + (q ? q + "&" : "?") + "preview=1"; })); });
   }
+
+  /* ---------- back to top ---------- */
+  var toTop = document.createElement("button");
+  toTop.type = "button"; toTop.className = "to-top";
+  toTop.setAttribute("aria-label", "Back to top"); toTop.title = "Back to top";
+  toTop.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+  document.body.appendChild(toTop);
+  var showTop = function () { toTop.classList.toggle("show", window.scrollY > 500); };
+  window.addEventListener("scroll", showTop, { passive: true }); showTop();
+  toTop.addEventListener("click", function () {
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" });
+    var h = $("h1") || $("a"); if (h) { if (!h.hasAttribute("tabindex") && h.tagName === "H1") h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
+  });
 
   /* ---------- reveal on scroll ---------- */
   function reveal() {
