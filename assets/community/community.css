@@ -59,3 +59,18 @@
 .vc-demo { background: #FFF1C9; border: 2px dashed #E2A100; color: #6B4B00; border-radius: 14px; padding: 10px 14px; font-weight: 700; margin: 10px 0; font-size: 14px; text-align: center; }
 .vc-fullrules { max-width: 760px; margin: 0 auto; }
 .vc-fullrules ol { padding-left: 22px; } .vc-fullrules li { margin: 8px 0; }
+
+/* public community page (community.html): feature cards and join steps */
+.vc-feat .ico { width: 56px; height: 56px; border-radius: 18px; display: grid; place-items: center; background: var(--celebrate); color: #fff; font-size: 1.5rem; box-shadow: var(--shadow-glow); margin-bottom: 14px; }
+.vc-feat h3 { margin-bottom: 8px; }
+.vc-feat p { color: var(--muted); margin: 0; }
+.vc-steps .ico { font: 900 1.4rem/1 var(--font-display); }
+.vc-steps p { color: var(--muted); }
+#preview #vc-app { margin-top: 8px; }
+
+/* dark VAIGA theme (2026-11-18): text colours that were made for the former light background */
+.vc-meta b { color: var(--text); }
+.vc-tabs button { color: var(--text); }
+.vc-tabs button[aria-selected=true] { color: #fff; }
+.vc-a { color: #FF8CC6; }
+.vc-card input:not([type=checkbox]), .vc-card textarea, .vc-card select { color: var(--text); background: var(--paper); }
