@@ -300,9 +300,20 @@ textarea { min-height: 150px; resize: vertical; }
 .concept-banner span { font-weight: 800; font-size: clamp(.8rem, 1.8vw, 1rem); letter-spacing: .14em; text-transform: uppercase; }
 
 /* collaboration partners under a concept (name, with its link underneath) */
-.collab { display: flex; flex-wrap: wrap; gap: 14px 36px; margin: 0 0 22px; }
-.collab-item b { display: block; font-size: 1.05rem; }
-.collab-item a { font-size: .92rem; word-break: break-word; }
+.collab { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 22px; }
+.collab-btn { display: inline-grid; gap: 2px; padding: 12px 20px; border-radius: 18px; background: var(--paper-2); border: 1px solid var(--line); box-shadow: var(--shadow); color: var(--ink); text-decoration: none; transition: transform .25s var(--ease), border-color .25s, box-shadow .25s; min-width: 0; }
+.collab-btn b { font-size: 1.02rem; }
+.collab-btn span { font-size: .85rem; color: var(--magenta); font-weight: 700; word-break: break-word; }
+a.collab-btn:hover, a.collab-btn:focus-visible { transform: translateY(-2px); border-color: var(--magenta); }
+
+/* e-mail as a button (footer, contact details) */
+.mail-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 999px; background: var(--celebrate); color: #fff !important; font-weight: 800; text-decoration: none; box-shadow: var(--shadow-glow); transition: transform .25s var(--ease); word-break: break-all; }
+.mail-btn:hover, .mail-btn:focus-visible { transform: translateY(-2px); }
+
+/* all large images the same size as the Latin Parties banner (event photos keep their own shape) */
+.frame, .frame.wide { aspect-ratio: 1080 / 450; }
+.frame .ph { min-height: 0; }
+[data-event-detail] .frame.wide { aspect-ratio: 16 / 10; }
 
 /* clickable map card (contact page) – no external map is loaded until it is clicked */
 .map-card { position: relative; display: block; margin: 0 0 28px; border-radius: var(--r-m); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); text-decoration: none; color: var(--ink); background: var(--ink); }
