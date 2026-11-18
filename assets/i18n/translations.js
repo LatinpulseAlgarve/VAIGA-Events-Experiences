@@ -431,6 +431,8 @@ window.VAIGA_TRANSLATIONS = {
   "All Meet & Go's": ["Todos os Meet & Go", "Todos los Meet & Go", "Alle Meet & Go's"],
   "Always in date order: the first meeting is at the top. Past meetings disappear automatically.": ["Sempre por ordem de data: o primeiro encontro está no topo. Os encontros passados desaparecem automaticamente.", "Siempre por orden de fecha: el primer encuentro está arriba. Los encuentros pasados desaparecen automáticamente.", "Altijd op datum: de eerstvolgende ontmoeting staat bovenaan. Voorbije ontmoetingen verdwijnen vanzelf."],
   "Today": ["Hoje", "Hoy", "Vandaag"],
+  "Please confirm that you are not a robot.": ["Confirme que não é um robô.", "Confirma que no eres un robot.", "Bevestig dat je geen robot bent."],
+  "The \"I am not a robot\" check could not load. Check your connection and reload the page.": ["Não foi possível carregar a verificação \"não sou um robô\". Verifique a ligação e recarregue a página.", "No se pudo cargar la comprobación \"no soy un robot\". Comprueba tu conexión y recarga la página.", "De controle \"ik ben geen robot\" kon niet laden. Controleer je verbinding en laad de pagina opnieuw."],
   "Write a message": ["Escrever uma mensagem", "Escribir un mensaje", "Schrijf een bericht"],
   "Messages about this Meet & Go": ["Mensagens sobre este Meet & Go", "Mensajes sobre este Meet & Go", "Berichten over deze Meet & Go"],
   "A question or message about this Meet & Go…": ["Uma pergunta ou mensagem sobre este Meet & Go…", "Una pregunta o mensaje sobre este Meet & Go…", "Een vraag of bericht over deze Meet & Go…"],
