@@ -51,6 +51,9 @@ window.VAIGA_CATEGORIES = [
     styles: ["Open air", "Multi-day", "Music"],
     short: "Festivals and open-air events that bring music, culture and people together.",
     long: "Festivals and open-air events: more music, more stages, more time to celebrate together – from one-day events to weekends.",
+    // concept photo (crowd dancing on the grass in front of an open-air festival stage)
+    image: "assets/img/festivals.jpg",
+    imageAlt: "Open-air festival: people dancing on the grass in front of a big stage with lights and screens",
     bg: "linear-gradient(140deg,#12C2B4 0%,#7B4DFF 100%)",
     icon: "M12 2 22 20H2L12 2Zm0 5L6.5 17h11L12 7Zm-1 4h2v4h-2v-4Z"
   },
