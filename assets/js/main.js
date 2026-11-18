@@ -56,7 +56,8 @@
     return "";
   }
   /* social row: Instagram, Facebook, TikTok, YouTube; then the black WhatsApp and e-mail buttons.
-     data-social="no-whatsapp" = without WhatsApp (contact page "Follow us", the "new dates" block) */
+     data-social="no-whatsapp" = without WhatsApp (contact page "Follow us");
+     data-social="social-only" = only the social media, no WhatsApp and no e-mail (the "new dates" block, 2026-11-18) */
   function socialHtml(box) {
     var mode = box && box.getAttribute ? box.getAttribute("data-social") : "";
     var h = "", soon = 0;
@@ -66,8 +67,8 @@
       if (soc[k]) h += '<a href="' + esc(soc[k]) + '" target="_blank" rel="noopener" aria-label="VAIGA on ' + LABEL[k] + '">' + svg + "</a>";
       else { soon++; h += '<button type="button" class="soon" data-soon="' + LABEL[k] + '" aria-label="VAIGA on ' + LABEL[k] + ' – coming soon">' + svg + "</button>"; }
     });
-    if (mode !== "no-whatsapp") h += contactBtn("whatsapp");
-    h += contactBtn("mail");
+    if (mode !== "no-whatsapp" && mode !== "social-only") h += contactBtn("whatsapp");
+    if (mode !== "social-only") h += contactBtn("mail");
     return h + (soon ? '<p class="social-soon" aria-live="polite">Our social media channels will be activated soon.</p>' : "");
   }
   window.VAIGA.socialHtml = socialHtml;
