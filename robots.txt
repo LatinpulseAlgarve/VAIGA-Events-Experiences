@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+# Demo site (demo.vaiga.eu): pages carry noindex. The live site will be vaiga.eu.

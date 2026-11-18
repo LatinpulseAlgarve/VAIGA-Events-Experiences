@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" role="img" aria-labelledby="t">
+  <title id="t">VAIGA – Events &amp; Experiences</title>
+  <!-- VAIGA logo, based on the VAIGA header: the V is a ribbon that sweeps up as an arc over AIGA (let's go) -->
+  <defs>
+    <linearGradient id="sw" gradientUnits="userSpaceOnUse" x1="10" y1="150" x2="580" y2="20">
+      <stop offset="0" stop-color="#FFB21E"/><stop offset=".28" stop-color="#FF6A2B"/><stop offset=".6" stop-color="#E5338C"/><stop offset="1" stop-color="#FF7AD9"/>
+    </linearGradient>
+    <linearGradient id="sv" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F1ECFA"/><stop offset="1" stop-color="#C9C0E0"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#sw)" d="M22 64 C32 44 56 36 78 48 L130 150 L152 150 C198 46 330 0 470 6 C520 9 558 21 580 36 C542 27 504 22 470 22 C362 22 240 72 148 118 L110 50 C100 34 70 28 50 34 C38 40 28 50 22 64 Z"/>
+  <g fill="url(#sv)">
+    <polygon points="168,150 208,60 232,60 272,150 244,150 220,96 196,150"/>
+    <rect x="288" y="60" width="26" height="90"/>
+    <polygon points="444,150 484,60 508,60 548,150 520,150 496,96 472,150"/>
+  </g>
+  <path d="M409.3 81.7 A33 33 0 1 0 419 105 L392 105" fill="none" stroke="url(#sv)" stroke-width="26"/>
+  <g fill="#E9E3F5">
+    <rect x="150" y="179" width="40" height="2"/><rect x="526" y="179" width="40" height="2"/>
+    <text x="358" y="186" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="17" letter-spacing="5">EVENTS &amp; EXPERIENCES</text>
+  </g>
+</svg>
