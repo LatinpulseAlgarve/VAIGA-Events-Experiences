@@ -93,6 +93,7 @@ window.VAIGA_TRANSLATIONS = {
   "New {x} dates coming soon": ["Novas datas de {x} em breve", "Nuevas fechas de {x} muy pronto", "Nieuwe data voor {x} volgen binnenkort"],
   "We are preparing the next VAIGA events. Follow us on social media or get in touch to be the first to know.": ["Estamos a preparar os próximos eventos VAIGA. Siga-nos nas redes sociais ou contacte-nos para ser o primeiro a saber.", "Estamos preparando los próximos eventos de VAIGA. Síguenos en redes sociales o contacta con nosotros para enterarte el primero.", "We bereiden de volgende VAIGA-evenementen voor. Volg ons op social media of neem contact op om het als eerste te weten."],
   "Get in touch": ["Contacte-nos", "Contáctanos", "Neem contact op"],
+  "Your stand at our event: dance shoes, jewellery and a festive venue": ["O seu stand no nosso evento: sapatos de dança, joias e um espaço festivo", "Tu stand en nuestro evento: zapatos de baile, joyería y un local festivo", "Jouw stand op ons evenement: dansschoenen, sieraden en een feestelijke locatie"],
   "Contact us": ["Contacte-nos", "Contáctanos", "Neem contact op"],
   "Event concepts": ["Conceitos de eventos", "Conceptos de eventos", "Eventconcepten"],
   "One brand.": ["Uma marca.", "Una marca.", "Eén merk."],
