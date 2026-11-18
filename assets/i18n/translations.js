@@ -26,6 +26,7 @@ window.VAIGA_TRANSLATIONS = {
   "Privacy": ["Privacidade", "Privacidad", "Privacy"],
   "Legal notice": ["Aviso legal", "Aviso legal", "Colofon"],
   "Our social media channels will be activated soon.": ["Os nossos canais de redes sociais serão ativados em breve.", "Nuestros canales en redes sociales se activarán pronto.", "Onze socialemediakanalen worden binnenkort geactiveerd."],
+  "E-mail VAIGA: {x}": ["Enviar e-mail à VAIGA: {x}", "Escribir a VAIGA: {x}", "E-mail VAIGA: {x}"],
   "VAIGA on {x} – coming soon": ["VAIGA no {x} – em breve", "VAIGA en {x} – próximamente", "VAIGA op {x} – binnenkort"],
   "VAIGA on {x}": ["VAIGA no {x}", "VAIGA en {x}", "VAIGA op {x}"],
   "{x} (opens in a new tab)": ["{x} (abre num novo separador)", "{x} (se abre en una pestaña nueva)", "{x} (opent in een nieuw tabblad)"],
