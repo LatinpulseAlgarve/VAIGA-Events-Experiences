@@ -456,3 +456,7 @@ a.cat.has-photo:hover .cat-photo { transform: scale(1.06); }
 .collab-link { color: var(--gold); font-weight: 800; text-decoration: underline; text-decoration-color: rgba(255,178,30,.5); text-underline-offset: 4px; }
 .collab-link::after { content: " ↗"; font-size: .85em; }
 .collab-link:hover, .collab-link:focus-visible { color: #fff; text-decoration-color: var(--magenta); }
+
+/* homepage "Bringing people together": event photo fills the 1080×450 frame */
+.photo-frame { background: var(--ink); }
+.photo-frame img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
