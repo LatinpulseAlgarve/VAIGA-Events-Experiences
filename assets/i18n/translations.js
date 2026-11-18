@@ -398,7 +398,7 @@ window.VAIGA_TRANSLATIONS = {
   "community|privacy": ["privacidade", "privacidad", "privacy"],
   "Read the full Community Rules": ["Ler as Regras da Comunidade completas", "Leer las normas completas de la comunidad", "Lees de volledige communityregels"],
   "PREVIEW – this is an example of the VAIGA Community with invented posts, people and events. Try it out: nothing is saved or sent, a reload starts again. The community opens later for approved members.": ["PRÉ-VISUALIZAÇÃO – exemplo da Comunidade VAIGA com publicações, pessoas e eventos inventados. Experimente: nada é guardado nem enviado e, ao recarregar, recomeça. A comunidade abre mais tarde para membros aprovados.", "VISTA PREVIA – ejemplo de la Comunidad VAIGA con publicaciones, personas y eventos inventados. Pruébala: no se guarda ni se envía nada; al recargar empieza de nuevo. La comunidad abrirá más adelante para miembros aprobados.", "VOORBEELD – dit is een voorbeeld van de VAIGA Community met verzonnen berichten, mensen en evenementen. Probeer het uit: er wordt niets opgeslagen of verstuurd, opnieuw laden begint weer van voren. De community gaat later open voor goedgekeurde leden."],
-  "Hi {x}": ["Olá {x}", "Hola {x}", "Hoi {x}"],
+  "Welcome back, {x}": ["Bem-vindo(a) de volta, {x}", "Bienvenido/a de nuevo, {x}", "Welkom terug, {x}"],
   "Log out": ["Sair", "Cerrar sesión", "Uitloggen"],
   "Share something about our events, the music, a night out together…": ["Partilhe algo sobre os nossos eventos, a música, uma saída em conjunto…", "Comparte algo sobre nuestros eventos, la música, una noche juntos…", "Deel iets over onze evenementen, de muziek, een avondje uit samen…"],
   "Photo": ["Foto", "Foto", "Foto"],

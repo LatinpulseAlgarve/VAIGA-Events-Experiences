@@ -41,7 +41,7 @@
     demo_banner: "PREVIEW – this is an example of the VAIGA Community with invented posts, people and events. Try it out: nothing is saved or sent, a new tab starts again.",
     st_unverified: "Please confirm your e-mail address with the link we sent you.",
     st_blocked: "Your access to the community is blocked. You can object by replying to the e-mail you received.",
-    tab_feed: "Feed", tab_mg: "Meet & Go", logout: "Log out", hello: "Hi {n}",
+    tab_feed: "Feed", tab_mg: "Meet & Go", logout: "Log out", hello: "Welcome back, {n}",
     inv_h: "Invite a friend", inv_p: "Share your personal invitation link. Everyone signs up the same way (face photo, e-mail confirmation) and follows the community rules.",
     inv_share: "Share", inv_copy: "Copy link", inv_copied: "Link copied ✓", inv_msg: "Join me in the VAIGA Community! Let's go. Let's celebrate.",
     ph_post: "Share something about our events, the music, a night out together…",
