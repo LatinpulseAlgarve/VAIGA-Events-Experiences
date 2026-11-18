@@ -60,6 +60,9 @@ window.VAIGA_CATEGORIES = [
     styles: ["Dress code", "Concepts", "Decor"],
     short: "Parties with a theme, a dress code and a story – the full experience.",
     long: "Themed parties where music, decor, dress code and atmosphere tell one story. A different experience every time.",
+    // concept photo (festive Christmas dinner party outdoors)
+    image: "assets/img/themed-parties.jpg",
+    imageAlt: "Friends toasting at a festive candlelit Christmas table under fairy lights",
     bg: "linear-gradient(140deg,#FFB21E 0%,#FF5A36 100%)",
     icon: "M4 8c3-4 13-4 16 0l-2 3c-1-1-3-1.5-6-1.5S7 10 6 11L4 8Zm3 5h10l-1 7H8l-1-7Z"
   },
