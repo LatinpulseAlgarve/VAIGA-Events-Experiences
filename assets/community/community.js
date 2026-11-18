@@ -65,7 +65,8 @@
     mg_write: "Write a message", mg_msgs: "Messages about this Meet & Go", ph_mg: "A question or message about this Meet & Go…",
     d_today: "Today", d_tomorrow: "Tomorrow", d_in: "In {n} days",
     e_login_failed: "E-mail address or password is not correct.", e_unverified: "Please confirm your e-mail address first with the link in your mailbox.",
-    e_face: "Please add a photo of your face.", e_robot: "Please confirm that you are not a robot.", e_robot_load: "The \"I am not a robot\" check could not load. Check your connection and reload the page.", e_country: "Please choose your country.", e_town: "Please enter your town (2–60 characters).",
+    e_face: "Please add a photo of your face.", e_robot: "Please confirm that you are not a robot.", e_robot_load: "The \"I am not a robot\" check could not load. Check your connection and reload the page.",
+    robot: "I am not a robot", robot_busy: "Checking…", robot_ok: "Checked ✓", e_robot_wait: "One moment: the check is still running.", e_country: "Please choose your country.", e_town: "Please enter your town (2–60 characters).",
     e_adult: "You must be 18 or older to join.",
     e_login: "Please log in again.", e_no_access: "You have no access to the community.", e_rate: "Too many actions in a short time. Please wait a moment.",
     e_too_long: "The text is too long.", e_empty: "Please write something.", e_photo: "This photo cannot be used (JPEG, PNG or WebP, max. 3 MB).",
@@ -162,7 +163,9 @@
       '<label class="vc-chk"><input type="checkbox" name="accept" value="1"> <span><span>' + esc(tx("f_accept")) + '</span> *</span></label>' +
       '<p class="vc-links"><a href="community-rules.html" target="_blank" rel="noopener">' + esc(tx("l_rules")) + '</a> · <a href="privacy.html" target="_blank" rel="noopener">' + esc(tx("l_privacy")) + "</a></p>" +
       '<input name="website" class="vc-hp" tabindex="-1" autocomplete="off" aria-hidden="true"><input type="hidden" name="ref" value="' + esc(REF) + '">' +
-      (tsKey() ? '<div class="vc-robot"><div id="vc-ts"></div></div>' : "") +
+      /* "I am not a robot": an EMPTY box the visitor ticks; only then Cloudflare Turnstile checks (2026-11-18) */
+      (tsKey() ? '<div class="vc-robot"><label class="vc-chk vc-notrobot"><input type="checkbox" name="not_robot" value="1"> <span><span>' + esc(tx("robot")) + '</span> *</span></label>' +
+        '<p class="vc-hint vc-ts-st" aria-live="polite"></p><div id="vc-ts"></div></div>' : "") +
       '<div class="vc-msg" role="status"></div>' +
       /* the DOOR is the send button, directly under the sign-up form: the animated VAIGA door ("Welkom bij VAIGA – Knock here", GIF of the user) */
       '<button class="vc-door vc-gifdoor" type="submit" aria-label="' + esc(tx("door_label")) + '"><img src="assets/community/img/vaiga-door.gif" alt="" width="414" height="414" decoding="async"></button></form>';
@@ -170,23 +173,45 @@
   /* "I am not a robot": Cloudflare Turnstile (privacy-friendly, no Google). The server must verify the token. */
   var TS_TEST = "1x00000000000000000000AA";   // Cloudflare's public test key: always passes (preview only)
   function tsKey() { var k = (window.VAIGA_CONFIG || {}).turnstileSiteKey || C.turnstileSiteKey || ""; return k || (C.demo ? TS_TEST : ""); }
-  var tsId = null, tsFailed = false;
-  function tsRender() {
-    var el = document.getElementById("vc-ts"); if (!el || !tsKey()) return;
-    var go = function () {
-      try { tsId = window.turnstile.render(el, { sitekey: tsKey(), theme: "dark", language: (document.documentElement.lang || "en").slice(0, 2), "response-field-name": "cf-turnstile-response" }); } catch (e) {}
-    };
-    if (window.turnstile) { go(); return; }
-    window.vcTsReady = go;
-    if (!document.getElementById("vc-ts-js")) {
-      var s = document.createElement("script"); s.id = "vc-ts-js"; s.async = true; s.defer = true;
-      s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=vcTsReady";
-      s.onerror = function () { tsFailed = true; el.innerHTML = '<p class="vc-hint">' + esc(tx("e_robot_load")) + "</p>"; };
-      document.head.appendChild(s);
-    }
+  var tsId = null, tsFailed = false, tsTok = "";
+  function tsStatus(t) { var st = document.querySelector(".vc-ts-st"); if (st) st.textContent = t ? tx(t) : ""; }
+  function tsLoad(done) {
+    if (window.turnstile) { done(); return; }
+    window.vcTsReady = done;
+    if (document.getElementById("vc-ts-js")) return;
+    var s = document.createElement("script"); s.id = "vc-ts-js"; s.async = true; s.defer = true;
+    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=vcTsReady";
+    s.onerror = function () { tsFailed = true; tsStatus("e_robot_load"); };
+    document.head.appendChild(s);
   }
-  function tsToken() { try { return tsId !== null && window.turnstile ? window.turnstile.getResponse(tsId) || "" : ""; } catch (e) { return ""; } }
-  function tsReset() { try { if (tsId !== null && window.turnstile) window.turnstile.reset(tsId); } catch (e) {} }
+  function tsStart() {
+    var el = document.getElementById("vc-ts"); if (!el || !tsKey()) return;
+    tsTok = ""; tsStatus("robot_busy");
+    tsLoad(function () {
+      try {
+        if (tsId !== null) { window.turnstile.reset(tsId); return; }
+        tsId = window.turnstile.render(el, {
+          sitekey: tsKey(), theme: "dark", appearance: "interaction-only", language: (document.documentElement.lang || "en").slice(0, 2),
+          "response-field-name": "cf-turnstile-response",
+          callback: function (t) { tsTok = t; tsStatus("robot_ok"); },
+          "expired-callback": function () { tsTok = ""; tsStop(); },
+          "error-callback": function () { tsTok = ""; tsStatus("e_robot_load"); }
+        });
+      } catch (e) { tsStatus("e_robot_load"); }
+    });
+  }
+  function tsStop() {
+    tsTok = ""; tsStatus("");
+    var cb = document.querySelector('#vc-join input[name="not_robot"]'); if (cb) cb.checked = false;
+    try { if (tsId !== null && window.turnstile) window.turnstile.reset(tsId); } catch (e) {}
+  }
+  function tsRender() {
+    var cb = document.querySelector('#vc-join input[name="not_robot"]'); if (!cb) return;
+    tsId = null; tsTok = "";
+    cb.onchange = function () { var m = document.querySelector("#vc-join .vc-msg"); if (m) m.innerHTML = ""; if (cb.checked) tsStart(); else tsStop(); };
+  }
+  function tsToken() { if (tsTok) return tsTok; try { return tsId !== null && window.turnstile ? window.turnstile.getResponse(tsId) || "" : ""; } catch (e) { return ""; } }
+  function tsReset() { tsStop(); }
   function remember() { try { localStorage.setItem("vc_key", "1"); } catch (e) {} }
   function remembered() { try { return localStorage.getItem("vc_key") === "1"; } catch (e) { return false; } }
   function bindJoin() {
@@ -223,7 +248,11 @@
       fd.delete("photo");
       if (!face) { msg.innerHTML = note("err", tx("e_face")); fbtn.parentNode.focus(); return; }
       fd.set("photo", face, "face.jpg");
-      if (tsKey() && !(C.demo && tsFailed)) { var tok = tsToken(); if (!tok) { msg.innerHTML = note("err", tx("e_robot")); return; } fd.set("cf-turnstile-response", tok); }
+      if (tsKey()) {
+        var rb = f.querySelector('input[name="not_robot"]');
+        if (!rb || !rb.checked) { msg.innerHTML = note("err", tx("e_robot")); return; }
+        if (!(C.demo && tsFailed)) { var tok = tsToken(); if (!tok) { msg.innerHTML = note("err", tx(tsFailed ? "e_robot_load" : "e_robot_wait")); return; } fd.set("cf-turnstile-response", tok); }
+      }
       if (b.disabled) return;
       b.disabled = true; b.classList.remove("vc-knock"); void b.offsetWidth; b.classList.add("vc-knock");
       api("POST", "join", fd).then(function () {
