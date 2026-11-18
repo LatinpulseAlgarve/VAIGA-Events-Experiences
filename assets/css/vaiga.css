@@ -497,3 +497,9 @@ main { position: relative; }
 .pp-note { color: var(--muted); font-size: .95rem; border-left: 3px solid var(--gold); padding-left: 12px; }
 /* menu with 8 items: a little tighter between laptop and wide screens */
 @media (min-width: 901px) and (max-width: 1180px) { .nav ul { gap: 12px; } .nav a { font-size: .84rem; letter-spacing: .02em; } }
+
+/* ---------- e-mail choice menu (opens from the envelope button) ---------- */
+.mail-panel { position: absolute; z-index: 80; display: grid; gap: 6px; min-width: 230px; padding: 12px; border-radius: 18px; background: linear-gradient(160deg, var(--ink-2), #2A0E45); border: 1px solid var(--line); box-shadow: 0 24px 60px -20px rgba(0,0,0,.85), var(--shadow-glow); color: var(--on-dark); }
+.mail-panel .mp-addr { font-size: .9rem; color: var(--gold); padding: 4px 8px 8px; border-bottom: 1px solid var(--line); margin-bottom: 2px; word-break: break-all; }
+.mail-panel a, .mail-panel button { display: block; width: 100%; text-align: left; padding: 10px 12px; border-radius: 12px; border: 1px solid transparent; background: transparent; color: var(--on-dark); font: 700 .92rem/1.2 var(--font-body); text-decoration: none; cursor: pointer; }
+.mail-panel a:hover, .mail-panel a:focus-visible, .mail-panel button:hover, .mail-panel button:focus-visible { background: var(--celebrate-soft); border-color: var(--magenta); }
