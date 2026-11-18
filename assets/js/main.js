@@ -78,12 +78,11 @@
         return '<a class="card cat reveal" style="--cat-bg:' + c.bg + '" href="categories.html#' + c.id + '"><span class="num">' + n + '</span><span class="ico">' + window.VAIGA.icon(c) + "</span><h3>" + esc(c.name) + "</h3><p>" + esc(c.short) + '</p><span class="go arrow">Discover </span></a>';
       }
       var p = c.partner, purl = p && c.concept === "latinpulse" ? C.latinpulseUrl : "";
-      var shortUrl = function (u) { return String(u).replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, ""); };
       var lp = c.collab
         ? '<div class="collab">' + c.collab.map(function (x) {
             var u = C[x.urlKey];
             return u
-              ? '<a class="collab-btn" href="' + esc(u) + '" target="_blank" rel="noopener" aria-label="' + esc(x.name) + ' – ' + esc(shortUrl(u)) + ' (opens in a new tab)"><b>' + esc(x.name) + "</b><span>" + esc(shortUrl(u)) + " ↗</span></a>"
+              ? '<a class="collab-btn" href="' + esc(u) + '" target="_blank" rel="noopener" aria-label="' + esc(x.name) + ' (opens in a new tab)"><b>' + esc(x.name) + "</b></a>"
               : '<span class="collab-btn is-off"><b>' + esc(x.name) + "</b></span>";
           }).join("") + "</div>"
         : p

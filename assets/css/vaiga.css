@@ -362,12 +362,12 @@ a.collab-btn:hover, a.collab-btn:focus-visible { transform: translateY(-2px); bo
 @media print { .site-header, .site-footer, .band, .share, .btn { display: none !important; } .hero, .page-hero, .dark { background: #fff !important; color: #000 !important; } }
 
 /* event concepts: every concept image the same size (square), about as tall as the text next to it */
-.concept.split { grid-template-columns: minmax(0, 360px) minmax(0, 1fr); }
+.concept.split { grid-template-columns: minmax(0, 280px) minmax(0, 1fr); }
 .concept .frame, .concept .frame.wide, .concept .frame.wide.concept-photo { aspect-ratio: 1 / 1; width: 100%; }
 .concept .concept-banner b { font-size: clamp(1.5rem, 3vw, 2.2rem); }
 @media (max-width: 760px) {
   .concept.split { grid-template-columns: 1fr; }
-  .concept .frame { max-width: 300px; }
+  .concept .frame { max-width: 240px; }
 }
 
 /* back-to-top button (added by main.js on every page) */
@@ -377,3 +377,6 @@ a.collab-btn:hover, a.collab-btn:focus-visible { transform: translateY(-2px); bo
 .to-top svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 body.menu-open .to-top { display: none; }
 @media print { .to-top { display: none !important; } }
+/* Latin Parties artwork: cut off along its own rounded gold border, so the black corners outside it disappear */
+.concept .frame.wide.concept-photo { background: transparent; box-shadow: none; border-radius: 0; overflow: visible; filter: drop-shadow(0 14px 22px rgba(14,10,36,.22)); }
+.concept-photo img { clip-path: inset(0 0 .5% 0 round 12%); }
