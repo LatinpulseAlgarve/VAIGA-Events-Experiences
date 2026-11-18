@@ -8,9 +8,14 @@ window.VAIGA_CATEGORIES = [
     name: "Latin Parties",
     styles: ["Salsa", "Bachata", "Merengue", "Reggaeton"],
     short: "Salsa, bachata, merengue and reggaeton nights full of rhythm, warmth and dancing.",
-    long: "Latin nights for dancers and everyone who loves the music: salsa, bachata, merengue and reggaeton. From social dancing to big party nights – Latin culture, rhythm and good company. Latinpulse Algarve, the Latin music and dance concept in the Algarve, is part of the VAIGA family.",
+    long: "Latin events and experiences for everyone who loves Latin music, culture, food and more. A collaboration between Latinpulse Algarve and Tropicaliente.",
     concept: "latinpulse",
     partner: { name: "Latinpulse Algarve", tagline: "Latin music & dance in the Algarve", image: "assets/img/partners/latinpulse-algarve.jpg" },  // link: config.js latinpulseUrl
+    // collaboration partners: name with its link underneath (links in config.js)
+    collab: [
+      { name: "Latinpulse Algarve", urlKey: "latinpulseUrl" },
+      { name: "Tropicaliente", urlKey: "tropicalienteUrl" }
+    ],
     bg: "linear-gradient(140deg,#FF5A36 0%,#E5338C 70%)",
     icon: "M12 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm-1 5h2l3 4-1.6 1.2L13 11v3l3 6-1.8.9L11.5 15 9 20.9 7.2 20 10 14v-3l-1.4 2.2L7 12l4-4Z"
   },

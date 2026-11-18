@@ -281,6 +281,36 @@ textarea { min-height: 150px; resize: vertical; }
 .social a:hover { background: var(--celebrate); transform: translateY(-3px); }
 .social svg { width: 22px; height: 22px; fill: currentColor; }
 .light .social a { background: var(--paper-2); border-color: var(--line); color: var(--ink); }
+/* social buttons that are not active yet ("coming soon") */
+.social button { width: 48px; height: 48px; border-radius: 16px; display: grid; place-items: center; background: rgba(255,255,255,.08); border: 1px dashed var(--ink-3); color: inherit; cursor: pointer; padding: 0; position: relative; transition: background .25s, transform .25s var(--ease); }
+.social button:hover, .social button:focus-visible { background: var(--celebrate); color: #fff; transform: translateY(-3px); }
+.light .social button, .social.light button, .empty .social button { background: var(--paper-2); border-color: var(--line); color: var(--ink); }
+.social.light a, .empty .social a { background: var(--paper-2); border-color: var(--line); color: var(--ink); }
+.social .social-soon { flex-basis: 100%; margin: 4px 0 0; font-size: .85rem; opacity: .8; }
+
+/* collaboration partners under a concept (name, with its link underneath) */
+.collab { display: flex; flex-wrap: wrap; gap: 14px 36px; margin: 0 0 22px; }
+.collab-item b { display: block; font-size: 1.05rem; }
+.collab-item a { font-size: .92rem; word-break: break-word; }
+
+/* clickable map card (contact page) – no external map is loaded until it is clicked */
+.map-card { position: relative; display: block; margin: 0 0 28px; border-radius: var(--r-m); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); text-decoration: none; color: var(--ink); background: var(--ink); }
+.map-card svg { display: block; width: 100%; height: auto; aspect-ratio: 600 / 240; transition: transform .6s var(--ease); }
+.map-card:hover svg { transform: scale(1.04); }
+.map-card .sea { fill: #CFE7F2; }
+.map-card .land { fill: #F6EEDC; }
+.map-card .land.es { fill: #EDE4D0; }
+.map-card .coast { fill: none; stroke: #9CC7D8; stroke-width: 3; stroke-linejoin: round; }
+.map-card .town { fill: var(--muted); }
+.map-card .lbl { font: 700 15px/1 var(--font-body); fill: var(--muted); }
+.map-card .lbl.region { font-size: 13px; letter-spacing: .2em; fill: #A79F8E; }
+.map-card .lbl.town-main { font: 900 20px/1 var(--font-display); fill: var(--ink); letter-spacing: .08em; }
+.map-card .pin { fill: #E5338C; stroke: #fff; stroke-width: 2; }
+.map-card .pulse { fill: #E5338C; opacity: .25; transform-origin: 480px 145px; animation: map-pulse 2.4s ease-out infinite; }
+@keyframes map-pulse { from { transform: scale(.4); opacity: .45; } to { transform: scale(2.2); opacity: 0; } }
+.map-card .map-cap { position: relative; display: block; background: var(--ink); color: #fff; padding: 12px 16px; font-weight: 800; font-size: .8rem; letter-spacing: .06em; }
+.map-card:hover .map-cap { background: var(--celebrate); }
+@media (prefers-reduced-motion: reduce) { .map-card .pulse { animation: none; } }
 
 /* ---------- CTA block ---------- */
 .cta { position: relative; overflow: hidden; border-radius: var(--r-l); background: var(--ink); color: var(--on-dark); padding: clamp(40px, 7vw, 88px) clamp(24px, 6vw, 72px); isolation: isolate; }
