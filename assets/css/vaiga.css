@@ -526,3 +526,8 @@ main { position: relative; }
 .robot-st { margin: 6px 0 0 32px; font-size: .9rem; color: var(--muted); }
 .robot-st:empty { display: none; }
 .robot-ts:not(:empty) { margin-top: 10px; display: flex; justify-content: center; }
+
+/* Geanimeerd logo (GIF van de gebruiker) in de menubalk naast de vlaggen (2026-11-18).
+   Achtergrond van het GIF is zwart; 'screen' maakt zwart onzichtbaar op de donkere balk. */
+.site-header .bar .brand img { height: 50px; width: auto; mix-blend-mode: screen; }
+@media (max-width: 600px) { .site-header .bar .brand img { height: 44px; } }
