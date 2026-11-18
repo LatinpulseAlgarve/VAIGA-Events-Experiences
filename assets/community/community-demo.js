@@ -17,14 +17,7 @@ window.VAIGA_COMMUNITY_CFG = { demo: true };   // preview: no server
   ];
   var seq = 100;
   /* invented example content */
-  var posts = [
-    { id: 3, author: "Marta", mine: false, can_delete: false, created: iso(35), photo: "", body: "Who is going to the next Latin party? It is my first VAIGA night and I would love to go with a few people from the community 💃", comments: [
-      { id: 31, parent_id: 0, author: "João", mine: false, can_delete: false, created: iso(25), body: "I am going! I created a Meet & Go for a drink before – have a look under Meet & Go." },
-      { id: 32, parent_id: 31, author: "Marta", mine: false, can_delete: false, created: iso(20), body: "Great, I will join 🙂" } ] },
-    { id: 2, author: "Sofia", mine: false, can_delete: false, created: iso(180), photo: "", body: "Tip for the Disco & Retro night: dress in your favourite decade. Last time the 80s outfits were amazing!", comments: [
-      { id: 21, parent_id: 0, author: "Pieter", mine: false, can_delete: false, created: iso(150), body: "Agree! I am going full 70s this time." } ] },
-    { id: 1, author: "João", mine: false, can_delete: false, created: iso(60 * 26), photo: "", body: "What a beautiful evening last weekend. Thank you to the organisers and the DJ – see you at the next one!", comments: [] }
-  ];
+  var posts = [];   // example posts of Marta, Sofia and João removed (user, 2026-11-18)
   function mt(e, before) {
     var p = e.start.split(":"), m = Math.max(0, +p[0] * 60 + +p[1] - before);
     return ("0" + Math.floor(m / 60)).slice(-2) + ":" + ("0" + (m % 60)).slice(-2);
