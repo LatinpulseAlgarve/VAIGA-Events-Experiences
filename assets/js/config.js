@@ -3,7 +3,7 @@
    Empty values are shown as placeholders or hidden; nothing is invented.
    =================================================================== */
 window.VAIGA_CONFIG = {
-  /* Empty = the address the site is opened on (demo.vaiga.eu now, vaiga.eu later), so share links always work. */
+  /* Empty = the address the site is opened on (vaiga.eu), so share links always work. */
   siteUrl: "",
 
   /* Contact – [PLACEHOLDER] fill in the real public address and phone */

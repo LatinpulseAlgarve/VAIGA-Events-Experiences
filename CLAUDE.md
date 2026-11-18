@@ -3,7 +3,8 @@
 - Communicatie met de gebruiker in het Nederlands; de website zelf in het Engels (internationaal merk).
 - VAIGA is een **apart project**, volledig los van Latinpulse (eigen map `Documents\vaiga`, eigen repository). Latinpulse is één van de eventconcepten binnen VAIGA (schrijfwijze: "Latinpulse", kleine p).
 - Techniek: uitsluitend HTML, CSS en vanilla JavaScript. Geen React, Next.js of andere frameworks, geen bouwstap. Geschikt voor GitHub Pages + domein vaiga.eu (`CNAME`). `index.html` in de root.
-- Publicatie: demo op https://demo.vaiga.eu via GitHub Pages, repo `LatinpulseAlgarve/VAIGA-Events-Experiences` (openbaar), branch `main` (beschermd: wijzigen via branch + pull request). `CNAME` = `demo.vaiga.eu`, alle pagina's `noindex`, absolute adressen naar demo.vaiga.eu. vaiga.eu zelf (OVH-server) niet aanraken. Livegang op vaiga.eu: stappen in README.
+- Publicatie: live op https://vaiga.eu via GitHub Pages, repo `LatinpulseAlgarve/VAIGA-Events-Experiences` (openbaar), branch `main` (beschermd: wijzigen via branch + pull request, na akkoord van de gebruiker). `CNAME` = `vaiga.eu`, absolute adressen naar vaiga.eu. DNS bij OVH; MX/SPF (e-mail info@vaiga.eu) nooit aanraken.
+- Werkwijze wijzigingen: nieuwe branch → wijzigen → `tools\check-site.ps1` ALL OK → visueel telefoon + laptop → akkoord gebruiker → PR samenvoegen → live controleren (alle pagina's 200, telefoon/tablet) → pas dan "klaar".
 - Beveiliging: CSP + referrer-policy als `<meta>` op elke pagina; geen inline scripts/`on…=`-attributen; externe links `rel="noopener"`.
 - **Niets automatisch publiceren.** Niet naar GitHub pushen of een repository aanmaken zonder uitdrukkelijke toestemming.
 - Geen bestaande bestanden verwijderen zonder toestemming.
