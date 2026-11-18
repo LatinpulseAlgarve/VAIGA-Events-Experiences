@@ -1,13 +1,11 @@
 # VAIGA-Events-Experiences
 
-Demo website for VAIGA Events & Experiences, published at **https://latinpulsealgarve.github.io/VAIGA-Events-Experiences/**.
-
-The custom domain `demo.vaiga.eu` is temporarily switched off until its DNS record exists (see below).
+Demo website for VAIGA Events & Experiences, published at **https://demo.vaiga.eu**.
 
 ## Publishing (GitHub Pages)
 
 GitHub Pages serves the `main` branch directly: every push to `main` updates the site.
-To use `demo.vaiga.eu` again: add the DNS record below, then add a file `CNAME` containing `demo.vaiga.eu` (or set the custom domain in *Settings → Pages*).
+The `CNAME` file sets the custom domain `demo.vaiga.eu` (DNS record at OVH added on 2026-11-18).
 
 One-time setup:
 
