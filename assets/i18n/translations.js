@@ -173,6 +173,7 @@ window.VAIGA_TRANSLATIONS = {
   "Have an idea for the next concept?": ["Tem uma ideia para o próximo conceito?", "¿Tienes una idea para el próximo concepto?", "Een idee voor het volgende concept?"],
   "Venues, artists and organisers are welcome to develop new event concepts together with VAIGA.": ["Espaços, artistas e organizadores são bem-vindos para desenvolver novos conceitos de eventos com a VAIGA.", "Locales, artistas y organizadores son bienvenidos a desarrollar nuevos conceptos de eventos junto con VAIGA.", "Locaties, artiesten en organisatoren zijn welkom om samen met VAIGA nieuwe eventconcepten te ontwikkelen."],
   "Talk to us": ["Fale connosco", "Habla con nosotros", "Praat met ons"],
+  "Dancing in 70s, 80s, 90s and 00s outfits under a disco ball": ["A dançar com roupas dos anos 70, 80, 90 e 00 debaixo de uma bola de espelhos", "Bailando con ropa de los años 70, 80, 90 y 00 bajo una bola de discoteca", "Dansen in outfits uit de jaren 70, 80, 90 en 00 onder een discobal"],
   "Tropicaliente in collaboration with Latinpulse Algarve – music, dance, events, community": ["Tropicaliente em colaboração com a Latinpulse Algarve – música, dança, eventos, comunidade", "Tropicaliente en colaboración con Latinpulse Algarve – música, baile, eventos, comunidad", "Tropicaliente in samenwerking met Latinpulse Algarve – muziek, dans, evenementen, community"],
 
   /* ---------- contact ---------- */
