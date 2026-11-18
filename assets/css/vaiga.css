@@ -380,3 +380,47 @@ body.menu-open .to-top { display: none; }
 /* Latin Parties artwork: cut off along its own rounded gold border, so the black corners outside it disappear */
 .concept .frame.wide.concept-photo { background: transparent; box-shadow: none; border-radius: 0; overflow: visible; filter: drop-shadow(0 14px 22px rgba(14,10,36,.22)); }
 .concept-photo img { clip-path: inset(0 0 .5% 0 round 12%); }
+
+/* =====================================================================
+   Colours taken from the header (2026-11-18): violet night, magenta, gold lights.
+   The former light cream background is replaced by a deep violet, so every page
+   has the same evening atmosphere as the header banner.
+   ===================================================================== */
+:root {
+  color-scheme: dark;
+  --paper: #1B0F3D;        /* violet night (page background) */
+  --paper-2: #26174F;      /* raised surface: cards, inputs, buttons */
+  --line: #3F2D7C;         /* borders */
+  --text: #F6F1FF;
+  --muted: #C7BCEA;
+  --celebrate-soft: linear-gradient(115deg, rgba(255,90,54,.22), rgba(229,51,140,.22) 50%, rgba(123,77,255,.22));
+  --shadow: 0 18px 50px -24px rgba(0,0,0,.7);
+}
+body { background: radial-gradient(1200px 700px at 100% 0%, rgba(229,51,140,.16), transparent 60%), radial-gradient(1000px 700px at 0% 100%, rgba(255,140,40,.10), transparent 60%), var(--paper); }
+.eyebrow { color: var(--gold); }
+.tag { color: var(--gold); }
+.lead { color: var(--muted); }
+.card { border-color: var(--line); }
+.cta { background: linear-gradient(135deg, #0E0A24, #2A0E45); border: 1px solid var(--line); }
+.chip[aria-pressed="true"], .dd-btn.active { background: var(--celebrate); border-color: transparent; }
+.event .date { background: #fff; }
+.collab-btn, .light .social a, .light .social button, .social.light button, .social.light a, .empty .social button, .empty .social a { color: var(--text); }
+.msg { color: #1B1535; }
+.map-card { color: #fff; border-color: var(--line); }
+.map-card .lbl { fill: #6E6884; }
+.map-card .lbl.region { fill: #A79F8E; }
+.map-card .lbl.town-main { fill: #0E0A24; }
+.map-card .town { fill: #6E6884; }
+input::placeholder, textarea::placeholder { color: #9C90C8; }
+select option { background: #26174F; color: #F6F1FF; }
+@media print { body { background: #fff; color: #000; } }
+
+/* ---------- language menu (made by i18n.js) ---------- */
+.i18n-wait body { visibility: hidden; }
+.site-header .bar .lang { margin-left: auto; display: block; font-weight: 400; }
+.site-header .bar .lang select { width: auto; min-height: 40px; padding: 6px 34px 6px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23FFB21E' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 13px center / 11px 8px; color: var(--on-dark); font: 700 .85rem/1 var(--font-body); letter-spacing: .04em; cursor: pointer; -webkit-appearance: none; appearance: none; }
+.site-header .bar .lang select:hover { border-color: var(--gold); }
+.site-header .bar .lang select option { background: var(--ink-2); color: var(--on-dark); }
+.site-header .bar .nav { order: 0; }
+@media (min-width: 901px) { .site-header .bar .lang { order: 2; margin-left: 0; } .site-header .bar .nav { margin-left: auto; } }
+@media (max-width: 900px) { .site-header .bar .lang { margin-right: 10px; } }

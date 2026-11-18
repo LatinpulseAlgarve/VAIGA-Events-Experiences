@@ -5,11 +5,10 @@
   if (!V) return;
   var esc = V.esc, $ = V.$, $$ = V.$$;
   var today = new Date(); today.setHours(0, 0, 0, 0);
-  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   var STATUS = { "on-sale": "Tickets on sale", "coming-soon": "Tickets soon", "sold-out": "Sold out", "cancelled": "Cancelled" };
 
   function parseDate(s) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ""); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; }
-  function longDate(d) { return d ? d.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : '<span class="placeholder-note">[Date]</span>'; }
+  function longDate(d) { return d ? d.toLocaleDateString(window.VAIGA_LOCALE || "en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : '<span class="placeholder-note">[Date]</span>'; }
   function all() { return (window.VAIGA_EVENTS || []).concat(V.preview ? (window.VAIGA_PREVIEW_EVENTS || []) : []); }
   function upcoming() {
     return all().filter(function (e) { var d = parseDate(e.date); return e.placeholder || (d && d >= today); })
@@ -22,7 +21,7 @@
   }
   function card(e) {
     var d = parseDate(e.date), cat = V.cat(e.category);
-    var badge = d ? "<b>" + d.getDate() + "</b><small>" + MONTHS[d.getMonth()] + "</small>" : "<b>–</b><small>[Date]</small>";
+    var badge = d ? "<b>" + d.getDate() + "</b><small>" + d.toLocaleDateString(window.VAIGA_LOCALE || "en-GB", { month: "short" }).replace(".", "") + "</small>" : "<b>–</b><small>[Date]</small>";
     var where = [e.venue, e.city].filter(Boolean).join(" · ");
     return '<a class="card event reveal" href="' + link(e) + '"><div class="media">' + media(e, cat) + '<div class="date">' + badge + '</div></div><div class="body">' +
       (cat ? '<span class="tag">' + esc(cat.name) + "</span>" : "") + "<h3>" + esc(e.title) + "</h3>" +
