@@ -485,6 +485,19 @@ a.cat.has-photo:hover .cat-photo { transform: scale(1.06); }
 .hero::after { -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%); mask-image: linear-gradient(180deg, #000 55%, transparent 100%); }
 main { position: relative; }
 
+/* ---------- Plan your party (plan.html) ---------- */
+.pp-card .ico { width: 56px; height: 56px; border-radius: 18px; display: grid; place-items: center; background: var(--celebrate); color: #fff; font-size: 1.5rem; box-shadow: var(--shadow-glow); margin-bottom: 14px; }
+.pp-card h3 { margin-bottom: 8px; }
+.pp-card p, .pp-steps p { color: var(--muted); margin: 0; }
+.pp-steps .ico { font: 900 1.4rem/1 var(--font-display); }
+.pp-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.pp-list li { position: relative; padding: 14px 16px 14px 46px; border-radius: var(--r-m); background: var(--paper-2); border: 1px solid var(--line); color: var(--muted); }
+.pp-list li::before { content: "✦"; position: absolute; left: 16px; top: 14px; color: var(--gold); }
+.pp-list b { color: var(--text); }
+.pp-note { color: var(--muted); font-size: .95rem; border-left: 3px solid var(--gold); padding-left: 12px; }
+/* menu with 8 items: a little tighter between laptop and wide screens */
+@media (min-width: 901px) and (max-width: 1180px) { .nav ul { gap: 12px; } .nav a { font-size: .84rem; letter-spacing: .02em; } }
+
 /* ---------- e-mail choice menu (opens from the envelope button) ---------- */
 .mail-panel { position: absolute; z-index: 80; display: grid; gap: 6px; min-width: 230px; padding: 12px; border-radius: 18px; background: linear-gradient(160deg, var(--ink-2), #2A0E45); border: 1px solid var(--line); box-shadow: 0 24px 60px -20px rgba(0,0,0,.85), var(--shadow-glow); color: var(--on-dark); }
 .mail-panel .mp-addr { font-size: .9rem; color: var(--gold); padding: 4px 8px 8px; border-bottom: 1px solid var(--line); margin-bottom: 2px; word-break: break-all; }

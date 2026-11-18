@@ -27,7 +27,10 @@
     if (!F("consent").checked) { show("err", "Please agree that we use your details to answer your message."); return; }
     var topicLabel = F("topic").options[F("topic").selectedIndex].text;
     var subject = "[VAIGA] " + topicLabel + " – " + name;
-    var body = "Name: " + name + "\nE-mail: " + email + "\nPhone: " + phone + (F("org").value.trim() ? "\nOrganisation: " + F("org").value.trim() : "") + "\nTopic: " + topicLabel + "\n\n" + text;
+    // extra fields of a form (e.g. Plan your party: date, guests, place); label from data-extra (English, for VAIGA)
+    var extra = Array.prototype.map.call(f.querySelectorAll("[data-extra]"), function (el) { var v = String(el.value || "").trim(); return v ? "\n" + el.getAttribute("data-extra") + ": " + v : ""; }).join("");
+    var org = F("org") ? F("org").value.trim() : "";
+    var body = "Name: " + name + "\nE-mail: " + email + "\nPhone: " + phone + (org ? "\nOrganisation: " + org : "") + "\nTopic: " + topicLabel + extra + "\n\n" + text;
 
     if (C.formEndpoint) {
       var btn = f.querySelector('button[type="submit"]'); btn.disabled = true;
