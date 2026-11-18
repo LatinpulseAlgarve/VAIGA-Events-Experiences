@@ -64,11 +64,19 @@
       if (!full) {
         return '<a class="card cat reveal" style="--cat-bg:' + c.bg + '" href="categories.html#' + c.id + '"><span class="num">' + n + '</span><span class="ico">' + window.VAIGA.icon(c) + "</span><h3>" + esc(c.name) + "</h3><p>" + esc(c.short) + '</p><span class="go arrow">Discover </span></a>';
       }
-      var lp = c.concept === "latinpulse"
-        ? '<p class="concept-note"><b>Concept:</b> Latinpulse – Latin music &amp; dance in the Algarve' + (C.latinpulseUrl ? ' · <a href="' + esc(C.latinpulseUrl) + '" target="_blank" rel="noopener">Visit Latinpulse</a>' : "") + "</p>" : "";
-      return '<article class="split concept reveal" id="' + c.id + '"><div class="frame wide"><div class="ph" style="--ph-bg:' + c.bg + '"><span>Photo: ' + esc(c.name) + '</span></div></div><div><span class="eyebrow">' + n + " · Concept</span><h2>" + esc(c.name) + '</h2><p class="lead">' + esc(c.long) + '</p><div class="stat-line" style="margin-bottom:22px">' + c.styles.map(function (s) { return '<span class="tag">' + esc(s) + "</span>"; }).join("") + "</div>" + lp + '<div class="btn-row"><a class="btn arrow" href="events.html?cat=' + c.id + '">' + esc(c.name) + " events </a></div></div></article>";
+      var p = c.partner, purl = p && c.concept === "latinpulse" ? C.latinpulseUrl : "";
+      var lp = p
+        ? '<p class="concept-note"><b>Concept:</b> ' + esc(p.name) + " – " + esc(p.tagline) + (purl ? ' · <a href="' + esc(purl) + '" target="_blank" rel="noopener">Visit ' + esc(p.name) + " ↗</a>" : "") + "</p>" : "";
+      var photo = p && p.image
+        ? (purl ? '<a class="frame wide partner-frame" href="' + esc(purl) + '" target="_blank" rel="noopener" aria-label="Visit ' + esc(p.name) + ' (opens in a new tab)">' : '<div class="frame wide partner-frame">') +
+          '<img src="' + esc(p.image) + '" alt="' + esc(p.name) + " – " + esc(p.tagline) + '" loading="lazy" decoding="async"><span class="frame-cap">' + esc(p.name) + (purl ? " ↗" : "") + "</span>" + (purl ? "</a>" : "</div>")
+        : '<div class="frame wide"><div class="ph" style="--ph-bg:' + c.bg + '"><span>Photo: ' + esc(c.name) + "</span></div></div>";
+      return '<article class="split concept reveal" id="' + c.id + '">' + photo + '<div><span class="eyebrow">' + n + " · Concept</span><h2>" + esc(c.name) + '</h2><p class="lead">' + esc(c.long) + '</p><div class="stat-line" style="margin-bottom:22px">' + c.styles.map(function (s) { return '<span class="tag">' + esc(s) + "</span>"; }).join("") + "</div>" + lp + '<div class="btn-row"><a class="btn arrow" href="events.html?cat=' + c.id + '">' + esc(c.name) + " events </a></div></div></article>";
     }).join("");
   });
+
+  /* ---------- Latinpulse Algarve links (one address in config.js) ---------- */
+  $$("[data-latinpulse-link]").forEach(function (a) { if (C.latinpulseUrl) a.setAttribute("href", C.latinpulseUrl); });
 
   /* ---------- preview mode banner ---------- */
   if (window.VAIGA.preview) {

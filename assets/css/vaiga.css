@@ -204,6 +204,12 @@ a.event:hover .media img { transform: scale(1.05); }
 .ph span { font-weight: 800; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; background: rgba(14,10,36,.35); padding: 8px 14px; border-radius: 999px; backdrop-filter: blur(4px); }
 .frame { border-radius: var(--r-l); overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 4 / 5; }
 .frame.wide { aspect-ratio: 16 / 10; }
+/* partner photo (e.g. Latinpulse Algarve) with a name caption; links to the partner */
+.partner-frame, .frame.wide.partner-frame { position: relative; display: block; background: var(--ink); text-decoration: none; aspect-ratio: 1080 / 450; }   /* same shape as the partner banner: nothing is cut off */
+.partner-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+a.partner-frame:hover img { transform: scale(1.04); }
+.frame-cap { position: absolute; left: 16px; bottom: 16px; background: rgba(14,10,36,.78); color: #fff; padding: 8px 14px; border-radius: 999px; font-weight: 800; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; backdrop-filter: blur(4px); }
+.partner-feature { display: grid; gap: clamp(24px, 4vw, 56px); align-items: center; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
 
 /* ---------- empty state / notes ---------- */
 .empty { text-align: center; border: 2px dashed var(--line); border-radius: var(--r-l); padding: clamp(32px, 6vw, 64px) 24px; background: var(--paper-2); }

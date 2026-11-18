@@ -24,5 +24,5 @@ window.VAIGA_CONFIG = {
   },
 
   /* Latinpulse is one of the VAIGA event concepts (separate brand) */
-  latinpulseUrl: ""     // e.g. "https://latinpulsealgarve.pt"
+  latinpulseUrl: "https://www.latinpulsealgarve.pt"   // Latinpulse Algarve (partner / Latin concept)
 };

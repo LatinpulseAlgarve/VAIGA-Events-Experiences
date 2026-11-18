@@ -19,12 +19,14 @@
     if (F("website").value) return;                                   // spam trap (hidden field)
     if (Date.now() - started < 2500) { show("err", "Please take a moment and try again."); return; }
     var name = F("name").value.trim(), email = F("email").value.trim(), text = F("message").value.trim();
-    if (!name || !email || !text) { show("err", "Please fill in your name, e-mail address and message."); return; }
+    var phone = F("phone").value.trim();
+    if (!name || !email || !phone || !text) { show("err", "Please fill in your name, e-mail address, phone number and message."); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { show("err", "Please enter a valid e-mail address."); F("email").focus(); return; }
+    if (!/^\+?[0-9()\s.\-]{6,25}$/.test(phone) || phone.replace(/\D/g, "").length < 6) { show("err", "Please enter a valid phone number (with country code if outside Portugal, e.g. +351 ...)."); F("phone").focus(); return; }
     if (!F("consent").checked) { show("err", "Please agree that we use your details to answer your message."); return; }
     var topicLabel = F("topic").options[F("topic").selectedIndex].text;
     var subject = "[VAIGA] " + topicLabel + " – " + name;
-    var body = "Name: " + name + "\nE-mail: " + email + (F("phone").value.trim() ? "\nPhone: " + F("phone").value.trim() : "") + (F("org").value.trim() ? "\nOrganisation: " + F("org").value.trim() : "") + "\nTopic: " + topicLabel + "\n\n" + text;
+    var body = "Name: " + name + "\nE-mail: " + email + "\nPhone: " + phone + (F("org").value.trim() ? "\nOrganisation: " + F("org").value.trim() : "") + "\nTopic: " + topicLabel + "\n\n" + text;
 
     if (C.formEndpoint) {
       var btn = f.querySelector('button[type="submit"]'); btn.disabled = true;
