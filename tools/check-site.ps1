@@ -72,7 +72,7 @@ else {
                 if ($kv.err) { $fail += "$($p.Name)$mode`: JavaScript error: $($kv.err)" }
                 if ([int]$kv.social -lt 1) { $fail += "$($p.Name)$mode`: footer social not rendered" }
                 if ($p.Name -in 'index.html', 'categories.html' -and [int]$kv.cats -lt $catCount) { $fail += "$($p.Name)$mode`: concepts not rendered ($($kv.cats) of $catCount)" }
-                if ($p.Name -in 'index.html', 'events.html' -and [int]$kv.events + [int]$kv.empty -lt 1) { $fail += "$($p.Name)$mode`: events list not rendered" }
+                if ([IO.File]::ReadAllText($p.FullName).Contains(' data-events') -and [int]$kv.events + [int]$kv.empty -lt 1) { $fail += "$($p.Name)$mode`: events list not rendered" }
                 if ($p.Name -eq 'event.html' -and $mode -and [int]$kv.detail -lt 1) { $fail += 'event.html?preview: detail not rendered' }
                 Write-Host ("  {0,-16} {1,-11} {2}" -f $p.Name, $(if ($mode) { 'preview' } else { 'normal' }), $res)
             }
