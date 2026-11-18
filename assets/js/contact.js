@@ -34,8 +34,17 @@
 
     if (C.formEndpoint) {
       var btn = f.querySelector('button[type="submit"]'); btn.disabled = true;
-      fetch(C.formEndpoint, { method: "POST", headers: { "Accept": "application/json" }, body: new FormData(f) })
-        .then(function (r) { if (!r.ok) throw new Error(); f.reset(); show("ok", "Thank you! Your message has been sent. We will get back to you as soon as possible."); })
+      // what the form service forwards: the readable message + subject, reply-to the visitor; never the spam-trap field
+      var fd = new FormData();
+      fd.append("_subject", subject);
+      fd.append("_replyto", email);
+      fd.append("_template", "box");
+      fd.append("_captcha", "false");
+      fd.append("name", name); fd.append("email", email); fd.append("phone", phone);
+      fd.append("message", body);
+      fetch(C.formEndpoint, { method: "POST", headers: { "Accept": "application/json" }, body: fd })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || (j && (j.success === false || j.success === "false"))) throw new Error(); }); })
+        .then(function () { f.reset(); show("ok", "Thank you! Your message has been sent. We will get back to you as soon as possible."); })
         .catch(function () { show("err", "Sending did not work. Please try again later" + (C.email ? " or e-mail " + C.email : "") + "."); })
         .then(function () { btn.disabled = false; });
       return;

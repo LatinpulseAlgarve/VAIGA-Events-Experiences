@@ -11,11 +11,12 @@ window.VAIGA_CONFIG = {
   phone: "+351 922 034 972",
   city: "Tavira, Portugal",
 
-  /* Contact form: optional form service (e.g. Formspree, Basin, Getform).
+  /* Contact form + Plan your party: form service FormSubmit (formsubmit.co, no account; the first message sends an
+     activation e-mail to info@vaiga.eu – click the link in it once). Other services (Formspree, Basin) also work.
      Empty = the form opens the visitor's e-mail program with the message (needs "email" above).
      SECURITY: when you fill this in, also add the service's address to "connect-src" in the
      Content-Security-Policy <meta> of contact.html, otherwise the browser blocks sending. */
-  formEndpoint: "",
+  formEndpoint: "https://formsubmit.co/ajax/info@vaiga.eu",
 
   /* Social media – empty ones are not shown */
   social: {
