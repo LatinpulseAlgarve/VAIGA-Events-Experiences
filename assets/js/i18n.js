@@ -33,24 +33,33 @@
     if (to !== "en") q += (q ? "&" : "?") + "lang=" + to;
     location.href = location.pathname + q + location.hash;
   }
+  /* flags (English = United Kingdom flag) */
+  var FLAG = { en: "gb", pt: "pt", es: "es", nl: "nl" };
+  var base = (document.currentScript && document.currentScript.src || "assets/js/i18n.js").replace(/js\/i18n\.js(\?.*)?$/, "");
+  var flag = function (k) { return '<img src="' + base + "img/flags/" + FLAG[k] + '.svg" alt="" width="30" height="20">'; };
   function addMenu() {
     var bar = document.querySelector(".site-header .bar");
     if (!bar || bar.querySelector(".lang")) return;
-    var wrap = document.createElement("label");
+    var wrap = document.createElement("div");
     wrap.className = "lang";
-    var sel = document.createElement("select");
-    sel.setAttribute("aria-label", "Language / Idioma / Taal");
-    ORDER.forEach(function (k) {
-      var o = document.createElement("option");
-      o.value = k; o.textContent = k.toUpperCase() + " · " + LANGS[k].name; o.lang = k;
-      if (k === lang) o.selected = true;
-      sel.appendChild(o);
+    wrap.setAttribute("data-no-i18n", "");
+    wrap.innerHTML =
+      '<button type="button" class="lang-btn" aria-haspopup="true" aria-expanded="false" aria-controls="lang-list" aria-label="Language / Idioma / Taal: ' + LANGS[lang].name + '" title="' + LANGS[lang].name + '">' + flag(lang) + '<span class="lang-caret" aria-hidden="true"></span></button>' +
+      '<ul class="lang-list" id="lang-list" hidden>' + ORDER.map(function (k) {
+        return '<li><a href="#" data-lang="' + k + '" lang="' + k + '" title="' + LANGS[k].name + '"' + (k === lang ? ' aria-current="true"' : "") + ">" + flag(k) + '<span class="sr-only">' + LANGS[k].name + "</span></a></li>";
+      }).join("") + "</ul>";
+    var btn = wrap.querySelector(".lang-btn"), list = wrap.querySelector(".lang-list");
+    var open = function (on) { list.hidden = !on; btn.setAttribute("aria-expanded", String(on)); };
+    btn.addEventListener("click", function () { open(list.hidden); if (!list.hidden) list.querySelector("a").focus(); });
+    list.addEventListener("click", function (e) {
+      var a = e.target.closest("a[data-lang]"); if (!a) return;
+      e.preventDefault(); e.stopPropagation();
+      var to = a.getAttribute("data-lang");
+      if (to === lang) { open(false); btn.focus(); } else go(to);
     });
-    sel.setAttribute("data-no-i18n", "");
-    sel.addEventListener("change", function () { go(sel.value); });
-    wrap.appendChild(sel);
-    var btn = bar.querySelector(".menu-btn");
-    bar.insertBefore(wrap, btn || null);
+    document.addEventListener("click", function (e) { if (!wrap.contains(e.target)) open(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !list.hidden) { open(false); btn.focus(); } });
+    bar.insertBefore(wrap, bar.querySelector(".menu-btn") || null);
   }
 
   /* keep the language when following an internal link (also without localStorage) */
