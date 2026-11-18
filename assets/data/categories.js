@@ -72,6 +72,9 @@ window.VAIGA_CATEGORIES = [
     styles: ["New Year", "Seasonal", "One-off"],
     short: "One-off celebrations and special dates that deserve something extra.",
     long: "Special events for special moments: seasonal celebrations, unique locations and one-off nights.",
+    // concept photo (grape-stomping harvest party at a vineyard at sunset)
+    image: "assets/img/special-events.jpg",
+    imageAlt: "Grape-stomping harvest party at a vineyard at sunset: couples dancing in wooden barrels with wine, cheese and fairy lights",
     bg: "linear-gradient(140deg,#FF5A36 0%,#7B4DFF 100%)",
     icon: "M12 2l2.9 6.6L22 9.3l-5.4 4.8L18.2 21 12 17.3 5.8 21l1.6-6.9L2 9.3l7.1-.7L12 2Z"
   },
