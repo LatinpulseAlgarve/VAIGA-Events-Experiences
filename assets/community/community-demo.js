@@ -31,7 +31,9 @@ window.VAIGA_COMMUNITY_CFG = { demo: true };   // preview: no server
   }
   var mg = [
     { id: 11, ev: EV[0], meet_time: mt(EV[0], 60), meeting_point: "Café on the main square (example)", max: 6, people: ["João", "Marta"], mineCreator: false },
-    { id: 12, ev: EV[1], meet_time: mt(EV[1], 45), meeting_point: "Terrace at the marina (example)", max: 4, people: ["Sofia", "Pieter", "Ana", "Rui"], mineCreator: false }
+    { id: 12, ev: EV[1], meet_time: mt(EV[1], 45), meeting_point: "Terrace at the marina (example)", max: 4, people: ["Sofia", "Pieter", "Ana", "Rui"], mineCreator: false },
+    { id: 13, ev: EV[2], meet_time: mt(EV[2], 60), meeting_point: "Bar near the beach (example)", max: 8, people: ["Ana"], mineCreator: false },
+    { id: 14, ev: EV[0], meet_time: mt(EV[0], 120), meeting_point: "Ice-cream shop by the bridge (example)", max: 5, people: ["Rui", "Pieter"], mineCreator: false }
   ];
   var ME = (function () { try { return sessionStorage.getItem("vc_demo_name") || "You"; } catch (e) { return "You"; } })();
   /* example members: illustrated avatars (no real people), town and country */
