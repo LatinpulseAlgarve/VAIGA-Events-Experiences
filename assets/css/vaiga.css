@@ -429,3 +429,30 @@ select option { background: #26174F; color: #F6F1FF; }
 .lang-list a[aria-current="true"] { background: var(--celebrate); }
 @media (min-width: 901px) { .site-header .bar .lang { order: 2; margin-left: 0; } .site-header .bar .nav { margin-left: auto; } }
 @media (max-width: 900px) { .site-header .bar .lang { margin-right: 10px; } }
+
+/* ---------- one continuous background from header to footer (2026-11-18) ----------
+   No more hard edges between sections: the page background is one long gradient
+   (night at the top, violet in the middle, back to night at the footer) and the
+   sections themselves are transparent. */
+body {
+  background:
+    radial-gradient(1100px 650px at 100% 0%, rgba(229,51,140,.14), transparent 65%),
+    radial-gradient(900px 700px at 0% 45%, rgba(123,77,255,.12), transparent 65%),
+    radial-gradient(1000px 700px at 100% 80%, rgba(255,140,40,.07), transparent 65%),
+    linear-gradient(180deg, #0E0A24 0, #160D33 520px, #1B0F3D 40%, #1E1043 70%, #140B2E 92%, #0E0A24 100%);
+}
+.hero, .page-hero, .dark, .site-footer { background: transparent; }
+.hero::after { background: repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 120px); }
+.site-footer .top { border-bottom-color: var(--line); }
+
+/* home: concept card with the same photo as on the concepts page */
+.cat.has-photo::before { opacity: 0; }
+.cat .cat-photo { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center 12%; transition: transform .6s var(--ease); }
+a.cat.has-photo:hover .cat-photo { transform: scale(1.06); }
+.cat.has-photo::after { background: linear-gradient(180deg, rgba(14,10,36,0) 22%, rgba(14,10,36,.82) 52%, rgba(14,10,36,.96) 75%); }
+.cat.has-photo .ico { display: none; }
+
+/* collaboration partners as links inside the concept description */
+.collab-link { color: var(--gold); font-weight: 800; text-decoration: underline; text-decoration-color: rgba(255,178,30,.5); text-underline-offset: 4px; }
+.collab-link::after { content: " ↗"; font-size: .85em; }
+.collab-link:hover, .collab-link:focus-visible { color: #fff; text-decoration-color: var(--magenta); }
