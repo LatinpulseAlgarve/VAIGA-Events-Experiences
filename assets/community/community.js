@@ -1,6 +1,10 @@
-/* VAIGA Community – front end. Same design and rules as the Latinpulse Community
-   (WordPress plug-in latinpulse-community): a closed meeting place around VAIGA events.
+/* VAIGA Community – front end. Same design, flow and rules as the Latinpulse Community (WordPress
+   plug-in latinpulse-community, demo on Cloudflare): public information page → sign-up form with the
+   DOOR underneath ("Knock here – Welcome") → members' KEY (log in on the page itself, with "Forgot your
+   password?") → the community (Feed + Meet & Go). Open sign-up: first + last name (only for the
+   administrator), unique community name, face photo, town, country, e-mail, password, 18+, rules.
    Talks to a community API (cookie + nonce) or, in the preview, to window.VAIGA_COMMUNITY_MOCK.
+   The site is written in English; assets/js/i18n.js translates the texts (assets/i18n/translations.js).
    Deliberately NOT here: likes, reactions, counters, popularity, private messages, member search,
    profiles, connections, matching, own groups, public participant lists, contact details. */
 (function () {
@@ -8,27 +12,38 @@
   var C = window.VAIGA_COMMUNITY_CFG;
   if (!C) return;
 
-  /* ---------- texts (the site is in English) ---------- */
+  /* ---------- texts (English; translated by i18n.js) ---------- */
   var TX = {
-    n_community: "Community",
     slogan: "Let's go. Let's celebrate. Together.",
-    intro: "A closed meeting place for people who love VAIGA events: share experiences, photos and plans around our events, and meet up before an event to go together.",
-    not_list: "Not a dating site, not a general social network and no private contact between members.",
-    login: "Log in", join_h: "Become a member", join_btn: "Send request",
+    join_h: "Become a member",
+    f_all: "All fields with * are required. Fill in the form and knock on the door.",
+    f_first: "First name", f_last: "Last name", f_town: "Town / place of residence",
+    f_nick: "Your community name", f_nick_hint: "This is the name other members see. 3–20 letters or digits, for example PartyAna.",
+    nick_ok: "✓ This name is available.", e_name_taken: "This name is no longer available. Please choose another name.",
+    e_nick: "This name is not allowed: use 3–20 letters or digits, starting with a letter (no e-mail, phone number or link).",
+    f_country: "Country", f_country_ph: "Choose your country",
+    f_face: "Photo of your face", f_face_hint: "A clear, recent photo of your own face, without other people. It is shown next to your name.",
+    f_face_btn: "Take or choose a photo", f_face_change: "Choose another photo",
     f_email: "E-mail", f_pw: "Password (at least 10 characters)",
-    f_accept: "I accept the community rules and the privacy policy.",
-    f_all: "All fields with * are required. Your full details are only seen by the administrator who approves your request.",
-    f_first: "First name", f_last: "Last name", f_birth: "Date of birth (18+)", f_town: "Town / place of residence",
-    f_shown: "In the community other members only see your first name and the initial of your last name (for example: Marta S.).",
-    private_h: "Private community", private_p: "The VAIGA Community is only visible to approved members. Membership is by invitation.",
-    l_rules: "rules", l_privacy: "privacy", rules_full: "Read the full Community Rules",
-    demo_banner: "PREVIEW – this is an example of the VAIGA Community with invented posts, people and events. Try it out: nothing is saved or sent, a reload starts again. The community opens later for approved members.",
-    join_sent: "Thank you! Check your e-mail to confirm your address. After that an administrator reviews your request.",
-    join_sent_in: "Thank you! An administrator reviews your request.",
+    f_shown: "Other members see your community name, face photo, town and country flag. Your first and last name and e-mail address are only seen by the administrator.",
+    f_adult: "I am 18 years or older.", f_accept: "I accept the community rules and the privacy policy.",
+    l_rules: "Community rules", l_privacy: "Privacy policy",
+    door_knock: "Knock here", door_welcome: "Welcome", door_label: "Knock here – Welcome: send my sign-up",
+    key_h: "Members' key", key_new: "Already a member? Use your key.", key_back: "Welcome back! Use your key to enter.",
+    key_enter: "Enter", f_login_id: "Community name or e-mail", f_pw_login: "Password",
+    lost_q: "Forgot your password?", lost_p: "Enter your community name or e-mail address. We will send you an e-mail with a link to choose a new password.",
+    lost_btn: "Send link", lost_back: "Back to log in",
+    lost_sent: "If this account exists, we have sent an e-mail with a link to choose a new password. Also check your spam folder.",
+    lost_demo: "Preview: no e-mail is sent. In the preview you can enter with any password.",
+    demo_mail: "Preview: no e-mail is sent. You can use your key right away (any e-mail address and password).",
+    join_sent: "Welcome! We sent you an e-mail. Click the link in it to confirm your address – then use your key to enter the community.",
+    invited: "You have been invited to the VAIGA Community! Fill in the form and knock on the door.",
+    demo_banner: "PREVIEW – this is an example of the VAIGA Community with invented posts, people and events. Try it out: nothing is saved or sent, a new tab starts again.",
     st_unverified: "Please confirm your e-mail address with the link we sent you.",
-    st_pending: "Your request is waiting for approval by an administrator. You will get an e-mail.",
     st_blocked: "Your access to the community is blocked. You can object by replying to the e-mail you received.",
     tab_feed: "Feed", tab_mg: "Meet & Go", logout: "Log out", hello: "Hi {n}",
+    inv_h: "Invite a friend", inv_p: "Share your personal invitation link. Everyone signs up the same way (face photo, e-mail confirmation) and follows the community rules.",
+    inv_share: "Share", inv_copy: "Copy link", inv_copied: "Link copied ✓", inv_msg: "Join me in the VAIGA Community! Let's go. Let's celebrate.",
     ph_post: "Share something about our events, the music, a night out together…",
     photo: "Photo", post_btn: "Post", posting: "Posting…",
     reply: "Reply", comment_ph: "Write a reply…", send: "Send", cancel: "Cancel",
@@ -36,17 +51,23 @@
     report_ph: "What is wrong? (required)", report_sent: "Thank you. A moderator will look at it.",
     mod_reason: "Reason for removal (sent to the author)",
     more: "Show older posts", empty: "No posts yet. Be the first to share something!",
-    rules_h: "Community rules",
+    rules_h: "Community rules", rules_full: "Read the full Community Rules",
     rules: ["Only about VAIGA, our event concepts, music, going together and experiences.", "Respect everyone. No harassment, discrimination or hate.", "No dating, no requests for private contact, no advertising.", "Only share photos you may share; ask people before you post them.", "Meet & Go only at public places, linked to a VAIGA event."],
-    mg_intro: "Meet before a VAIGA event for a drink or at a public meeting point, then go to the event together.",
+    mg_intro: "Meet before a VAIGA event for a drink or at a public meeting point, then go to the event together.", mg_rules: "Meet & Go rules",
     mg_new: "New Meet & Go", mg_event: "Event", mg_time: "Meet at", mg_point: "Public meeting point (café, square…)",
     mg_public: "This is a public place.", mg_max: "Maximum number of people", mg_create: "Create Meet & Go",
     mg_none: "No Meet & Go's yet for upcoming events.", mg_join: "Join", mg_leave: "Leave", mg_cancel: "Cancel this Meet & Go",
     mg_joined: "You are going", mg_full: "Full", mg_who: "Who is going (only visible to participants)",
     mg_meet_at: "Meet at", mg_noevents: "There are no upcoming events at the moment.",
     mg_rule_time: "At most {h} hours before the event starts.",
+    e_login_failed: "E-mail address or password is not correct.", e_unverified: "Please confirm your e-mail address first with the link in your mailbox.",
+    e_face: "Please add a photo of your face.", e_country: "Please choose your country.", e_town: "Please enter your town (2–60 characters).",
+    e_adult: "You must be 18 or older to join.",
     e_login: "Please log in again.", e_no_access: "You have no access to the community.", e_rate: "Too many actions in a short time. Please wait a moment.",
     e_too_long: "The text is too long.", e_empty: "Please write something.", e_photo: "This photo cannot be used (JPEG, PNG or WebP, max. 3 MB).",
+    e_name: "Please enter your first and last name (letters only).", e_email: "Please enter a valid e-mail address.",
+    e_password: "The password needs at least 10 characters.", e_accept: "Please accept the community rules and the privacy policy.",
+    e_required: "Please fill in all fields.", e_spam: "Please wait a few seconds and try again.", e_state: "You already sent a request.",
     e_preview: "This is only a preview.",
     e_no_event: "Please choose an upcoming VAIGA event.", e_time: "Choose a time on the event day, before the event starts (max. 4 hours before).",
     e_point: "Please describe the public meeting point (5–160 characters).", e_point_contact: "No phone numbers, e-mail addresses or links in the meeting point.",
@@ -58,8 +79,20 @@
   function tx(k, v) { var s = TX[k] !== undefined ? TX[k] : k; if (v) for (var x in v) s = s.split("{" + x + "}").join(v[x]); return s; }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function multiline(s) { return esc(s).replace(/\n/g, "<br>"); }
-  function when(iso) { try { return new Date(iso).toLocaleString(window.VAIGA_LOCALE || "en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } }
-  function day(d) { try { return new Date(d + "T12:00:00Z").toLocaleDateString(window.VAIGA_LOCALE || "en-GB", { weekday: "short", day: "numeric", month: "short" }); } catch (e) { return d; } }
+  var LOC = window.VAIGA_LOCALE || "en-GB";
+  function when(iso) { try { return new Date(iso).toLocaleString(LOC, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } }
+  function day(d) { try { return new Date(d + "T12:00:00Z").toLocaleDateString(LOC, { weekday: "short", day: "numeric", month: "short" }); } catch (e) { return d; } }
+  var COUNTRIES = "AD AE AF AG AI AL AM AO AR AT AU AW AZ BA BB BD BE BF BG BH BI BJ BM BN BO BR BS BT BW BY BZ CA CD CF CG CH CI CL CM CN CO CR CU CV CW CY CZ DE DJ DK DM DO DZ EC EE EG ER ES ET FI FJ FR GA GB GD GE GH GI GM GN GQ GR GT GW GY HK HN HR HT HU ID IE IL IN IQ IR IS IT JM JO JP KE KG KH KM KN KR KW KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MG MK ML MM MN MO MR MT MU MV MW MX MY MZ NA NE NG NI NL NO NP NZ OM PA PE PG PH PK PL PR PS PT PY QA RO RS RU RW SA SC SD SE SG SI SK SL SM SN SO SR ST SV SY SZ TD TG TH TJ TL TM TN TR TT TW TZ UA UG US UY UZ VA VC VE VN YE ZA ZM ZW".split(" ");
+  function flag(cc) { return /^[A-Z]{2}$/.test(cc || "") ? String.fromCodePoint(127397 + cc.charCodeAt(0), 127397 + cc.charCodeAt(1)) : ""; }
+  function cname(cc) { try { return new Intl.DisplayNames([LOC], { type: "region" }).of(cc) || cc; } catch (e) { return cc; } }
+  /* how a member appears in the community: face photo, community name, town + country flag */
+  function whoHtml(o) {
+    if (typeof o === "string") o = { name: o };
+    o = o || {};
+    var place = (o.town ? esc(o.town) : "") + (o.country ? ' <span class="vc-flag" title="' + esc(cname(o.country)) + '">' + flag(o.country) + "</span>" : "");
+    return '<span class="vc-whoi" data-no-i18n>' + (o.avatar ? '<img class="vc-av" src="' + esc(o.avatar) + '" alt="" loading="lazy" decoding="async">' : '<span class="vc-av vc-av0" aria-hidden="true">' + esc((o.name || "?").charAt(0).toUpperCase()) + "</span>") +
+      '<span class="vc-whot"><b>' + esc(o.name || "") + "</b>" + (place ? "<small>" + place + "</small>" : "") + "</span></span>";
+  }
 
   /* ---------- API ---------- */
   function api(method, path, body) {
@@ -76,66 +109,203 @@
     });
   }
   function errText(e) { var k = "e_" + ((e && e.code) || "generic"); return TX[k] ? tx(k) : tx("e_generic"); }
+  function note(cls, text) { return '<div class="vc-note vc-' + cls + '">' + esc(text) + "</div>"; }
 
   var app = document.getElementById("vc-app");
   if (!app) return;
+  var info = document.getElementById("vc-info");        // public information block (visitors only)
+  var keyTopEl = document.getElementById("vc-keytop");  // returning visitors: the key at the top of the page
   var state = { me: null, view: "feed", posts: [], more: false, events: [], rules: null, mg: [] };
-  var invited = /[?&]join=1(&|$)/.test(location.search);   // invitation link shared by the administrator
 
   function hero(extra) {
     return '<div class="vc-hero"><div class="vc-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><h2>VAIGA <span>Community</span></h2><p class="vc-slogan">' + esc(tx("slogan")) + "</p>" + (extra || "") + "</div>";
   }
 
-  /* ---------- not (yet) a member ---------- */
-  function joinForm(loggedIn) {
-    var d = new Date(); d.setFullYear(d.getFullYear() - 18); var maxBd = d.toISOString().slice(0, 10);
-    return '<form class="vc-card vc-join" id="vc-join" novalidate><h3>' + esc(tx("join_h")) + '</h3><p class="vc-hint">' + esc(tx("f_all")) + "</p>" +
-      '<div class="vc-grid2"><label>' + esc(tx("f_first")) + ' *<input name="first_name" maxlength="40" autocomplete="given-name" required></label>' +
-      '<label>' + esc(tx("f_last")) + ' *<input name="last_name" maxlength="40" autocomplete="family-name" required></label></div>' +
-      '<div class="vc-grid2"><label>' + esc(tx("f_birth")) + ' *<input name="birthdate" type="date" max="' + maxBd + '" autocomplete="bday" required></label>' +
-      '<label>' + esc(tx("f_town")) + ' *<input name="town" maxlength="60" autocomplete="address-level2" required></label></div>' +
-      (loggedIn ? "" : '<label>' + esc(tx("f_email")) + ' *<input name="email" type="email" autocomplete="email" required></label><label>' + esc(tx("f_pw")) + ' *<input name="password" type="password" minlength="10" autocomplete="new-password" required></label>') +
-      '<p class="vc-hint">' + esc(tx("f_shown")) + "</p>" +
-      '<label class="vc-chk"><input type="checkbox" name="accept" value="1"> <span>' + esc(tx("f_accept")) + ' * (<a href="#rules">' + esc(tx("l_rules")) + '</a> · <a href="privacy.html">' + esc(tx("l_privacy")) + "</a>)</span></label>" +
-      '<input name="website" class="vc-hp" tabindex="-1" autocomplete="off" aria-hidden="true"><input type="hidden" name="ts" value="' + esc(C.ts || "") + '">' +
-      '<div class="vc-msg" role="status"></div><button class="btn" type="submit">' + esc(tx("join_btn")) + "</button></form>";
+  /* ---------- visitor: sign-up form with the door underneath ---------- */
+  var REF = (function () {
+    var m = /[?&]ref=([a-z0-9]{10})(&|$)/i.exec(location.search);
+    try { if (m) sessionStorage.setItem("vc_ref", m[1].toLowerCase()); return (sessionStorage.getItem("vc_ref") || "").toLowerCase(); } catch (e) { return m ? m[1].toLowerCase() : ""; }
+  })();
+  function countryOptions() {
+    var list = COUNTRIES.filter(function (c) { return c !== "PT"; }).sort(function (a, b) { return cname(a).localeCompare(cname(b), LOC); });
+    return ["PT"].concat(list).map(function (c) { return '<option value="' + c + '">' + flag(c) + " " + esc(cname(c)) + "</option>"; }).join("");
   }
-  function bindJoin(loggedIn) {
+  function joinForm() {
+    return '<form class="vc-card vc-join" id="vc-join" novalidate><h3>' + esc(tx("join_h")) + '</h3><p class="vc-hint">' + esc(tx("f_all")) + "</p>" +
+      '<div class="vc-grid2"><label>' + '<span>' + esc(tx("f_first")) + '</span> *<input name="first_name" maxlength="40" autocomplete="given-name" required></label>' +
+      '<label>' + '<span>' + esc(tx("f_last")) + '</span> *<input name="last_name" maxlength="40" autocomplete="family-name" required></label></div>' +
+      '<label>' + '<span>' + esc(tx("f_nick")) + '</span> *<input name="name" maxlength="20" autocomplete="nickname" required aria-describedby="vc-nick-msg"></label>' +
+      '<p class="vc-hint vc-nick" id="vc-nick-msg" aria-live="polite">' + esc(tx("f_nick_hint")) + "</p>" +
+      '<div class="vc-grid2"><label>' + '<span>' + esc(tx("f_town")) + '</span> *<input name="town" maxlength="60" autocomplete="address-level2" required></label>' +
+      '<label>' + '<span>' + esc(tx("f_country")) + '</span> *<select name="country" required><option value="">' + esc(tx("f_country_ph")) + "</option>" + countryOptions() + "</select></label></div>" +
+      '<div class="vc-face"><span class="vc-face-pv" aria-hidden="true"><svg viewBox="0 0 24 24" width="44" height="44"><circle cx="12" cy="9" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4 21c1.4-4 4.4-6 8-6s6.6 2 8 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>' +
+      '<div><b>' + '<span>' + esc(tx("f_face")) + '</span> *</b><p class="vc-hint">' + esc(tx("f_face_hint")) + '</p><label class="vc-face-btn"><span>' + esc(tx("f_face_btn")) + '</span><input name="photo" type="file" accept="image/jpeg,image/png,image/webp" capture="user" hidden></label></div></div>' +
+      '<label>' + '<span>' + esc(tx("f_email")) + '</span> *<input name="email" type="email" autocomplete="email" required></label>' +
+      '<label>' + '<span>' + esc(tx("f_pw")) + '</span> *<input name="password" type="password" minlength="10" autocomplete="new-password" required></label>' +
+      '<p class="vc-hint">' + esc(tx("f_shown")) + "</p>" +
+      '<label class="vc-chk"><input type="checkbox" name="adult" value="1"> <span><span>' + esc(tx("f_adult")) + "</span> *</span></label>" +
+      '<label class="vc-chk"><input type="checkbox" name="accept" value="1"> <span><span>' + esc(tx("f_accept")) + '</span> *</span></label>' +
+      '<p class="vc-links"><a href="community-rules.html" target="_blank" rel="noopener">' + esc(tx("l_rules")) + '</a> · <a href="privacy.html" target="_blank" rel="noopener">' + esc(tx("l_privacy")) + "</a></p>" +
+      '<input name="website" class="vc-hp" tabindex="-1" autocomplete="off" aria-hidden="true"><input type="hidden" name="ref" value="' + esc(REF) + '">' +
+      '<div class="vc-msg" role="status"></div>' +
+      /* the DOOR is the send button, directly under the sign-up form */
+      '<button class="vc-door" type="submit" aria-label="' + esc(tx("door_label")) + '"><span class="vc-sign" aria-hidden="true"><b>' + esc(tx("door_knock")) + "</b><i>" + esc(tx("door_welcome")) + "</i></span>" +
+      '<span class="vc-df" aria-hidden="true"><span class="vc-dlight"></span><span class="vc-dp"></span><span class="vc-dk"></span></span></button></form>';
+  }
+  function remember() { try { localStorage.setItem("vc_key", "1"); } catch (e) {} }
+  function remembered() { try { return localStorage.getItem("vc_key") === "1"; } catch (e) { return false; } }
+  function bindJoin() {
     var f = document.getElementById("vc-join"); if (!f) return;
+    var nk = f.querySelector('input[name="name"]'), nm = f.querySelector(".vc-nick"), timer = null;
+    function nickMsg(cls, text) { nm.className = "vc-hint vc-nick" + (cls ? " " + cls : ""); nm.textContent = text; }
+    nk.oninput = function () {
+      clearTimeout(timer); var v = nk.value.trim();
+      if (v.length < 3) { nickMsg("", tx("f_nick_hint")); return; }
+      timer = setTimeout(function () {
+        api("GET", "name?n=" + encodeURIComponent(v)).then(function (j) {
+          if (nk.value.trim() !== v) return;
+          if (!j.valid) nickMsg("vc-bad", tx("e_nick")); else if (!j.available) nickMsg("vc-bad", tx("e_name_taken")); else nickMsg("vc-good", tx("nick_ok"));
+        }).catch(function () {});
+      }, 400);
+    };
+    var face = null, fin = f.querySelector('input[name="photo"]'), pv = f.querySelector(".vc-face-pv"), fbtn = f.querySelector(".vc-face-btn span");
+    fin.onchange = function () {
+      var file = fin.files && fin.files[0]; if (!file) return;
+      var url = URL.createObjectURL(file), im = new Image();
+      im.onload = function () {   // square crop to 600 px JPEG in the browser (the server re-encodes without EXIF/GPS)
+        var sz = Math.min(im.naturalWidth, im.naturalHeight), cv = document.createElement("canvas"); cv.width = cv.height = 600;
+        cv.getContext("2d").drawImage(im, (im.naturalWidth - sz) / 2, (im.naturalHeight - sz) / 2, sz, sz, 0, 0, 600, 600);
+        URL.revokeObjectURL(url);
+        cv.toBlob(function (bl) { face = bl; pv.innerHTML = '<img src="' + cv.toDataURL("image/jpeg", 0.7) + '" alt="">'; fbtn.textContent = tx("f_face_change"); }, "image/jpeg", 0.85);
+      };
+      im.onerror = function () { URL.revokeObjectURL(url); face = null; f.querySelector(".vc-msg").innerHTML = note("err", tx("e_photo")); };
+      im.src = url;
+    };
     f.onsubmit = function (ev) {
       ev.preventDefault();
-      var fd = new FormData(f), msg = f.querySelector(".vc-msg"), b = f.querySelector("button");
-      b.disabled = true;
-      api("POST", "join", fd).then(function () { f.innerHTML = '<div class="vc-note vc-ok">' + esc(tx(loggedIn ? "join_sent_in" : "join_sent")) + "</div>"; })
-        .catch(function (e) { msg.innerHTML = '<div class="vc-note vc-err">' + esc(errText(e)) + "</div>"; b.disabled = false; });
+      var fd = new FormData(f), msg = f.querySelector(".vc-msg"), b = f.querySelector(".vc-door");
+      fd.delete("photo");
+      if (!face) { msg.innerHTML = note("err", tx("e_face")); fbtn.parentNode.focus(); return; }
+      fd.set("photo", face, "face.jpg");
+      if (b.disabled) return;
+      b.disabled = true; b.classList.remove("vc-knock"); void b.offsetWidth; b.classList.add("vc-knock");
+      api("POST", "join", fd).then(function () {
+        remember(); b.classList.add("vc-open");
+        setTimeout(function () {
+          f.innerHTML = note("ok", tx("join_sent")) + (C.demo ? '<p class="vc-hint">' + esc(tx("demo_mail")) + "</p>" : "");
+          var k = document.getElementById("vc-key"); if (k) { k.querySelector("#vc-login").hidden = false; k.querySelector(".vc-key").setAttribute("aria-expanded", "true"); k.scrollIntoView({ behavior: "smooth", block: "center" }); }
+        }, 800);
+      }).catch(function (e) {
+        msg.innerHTML = note("err", errText(e)); b.disabled = false;
+        if (e && (e.code === "name_taken" || e.code === "nick")) { nickMsg("vc-bad", errText(e)); nk.focus(); nk.select(); }
+      });
     };
   }
-  function rulesBox() { return '<div class="vc-card vc-rules"><h3>' + esc(tx("rules_h")) + "</h3><ul>" + TX.rules.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") + '</ul><p><a href="#rules">' + esc(tx("rules_full")) + " →</a></p></div>"; }
+
+  /* ---------- the members' key: log in on the page itself ---------- */
+  var KEY_SVG = '<svg viewBox="0 0 64 32" width="56" height="28" aria-hidden="true"><circle cx="14" cy="16" r="10" fill="none" stroke="currentColor" stroke-width="5"/><path d="M24 16h36M50 16v9M58 16v7" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>';
+  function keyBox(open) {
+    return '<div class="vc-card vc-keybox" id="vc-key"><button type="button" class="vc-key" aria-expanded="' + open + '">' + KEY_SVG + "<span><b>" + esc(tx("key_h")) + "</b><small>" + esc(tx(remembered() ? "key_back" : "key_new")) + "</small></span></button>" +
+      '<form id="vc-login" novalidate' + (open ? "" : " hidden") + '><label>' + esc(tx("f_login_id")) + '<input name="email" autocomplete="username" autocapitalize="off" spellcheck="false" required></label>' +
+      '<label>' + esc(tx("f_pw_login")) + '<input name="password" type="password" autocomplete="current-password" required></label>' +
+      '<div class="vc-msg" role="status"></div><button class="btn" type="submit">' + esc(tx("key_enter")) + '</button><p class="vc-forgot"><button type="button" class="vc-lnk" data-lost="1">' + esc(tx("lost_q")) + "</button></p></form>" +
+      '<form id="vc-lost" novalidate hidden><p class="vc-hint">' + esc(tx("lost_p")) + '</p><label>' + esc(tx("f_login_id")) + '<input name="email" autocomplete="username" autocapitalize="off" spellcheck="false" required></label>' +
+      '<div class="vc-msg" role="status"></div><button class="btn" type="submit">' + esc(tx("lost_btn")) + '</button><p class="vc-forgot"><button type="button" class="vc-lnk" data-lost="0">' + esc(tx("lost_back")) + "</button></p></form></div>";
+  }
+  function bindKey() {
+    var k = document.getElementById("vc-key"); if (!k) return;
+    var f = k.querySelector("#vc-login"), lf = k.querySelector("#vc-lost"), t = k.querySelector(".vc-key");
+    t.onclick = function () { var open = f.hidden && lf.hidden; f.hidden = !open; lf.hidden = true; t.setAttribute("aria-expanded", open); if (open) f.querySelector("input").focus(); };
+    Array.prototype.forEach.call(k.querySelectorAll("[data-lost]"), function (b) {
+      b.onclick = function () {
+        var lost = b.getAttribute("data-lost") === "1";
+        if (lost && f.email.value.trim()) lf.email.value = f.email.value.trim();
+        f.hidden = lost; lf.hidden = !lost; (lost ? lf : f).querySelector("input").focus();
+      };
+    });
+    /* forgot password: a reset link by e-mail (the answer never says whether the account exists) */
+    lf.onsubmit = function (ev) {
+      ev.preventDefault();
+      var msg = lf.querySelector(".vc-msg"), b = lf.querySelector("button[type=submit]"), id = lf.email.value.trim();
+      if (!id) { msg.innerHTML = note("err", tx("e_required")); return; }
+      b.disabled = true;
+      api("POST", "lostpw", { email: id }).then(function () {
+        // the preview has no mail server: say so plainly instead of claiming that an e-mail was sent
+        msg.innerHTML = C.demo ? note("ok", tx("lost_demo")) : note("ok", tx("lost_sent"));
+        b.hidden = true;
+      }).catch(function (e) { msg.innerHTML = note("err", errText(e)); b.disabled = false; });
+    };
+    f.onsubmit = function (ev) {
+      ev.preventDefault();
+      var msg = f.querySelector(".vc-msg"), b = f.querySelector("button[type=submit]");
+      b.disabled = true;
+      api("POST", "login", { email: f.email.value.trim(), password: f.password.value }).then(function () {
+        remember();
+        if (C.demo) { start(true); } else { location.hash = "#join"; location.reload(); }   // fresh session + nonce
+      }).catch(function (e) { msg.innerHTML = note("err", errText(e)); b.disabled = false; });
+    };
+  }
+  function rulesBox() {
+    return '<div class="vc-card vc-rules"><h3>' + esc(tx("rules_h")) + "</h3><ul>" + TX.rules.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") +
+      '</ul><p><a href="community-rules.html">' + esc(tx("rules_full")) + " →</a></p></div>";
+  }
+  function inviteBox(url) {
+    if (!url) return "";
+    var msg = tx("inv_msg") + " " + url;
+    return '<details class="vc-card vc-invite"><summary><b>✉️ ' + esc(tx("inv_h")) + '</b></summary><p class="vc-hint">' + esc(tx("inv_p")) + "</p>" +
+      '<input class="vc-invurl" readonly value="' + esc(url) + '" aria-label="' + esc(tx("inv_h")) + '" data-no-i18n>' +
+      '<div class="vc-invbtns">' + (navigator.share ? '<button type="button" class="btn small" data-inv="share">' + esc(tx("inv_share")) + "</button>" : "") +
+      '<a class="btn ghost small" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(msg) + '">WhatsApp</a>' +
+      '<button type="button" class="btn ghost small" data-inv="copy">' + esc(tx("inv_copy")) + "</button></div></details>";
+  }
+  function bindInvite(url) {
+    var box = app.querySelector(".vc-invite"); if (!box) return;
+    box.onclick = function (ev) {
+      var b = ev.target.closest && ev.target.closest("[data-inv]"); if (!b) return;
+      if (b.dataset.inv === "share") { navigator.share({ title: "VAIGA Community", text: tx("inv_msg"), url: url }).catch(function () {}); return; }
+      var done = function () { b.textContent = tx("inv_copied"); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () {});
+      else { var i = box.querySelector(".vc-invurl"); i.select(); try { document.execCommand("copy"); done(); } catch (e) {} }
+    };
+  }
 
   function render() {
     var me = state.me;
-    if (!me) { app.innerHTML = hero(); return; }
-    var top = hero('<p class="vc-intro">' + esc(tx("intro")) + '</p><p class="vc-not">' + esc(tx("not_list")) + "</p>");
-    var login = C.login ? '<p class="vc-center"><a class="btn" href="' + esc(C.login) + '">' + esc(tx("login")) + "</a></p>" : "";
-    if (me.state === "guest" || me.state === "outsider") {
-      if (invited) { app.innerHTML = top + (me.state === "guest" ? login : "") + joinForm(me.state === "outsider") + rulesBox(); bindJoin(me.state === "outsider"); return; }
-      app.innerHTML = hero() + '<div class="vc-card vc-center"><h3>' + esc(tx("private_h")) + "</h3><p>" + esc(tx("private_p")) + "</p></div>" + (me.state === "guest" ? login : "");
+    var visitor = !me || me.state === "guest";
+    if (info) info.hidden = !visitor;   // public information only for visitors
+    if (keyTopEl) keyTopEl.innerHTML = "";
+    if (!me) { app.innerHTML = ""; return; }
+    if (visitor) {
+      // open sign-up: the form with the door; returning visitors get the key first (at the top of the page)
+      var back = remembered();
+      var invNote = REF && !back ? note("ok vc-invited", tx("invited")) : "";
+      if (back && keyTopEl) { keyTopEl.innerHTML = keyBox(true); app.innerHTML = joinForm(); }
+      else app.innerHTML = invNote + joinForm() + keyBox(false);
+      bindJoin(); bindKey();
       return;
     }
     if (me.state !== "member") {
-      app.innerHTML = top + '<div class="vc-card vc-center"><p>' + esc(tx("st_" + me.state)) + "</p>" + (C.logout ? '<p><a class="btn ghost" href="' + esc(C.logout) + '">' + esc(tx("logout")) + "</a></p>" : "") + "</div>";
+      app.innerHTML = hero() + '<div class="vc-card vc-center"><p>' + esc(tx("st_" + me.state)) + "</p></div>";
       return;
     }
+    var p = me.profile || {};
     app.innerHTML = (C.demo ? '<div class="vc-demo" role="note">' + esc(tx("demo_banner")) + "</div>" : "") +
-      hero('<p class="vc-hello">' + esc(tx("hello", { n: me.name })) + (C.logout ? ' · <a href="' + esc(C.logout) + '">' + esc(tx("logout")) + "</a>" : "") + "</p>") +
+      hero('<p class="vc-hello">' + (p.avatar ? '<img class="vc-av vc-av-me" src="' + esc(p.avatar) + '" alt=""> ' : "") + '<span>' + esc(tx("hello", { n: me.name })) + "</span>" + (p.country ? ' <span data-no-i18n>' + flag(p.country) + "</span>" : "") +
+        ' · <button type="button" class="vc-lnk vc-out">' + esc(tx("logout")) + "</button></p>") +
+      inviteBox(me.invite) +
       '<div class="vc-tabs" role="tablist"><button type="button" role="tab" data-v="feed" aria-selected="' + (state.view === "feed") + '">' + esc(tx("tab_feed")) + '</button><button type="button" role="tab" data-v="mg" aria-selected="' + (state.view === "mg") + '">' + esc(tx("tab_mg")) + "</button></div>" +
       '<div id="vc-view"></div>';
+    bindInvite(me.invite);
+    app.querySelector(".vc-out").onclick = function () {
+      if (C.logout && !C.demo) { location.href = C.logout; return; }
+      api("POST", "logout").then(function () { state.view = "feed"; start(); });
+    };
     app.querySelectorAll(".vc-tabs button").forEach(function (b) { b.onclick = function () { state.view = b.dataset.v; render(); load(); }; });
     if (state.view === "feed") renderFeed(); else renderMg();
   }
 
   /* ---------- feed ---------- */
-  function actions(kind, item, canReply) {
+  function actions(item, canReply) {
     var h = '<div class="vc-acts">';
     if (canReply) h += '<button type="button" class="vc-a" data-act="reply">' + esc(tx("reply")) + "</button>";
     if (item.can_delete) h += '<button type="button" class="vc-a" data-act="del">' + esc(tx("del")) + "</button>";
@@ -143,21 +313,21 @@
     return h + '</div><div class="vc-inline"></div>';
   }
   function commentHtml(c, replies) {
-    return '<div class="vc-c" data-kind="comment" data-id="' + c.id + '"><div class="vc-meta"><b>' + esc(c.author) + "</b> · " + esc(when(c.created)) + '</div><div class="vc-body">' + multiline(c.body) + "</div>" + actions("comment", c, !c.parent_id) +
+    return '<div class="vc-c" data-kind="comment" data-id="' + c.id + '"><div class="vc-meta">' + whoHtml(c.who || c.author) + '<span class="vc-when">' + esc(when(c.created)) + '</span></div><div class="vc-body">' + multiline(c.body) + "</div>" + actions(c, !c.parent_id) +
       (replies && replies.length ? '<div class="vc-replies">' + replies.map(function (r) { return commentHtml(r, null); }).join("") + "</div>" : "") + "</div>";
   }
   function postHtml(p) {
     var top = p.comments.filter(function (c) { return !c.parent_id; });
-    return '<article class="vc-card vc-post" data-kind="post" data-id="' + p.id + '"><div class="vc-meta"><b>' + esc(p.author) + "</b> · " + esc(when(p.created)) + "</div>" +
+    return '<article class="vc-card vc-post" data-kind="post" data-id="' + p.id + '"><div class="vc-meta">' + whoHtml(p.who || p.author) + '<span class="vc-when">' + esc(when(p.created)) + "</span></div>" +
       (p.body ? '<div class="vc-body">' + multiline(p.body) + "</div>" : "") +
       (p.photo ? '<img class="vc-photo" src="' + esc(p.photo) + '" alt="" loading="lazy" decoding="async">' : "") +
-      actions("post", p, true) +
+      actions(p, true) +
       '<div class="vc-comments">' + top.map(function (c) { return commentHtml(c, p.comments.filter(function (r) { return r.parent_id === c.id; })); }).join("") + "</div></article>";
   }
   function renderFeed() {
     var v = document.getElementById("vc-view"); if (!v) return;
-    v.innerHTML = '<form class="vc-card vc-compose" id="vc-compose"><textarea name="body" maxlength="2000" rows="3" placeholder="' + esc(tx("ph_post")) + '" aria-label="' + esc(tx("ph_post")) + '"></textarea>' +
-      '<div class="vc-row"><label class="btn ghost small vc-file">📷 ' + esc(tx("photo")) + '<input type="file" name="photo" accept="image/jpeg,image/png,image/webp" hidden></label><span class="vc-fname"></span><button class="btn small" type="submit">' + esc(tx("post_btn")) + '</button></div><div class="vc-msg" role="status"></div></form>' +
+    v.innerHTML = '<form class="vc-card vc-compose" id="vc-compose"><textarea name="body" maxlength="2000" rows="3" placeholder="' + esc(tx("ph_post")) + '"></textarea>' +
+      '<div class="vc-row"><label class="btn ghost small vc-file">📷 ' + esc(tx("photo")) + '<input type="file" name="photo" accept="image/jpeg,image/png,image/webp" hidden></label><span class="vc-fname" data-no-i18n></span><button class="btn small" type="submit">' + esc(tx("post_btn")) + '</button></div><div class="vc-msg" role="status"></div></form>' +
       '<div id="vc-posts">' + (state.posts.length ? state.posts.map(postHtml).join("") : '<p class="vc-empty">' + esc(tx("empty")) + "</p>") + "</div>" +
       (state.more ? '<p class="vc-center"><button type="button" class="btn ghost" id="vc-more">' + esc(tx("more")) + "</button></p>" : "") + rulesBox();
     var f = document.getElementById("vc-compose");
@@ -168,7 +338,7 @@
       var b = f.querySelector('button[type="submit"]'), msg = f.querySelector(".vc-msg");
       b.disabled = true; b.textContent = tx("posting");
       var fd = new FormData(); fd.append("body", f.body.value); if (fi.files[0]) fd.append("photo", fi.files[0]);
-      api("POST", "posts", fd).then(function () { loadFeed(true); }).catch(function (e) { msg.innerHTML = '<div class="vc-note vc-err">' + esc(errText(e)) + "</div>"; b.disabled = false; b.textContent = tx("post_btn"); });
+      api("POST", "posts", fd).then(function () { loadFeed(true); }).catch(function (e) { msg.innerHTML = note("err", errText(e)); b.disabled = false; b.textContent = tx("post_btn"); });
     };
     var m = document.getElementById("vc-more");
     if (m) m.onclick = function () { var last = state.posts[state.posts.length - 1]; api("GET", "feed?before=" + (last ? last.id : 0)).then(function (j) { state.posts = state.posts.concat(j.posts); state.more = j.more; renderFeed(); }); };
@@ -183,13 +353,13 @@
         b.onclick = function () {
           var act = b.dataset.act;
           if (act === "reply") {
-            box.innerHTML = '<form class="vc-mini"><textarea maxlength="1000" rows="2" placeholder="' + esc(tx("comment_ph")) + '" aria-label="' + esc(tx("comment_ph")) + '"></textarea><div class="vc-row"><button class="btn small" type="submit">' + esc(tx("send")) + '</button><button class="btn ghost small" type="button" data-x>' + esc(tx("cancel")) + '</button></div><div class="vc-msg"></div></form>';
+            box.innerHTML = '<form class="vc-mini"><textarea maxlength="1000" rows="2" placeholder="' + esc(tx("comment_ph")) + '"></textarea><div class="vc-row"><button class="btn small" type="submit">' + esc(tx("send")) + '</button><button class="btn ghost small" type="button" data-x>' + esc(tx("cancel")) + '</button></div><div class="vc-msg"></div></form>';
             var fm = box.querySelector("form"), ta = fm.querySelector("textarea"); ta.focus();
             fm.onsubmit = function (ev) {
               ev.preventDefault();
               var postId = kind === "post" ? id : +item.closest(".vc-post").dataset.id;
               api("POST", "posts/" + postId + "/comments", { body: ta.value, parent_id: kind === "comment" ? id : 0 }).then(function () { loadFeed(true); })
-                .catch(function (e) { fm.querySelector(".vc-msg").innerHTML = '<div class="vc-note vc-err">' + esc(errText(e)) + "</div>"; });
+                .catch(function (e) { fm.querySelector(".vc-msg").innerHTML = note("err", errText(e)); });
             };
           } else if (act === "del") {
             var mine = !acts.querySelector('[data-act="report"]');
@@ -198,16 +368,16 @@
             fd.onsubmit = function (ev) {
               ev.preventDefault();
               var r = fd.querySelector("input"), path = (kind === "post" ? "posts/" : kind === "comment" ? "comments/" : "meetgo/") + id + (r ? "?reason=" + encodeURIComponent(r.value) : "");
-              api("DELETE", path).then(function () { kind === "meetgo" ? loadMg() : loadFeed(true); })
-                .catch(function (e) { fd.querySelector(".vc-msg").innerHTML = '<div class="vc-note vc-err">' + esc(errText(e)) + "</div>"; });
+              api("DELETE", path).then(function () { if (kind === "meetgo") loadMg(); else loadFeed(true); })
+                .catch(function (e) { fd.querySelector(".vc-msg").innerHTML = note("err", errText(e)); });
             };
           } else if (act === "report") {
-            box.innerHTML = '<form class="vc-mini"><textarea maxlength="500" rows="2" placeholder="' + esc(tx("report_ph")) + '" aria-label="' + esc(tx("report_ph")) + '" required></textarea><div class="vc-row"><button class="btn small" type="submit">' + esc(tx("report")) + '</button><button class="btn ghost small" type="button" data-x>' + esc(tx("cancel")) + '</button></div><div class="vc-msg"></div></form>';
+            box.innerHTML = '<form class="vc-mini"><textarea maxlength="500" rows="2" placeholder="' + esc(tx("report_ph")) + '" required></textarea><div class="vc-row"><button class="btn small" type="submit">' + esc(tx("report")) + '</button><button class="btn ghost small" type="button" data-x>' + esc(tx("cancel")) + '</button></div><div class="vc-msg"></div></form>';
             var fr = box.querySelector("form");
             fr.onsubmit = function (ev) {
               ev.preventDefault();
-              api("POST", "reports", { type: kind, id: id, reason: fr.querySelector("textarea").value }).then(function () { box.innerHTML = '<div class="vc-note vc-ok">' + esc(tx("report_sent")) + "</div>"; })
-                .catch(function (e) { fr.querySelector(".vc-msg").innerHTML = '<div class="vc-note vc-err">' + esc(errText(e)) + "</div>"; });
+              api("POST", "reports", { type: kind, id: id, reason: fr.querySelector("textarea").value }).then(function () { box.innerHTML = note("ok", tx("report_sent")); })
+                .catch(function (e) { fr.querySelector(".vc-msg").innerHTML = note("err", errText(e)); });
             };
           }
           var x = box.querySelector("[data-x]"); if (x) x.onclick = function () { box.innerHTML = ""; };
@@ -218,17 +388,17 @@
 
   /* ---------- Meet & Go ---------- */
   function evLabel(e) { return day(e.date) + " · " + e.title + " · " + e.city; }
-  function who(m) { return m.participants ? '<div class="vc-who"><b>' + esc(tx("mg_who")) + "</b><ul>" + m.participants.map(function (n) { return "<li>" + esc(n) + "</li>"; }).join("") + "</ul></div>" : ""; }
+  function whoList(m) { return m.participants ? '<div class="vc-who"><b>' + esc(tx("mg_who")) + "</b><ul>" + m.participants.map(function (n) { return "<li>" + whoHtml(n) + "</li>"; }).join("") + "</ul></div>" : ""; }
   function mgHtml(m) {
     var e = m.event, h = '<article class="vc-card vc-mg" data-kind="meetgo" data-id="' + m.id + '"><div class="vc-mg-ev"><b>' + esc(e.title) + "</b><span>" + esc(day(e.date)) + " · " + esc(e.start) + " · " + esc(e.venue) + ", " + esc(e.city) + "</span></div>" +
-      '<p class="vc-mg-meet">🕒 <span>' + esc(tx("mg_meet_at")) + '</span> <b>' + esc(m.meet_time) + '</b> · ' + esc(m.meeting_point) + "</p>";
+      '<p class="vc-mg-meet">🕒 <span>' + esc(tx("mg_meet_at")) + "</span> " + esc(m.meet_time) + ' · <span>' + esc(m.meeting_point) + "</span></p>";
     if (m.joined) {
-      h += '<p class="vc-badge">✓ ' + esc(tx("mg_joined")) + "</p>" + who(m);
+      h += '<p class="vc-badge">✓ ' + esc(tx("mg_joined")) + "</p>" + whoList(m);
       h += '<div class="vc-row">' + (m.mine ? "" : '<button type="button" class="btn ghost small" data-mg="leave">' + esc(tx("mg_leave")) + "</button>") + "</div>";
     } else if (m.full) {
-      h += '<p class="vc-badge vc-full">' + esc(tx("mg_full")) + "</p>" + who(m);
+      h += '<p class="vc-badge vc-full">' + esc(tx("mg_full")) + "</p>" + whoList(m);
     } else {
-      h += '<div class="vc-row"><button type="button" class="btn small" data-mg="join">' + esc(tx("mg_join")) + "</button></div>" + who(m);
+      h += '<div class="vc-row"><button type="button" class="btn small" data-mg="join">' + esc(tx("mg_join")) + "</button></div>" + whoList(m);
     }
     h += '<div class="vc-acts">' + (m.can_delete ? '<button type="button" class="vc-a" data-act="del">' + esc(m.mine ? tx("mg_cancel") : tx("del")) + "</button>" : "") + (m.mine ? "" : '<button type="button" class="vc-a" data-act="report">' + esc(tx("report")) + "</button>") + '</div><div class="vc-inline"></div><div class="vc-msg"></div></article>';
     return h;
@@ -237,7 +407,7 @@
     var v = document.getElementById("vc-view"); if (!v) return;
     var r = state.rules || { min_people: 2, max_people: 20, max_hours_before: 4 };
     var opts = state.events.map(function (e, i) { return '<option value="' + i + '">' + esc(evLabel(e)) + "</option>"; }).join("");
-    v.innerHTML = '<p class="vc-intro2">' + esc(tx("mg_intro")) + "</p>" +
+    v.innerHTML = '<p class="vc-intro2">' + esc(tx("mg_intro")) + ' <a href="community-rules.html#meet-go">' + esc(tx("mg_rules")) + " →</a></p>" +
       (state.events.length ? '<form class="vc-card vc-mgform" id="vc-mgform"><h3>' + esc(tx("mg_new")) + "</h3>" +
         '<label>' + esc(tx("mg_event")) + '<select name="ev">' + opts + "</select></label>" +
         '<div class="vc-grid2"><label>' + esc(tx("mg_time")) + '<input type="time" name="meet_time" required><small class="vc-hint"></small></label>' +
@@ -259,14 +429,14 @@
         ev.preventDefault();
         var e = state.events[+f.ev.value], msg = f.querySelector(".vc-msg");
         api("POST", "meetgo", { event: e.id, date: e.date, meet_time: f.meet_time.value, meeting_point: f.meeting_point.value, max_people: f.max_people.value, public_place: f.public_place.checked ? "1" : "0" })
-          .then(loadMg)
-          .catch(function (er) { msg.innerHTML = '<div class="vc-note vc-err">' + esc(errText(er)) + "</div>"; });
+          .then(function () { loadMg(); })
+          .catch(function (er) { msg.innerHTML = note("err", errText(er)); });
       };
     }
     v.querySelectorAll("[data-mg]").forEach(function (b) {
       b.onclick = function () {
         var card = b.closest(".vc-mg");
-        api("POST", "meetgo/" + card.dataset.id + "/" + b.dataset.mg).then(loadMg).catch(function (e) { card.querySelector(".vc-msg").innerHTML = '<div class="vc-note vc-err">' + esc(errText(e)) + "</div>"; });
+        api("POST", "meetgo/" + card.dataset.id + "/" + b.dataset.mg).then(loadMg).catch(function (e) { card.querySelector(".vc-msg").innerHTML = note("err", errText(e)); });
       };
     });
     bindItems(v);
@@ -279,7 +449,11 @@
   }
   function load() {
     if (!state.me || state.me.state !== "member") return;
-    (state.view === "feed" ? loadFeed() : loadMg()).catch(function (e) { var v = document.getElementById("vc-view"); if (v) v.innerHTML = '<div class="vc-note vc-err">' + esc(errText(e)) + "</div>"; });
+    (state.view === "feed" ? loadFeed() : loadMg()).catch(function (e) { var v = document.getElementById("vc-view"); if (v) v.innerHTML = note("err", errText(e)); });
   }
-  api("GET", "me").then(function (j) { state.me = j; render(); load(); }).catch(function () { state.me = { state: "guest" }; render(); });
+  function start(scroll) {
+    api("GET", "me").then(function (j) { state.me = j; if (j && j.state === "member") remember(); render(); load(); if (scroll) app.scrollIntoView({ behavior: "smooth", block: "start" }); })
+      .catch(function () { state.me = { state: "guest" }; render(); });
+  }
+  start();
 })();

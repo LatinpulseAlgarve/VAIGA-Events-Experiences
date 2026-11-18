@@ -28,9 +28,12 @@
       (where ? '<div class="where">' + esc(where) + "</div>" : "") +
       (e.status ? '<div class="where"><b>' + esc(STATUS[e.status] || "") + "</b></div>" : "") + '<span class="go arrow" style="margin-top:auto;font-weight:800;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase">Details </span></div></a>';
   }
-  function empty(catName) {
+  /* "new dates are coming soon" (decision 2026-11-18): no e-mail and no "Get in touch" button; on the homepage
+     (list with data-limit) also no social row, because the "Stay in the loop" block below already has it */
+  function empty(catName, home) {
     return '<div class="empty reveal"><span class="eyebrow">Stay tuned</span><h3>' + (catName ? "New " + esc(catName) + " dates coming soon" : "New dates are coming soon") +
-      '</h3><p class="lead" style="margin-inline:auto">We are preparing the next VAIGA events. Follow us on social media or get in touch to be the first to know.</p><div data-social="no-whatsapp" class="social" style="justify-content:center;margin:18px 0"></div><div class="btn-row" style="justify-content:center"><a class="btn arrow" href="contact.html">Get in touch </a></div></div>';
+      '</h3><p class="lead" style="margin-inline:auto">We are preparing the next VAIGA events. Follow us on social media to be the first to know.</p>' +
+      (home ? "" : '<div data-social="social-only" class="social" style="justify-content:center;margin:18px 0"></div>') + "</div>";
   }
 
   /* ---------- lists ---------- */
@@ -43,7 +46,7 @@
     function draw() {
       var list = upcoming().filter(function (e) { return !sel.length || sel.indexOf(e.category) >= 0; });
       if (limit) list = list.slice(0, limit);
-      box.innerHTML = list.length ? '<div class="grid g3">' + list.map(card).join("") + "</div>" : empty(sel.length === 1 ? V.cat(sel[0]).name : "");
+      box.innerHTML = list.length ? '<div class="grid g3">' + list.map(card).join("") + "</div>" : empty(sel.length === 1 ? V.cat(sel[0]).name : "", !!limit);
       if (!list.length) fillSocial(box);
       V.reveal();
     }

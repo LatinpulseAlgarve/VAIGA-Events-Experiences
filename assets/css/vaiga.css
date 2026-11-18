@@ -503,3 +503,15 @@ main { position: relative; }
 .mail-panel .mp-addr { font-size: .9rem; color: var(--gold); padding: 4px 8px 8px; border-bottom: 1px solid var(--line); margin-bottom: 2px; word-break: break-all; }
 .mail-panel a, .mail-panel button { display: block; width: 100%; text-align: left; padding: 10px 12px; border-radius: 12px; border: 1px solid transparent; background: transparent; color: var(--on-dark); font: 700 .92rem/1.2 var(--font-body); text-decoration: none; cursor: pointer; }
 .mail-panel a:hover, .mail-panel a:focus-visible, .mail-panel button:hover, .mail-panel button:focus-visible { background: var(--celebrate-soft); border-color: var(--magenta); }
+
+/* legal texts (privacy.html, community-rules.html, 2026-11-18): one block per language, shown by assets/js/legal-lang.js */
+.legal-doc h2 { font-size: var(--fs-h3); margin-top: 1.6em; }
+.legal-doc h3 { font-size: 1.1rem; margin-top: 1.4em; }
+.legal-doc ul, .legal-doc ol { padding-left: 22px; }
+.legal-doc li { margin: 6px 0; }
+.legal-doc a { color: #FF8CC6; }
+.legal-doc .tw { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: var(--r-s); }
+.legal-doc table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: 14px; }
+.legal-doc th, .legal-doc td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+.legal-doc th { background: var(--paper-2); font-weight: 800; }
+.legal-doc [hidden] { display: none !important; }

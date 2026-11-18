@@ -74,3 +74,82 @@
 .vc-tabs button[aria-selected=true] { color: #fff; }
 .vc-a { color: #FF8CC6; }
 .vc-card input:not([type=checkbox]), .vc-card textarea, .vc-card select { color: var(--text); background: var(--paper); }
+
+/* ---------- sign-up like the Latinpulse Community (2026-11-18): door, key, face photo, community name ---------- */
+#vc-keytop:empty { display: none; }
+#vc-keytop { max-width: 760px; margin: 0 auto; padding: 0 var(--gutter); }
+#vc-keytop .vc-keybox { margin-top: 18px; }
+.vc-join { max-width: 620px; }
+.vc-links { margin: -2px 0 10px 28px; font-size: 14px; }
+.vc-links a { color: #FF8CC6; font-weight: 700; }
+.vc-nick { margin: -4px 0 10px; }
+.vc-nick.vc-good { color: #4BD38A; font-weight: 700; }
+.vc-nick.vc-bad { color: #FF7A7A; font-weight: 700; }
+.vc-invited { margin-bottom: 12px; }
+.vc-ok { background: rgba(31,168,85,.16); border-color: #1FA855; color: var(--text); }
+.vc-err { background: rgba(198,40,40,.18); border-color: #E05252; color: var(--text); }
+
+/* face photo */
+.vc-face { display: flex; gap: 14px; align-items: center; margin: 8px 0 14px; }
+.vc-face-pv { flex: none; width: 96px; height: 96px; border-radius: 50%; display: grid; place-items: center; overflow: hidden; background: var(--paper); color: var(--muted); border: 3px solid var(--line); box-shadow: var(--shadow); }
+.vc-face-pv img { width: 100%; height: 100%; object-fit: cover; }
+.vc-face .vc-hint { margin: 2px 0 8px; }
+.vc-card label.vc-face-btn { display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 9px 16px; border-radius: 99px; border: 2px solid var(--gold); color: var(--gold); font-weight: 800; font-size: 14px; cursor: pointer; }
+.vc-face-btn::before { content: "📷"; }
+.vc-face-btn:hover { background: rgba(255,178,30,.12); }
+
+/* the DOOR = send button under the sign-up form, with the hanging sign "Knock here – Welcome" */
+.vc-door { display: block; position: relative; width: 140px; margin: 30px auto 8px; padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; }
+.vc-door:disabled { cursor: default; }
+.vc-door:focus-visible { outline: 3px solid var(--gold); outline-offset: 6px; border-radius: 70px 70px 10px 10px; }
+.vc-df { position: relative; display: block; width: 140px; height: 206px; padding: 9px; border-radius: 70px 70px 10px 10px; background: linear-gradient(180deg, #3A2580, #140C33); box-shadow: 0 0 0 2px rgba(255,178,30,.55), 0 18px 40px -14px rgba(229,51,140,.7); overflow: hidden; }
+/* light of the party behind the door (visible when it opens) */
+.vc-dlight { position: absolute; inset: 9px; border-radius: 61px 61px 4px 4px; background: radial-gradient(70% 60% at 50% 40%, #FFE6A8 0%, var(--gold) 30%, var(--magenta) 70%, var(--violet) 100%); }
+.vc-dp { position: absolute; inset: 9px; border-radius: 61px 61px 4px 4px; background: linear-gradient(160deg, var(--magenta) 0%, #9B2CCB 55%, var(--violet) 100%); transform-origin: left center; transition: transform .7s var(--ease); box-shadow: inset 0 0 0 2px rgba(255,255,255,.12); }
+.vc-dp::before { content: ""; position: absolute; left: 18px; right: 18px; top: 22px; height: 30%; border: 2px solid rgba(255,255,255,.28); border-radius: 44px 44px 4px 4px; }
+.vc-dp::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 18px; height: 34%; border: 2px solid rgba(255,255,255,.28); border-radius: 4px; }
+.vc-dk { position: absolute; right: 24px; top: 56%; width: 15px; height: 15px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px rgba(255,178,30,.9); transition: opacity .3s; }
+.vc-sign { position: absolute; z-index: 2; left: 50%; top: 46px; width: 124px; padding: 7px 6px 6px; border-radius: 10px; background: var(--gold); color: var(--ink); border: 2px solid #FFE6A8; box-shadow: 0 6px 14px -6px rgba(0,0,0,.6); text-align: center; line-height: 1.15; transform: translateX(-50%) rotate(-3deg); transform-origin: 50% -26px; animation: vc-swing 3.2s ease-in-out infinite; }
+.vc-sign::before, .vc-sign::after { content: ""; position: absolute; top: -28px; width: 2px; height: 30px; background: #FFE6A8; }
+.vc-sign::before { left: 26px; transform: rotate(22deg); transform-origin: bottom; }
+.vc-sign::after { right: 26px; transform: rotate(-22deg); transform-origin: bottom; }
+.vc-sign b { display: block; font: 900 14px/1.1 var(--font-display); text-transform: uppercase; letter-spacing: .02em; }
+.vc-sign i { display: block; font-size: 13px; font-style: italic; font-weight: 700; color: #6B2A00; }
+.vc-door:hover .vc-dp, .vc-door:focus-visible .vc-dp { transform: perspective(600px) rotateY(-14deg); }
+.vc-door.vc-knock .vc-df { animation: vc-knock .45s ease; }
+.vc-door.vc-open .vc-dp { transform: perspective(600px) rotateY(-78deg); }
+.vc-door.vc-open .vc-dk { opacity: 0; }
+@keyframes vc-swing { 0%, 100% { transform: translateX(-50%) rotate(-3deg); } 50% { transform: translateX(-50%) rotate(3deg); } }
+@keyframes vc-knock { 0%, 100% { transform: none; } 20%, 60% { transform: translateX(-3px); } 40%, 80% { transform: translateX(3px); } }
+@media (prefers-reduced-motion: reduce) { .vc-sign, .vc-door.vc-knock .vc-df { animation: none; } .vc-dp { transition: none; } }
+
+/* the members' key */
+.vc-keybox { max-width: 620px; margin: 18px auto 14px; }
+.vc-key { display: flex; align-items: center; gap: 14px; width: 100%; padding: 4px 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.vc-key svg { flex: none; color: var(--gold); }
+.vc-key b { display: block; font-size: 17px; color: var(--text); }
+.vc-key small { display: block; color: var(--muted); font-size: 14px; }
+#vc-login, #vc-lost { margin-top: 12px; }
+.vc-forgot { margin: 10px 0 0; text-align: center; }
+.vc-lnk { border: 0; background: none; padding: 6px 4px; color: inherit; font: inherit; font-size: 14px; text-decoration: underline; cursor: pointer; }
+.vc-hello .vc-lnk { color: #fff; font-weight: 700; padding: 0; }
+
+/* face photo, town and country flag next to every name */
+.vc-whoi { display: inline-flex; align-items: center; gap: 9px; min-width: 0; vertical-align: middle; }
+.vc-av { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex: none; background: var(--line); }
+.vc-av0 { display: inline-grid; place-items: center; font-weight: 800; color: var(--text); }
+.vc-whot { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+.vc-whot small { color: var(--muted); font-size: 12.5px; }
+.vc-flag { font-size: 15px; }
+.vc-meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.vc-when { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+.vc-who ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.vc-av-me { width: 44px; height: 44px; vertical-align: middle; border: 2px solid #fff; }
+
+/* invite a friend (members) */
+.vc-invite summary { cursor: pointer; list-style: none; }
+.vc-invite summary::-webkit-details-marker { display: none; }
+.vc-invite summary::after { content: " ▾"; color: var(--muted); }
+.vc-invite[open] summary::after { content: " ▴"; }
+.vc-card input.vc-invurl { font-size: 14px; margin: 4px 0 10px; }
+.vc-invbtns { display: flex; flex-wrap: wrap; gap: 8px; }
