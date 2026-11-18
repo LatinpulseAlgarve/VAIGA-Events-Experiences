@@ -78,6 +78,9 @@ window.VAIGA_CATEGORIES = [
     styles: ["Bands", "Artists", "Shows"],
     short: "Live bands, artists and shows – the energy of real musicians on stage.",
     long: "Live music and entertainment: bands, singers, DJs and performers who turn a night into a show.",
+    // concept photo (singer, conga player and guitarist on an open-air stage at night)
+    image: "assets/img/live-music.jpg",
+    imageAlt: "Live music at night: a singer in a red dress with a conga player on an open-air stage",
     bg: "linear-gradient(140deg,#E5338C 0%,#12C2B4 100%)",
     icon: "M12 2a4 4 0 0 1 4 4v5a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4Zm-7 9h2a5 5 0 0 0 10 0h2a7 7 0 0 1-6 6.9V21h3v2H8v-2h3v-3.1A7 7 0 0 1 5 11Z"
   }
