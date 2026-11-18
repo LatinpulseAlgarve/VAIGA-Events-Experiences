@@ -39,6 +39,9 @@ window.VAIGA_CATEGORIES = [
     styles: ["40+", "Classics", "Dance"],
     short: "Relaxed, stylish party nights for the 40+ crowd – great music and good company.",
     long: "Party nights made for the 40+ crowd: a relaxed atmosphere, music to dance to and an easy place to meet people – without the late-night student crowd.",
+    // concept photo (40+ Party – Dance · Meet · Enjoy)
+    image: "assets/img/forty-plus.jpg",
+    imageAlt: "40+ Party – dance, meet, enjoy: people in their forties and fifties dancing and celebrating",
     bg: "linear-gradient(140deg,#E5338C 0%,#FFB21E 100%)",
     icon: "M5 4h3v7h3V8h3v3h2v3h-2v6h-3v-6H5V4Zm13 3h3v3h3v3h-3v3h-3v-3h-3v-3h3V7Z"
   },
