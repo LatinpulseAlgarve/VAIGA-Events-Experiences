@@ -21,7 +21,7 @@
      form-filling bots in the browser. The form service (FormSubmit) also filters spam itself. ---------- */
   var tsKey = C.turnstileSiteKey || "", tsId = null, tsTok = "", tsFailed = false;
   var RB = {
-    robot: "I am not a robot", busy: "Checking…", ok: "Checked ✓",
+    robot: "I am not a robot", busy: "Checking…", ok: "Checked ✓", click: "Tick the box below to finish the check.",
     need: "Please confirm that you are not a robot.", wait: "One moment: the check is still running.",
     load: "The \"I am not a robot\" check could not load. Check your connection and reload the page."
   };
@@ -52,6 +52,7 @@
         tsId = window.turnstile.render(el, {
           sitekey: tsKey, theme: "dark", appearance: "interaction-only", language: (document.documentElement.lang || "en").slice(0, 2),
           callback: function (t) { if (!cbRobot || !cbRobot.checked) { tsTok = ""; return; } tsTok = t; tsStatus(RB.ok); },
+          "before-interactive-callback": function () { tsStatus(RB.click); },
           "expired-callback": function () { tsStop(); },
           "error-callback": function () { tsTok = ""; tsStatus(RB.load); }
         });

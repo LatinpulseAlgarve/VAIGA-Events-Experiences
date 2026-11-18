@@ -462,12 +462,12 @@ a.cat.has-photo:hover .cat-photo { transform: scale(1.06); }
 .photo-frame img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
 
 /* ---------- black contact buttons: WhatsApp, e-mail, location (2026-11-18) ---------- */
-.black-btn, .social a.black-btn { width: 48px; height: 48px; border-radius: 16px; display: inline-grid; place-items: center; background: #06040F; border: 1px solid rgba(255,255,255,.14); color: #fff; box-shadow: 0 10px 24px -14px rgba(0,0,0,.9); transition: background .25s, transform .25s var(--ease), border-color .25s; }
+.black-btn, .social a.black-btn { width: 48px; height: 48px; border-radius: 16px; display: inline-grid; place-items: center; background: transparent; border: 1px solid var(--line); color: #fff; box-shadow: none; transition: background .25s, transform .25s var(--ease), border-color .25s; }
 .black-btn svg { width: 22px; height: 22px; fill: currentColor; }
 .black-btn:hover, .black-btn:focus-visible, .social a.black-btn:hover { background: var(--celebrate); border-color: transparent; transform: translateY(-3px); }
-.social.light a.black-btn, .empty .social a.black-btn { background: #06040F; border-color: rgba(255,255,255,.14); color: #fff; }
+.social.light a.black-btn, .empty .social a.black-btn { background: transparent; border-color: var(--line); color: #fff; }
 .contact-btns { display: flex; flex-wrap: wrap; gap: 14px; margin: 6px 0 8px; }
-.contact-btns .black-btn { width: 64px; height: 64px; border-radius: 20px; }
+.contact-btns .black-btn { width: 64px; height: 64px; border-radius: 20px; background: transparent; border: 1px solid var(--line); box-shadow: none; }   /* contact page: bigger; all black-btn have the blue page background (2026-11-18) */
 .contact-btns .black-btn svg { width: 28px; height: 28px; }
 
 /* ---------- seamless section transitions (2026-11-18) ----------
