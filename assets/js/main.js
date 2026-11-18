@@ -95,7 +95,7 @@
         ? (purl ? '<a class="frame wide partner-frame" href="' + esc(purl) + '" target="_blank" rel="noopener" aria-label="Visit ' + esc(p.name) + ' (opens in a new tab)">' : '<div class="frame wide partner-frame">') +
           '<img src="' + esc(p.image) + '" alt="' + esc(p.name) + " – " + esc(p.tagline) + '" loading="lazy" decoding="async"><span class="frame-cap">' + esc(p.name) + (purl ? " ↗" : "") + "</span>" + (purl ? "</a>" : "</div>")
         : '<div class="frame wide"><div class="ph" style="--ph-bg:' + c.bg + '"><span>Photo: ' + esc(c.name) + "</span></div></div>";
-      return '<article class="split concept reveal" id="' + c.id + '">' + photo + '<div><span class="eyebrow">' + n + " · Concept</span><h2>" + esc(c.name) + '</h2><p class="lead">' + esc(c.long) + '</p><div class="stat-line" style="margin-bottom:22px">' + c.styles.map(function (s) { return '<span class="tag">' + esc(s) + "</span>"; }).join("") + "</div>" + lp + '<div class="btn-row"><a class="btn arrow" href="events.html?cat=' + c.id + '">' + esc(c.name) + " events </a></div></div></article>";
+      return '<article class="split concept reveal" id="' + c.id + '">' + photo + '<div><span class="eyebrow">' + n + " · Concept</span><h2>" + esc(c.name) + '</h2><p class="lead">' + esc(c.long) + '</p>' + lp + '<div class="btn-row"><a class="btn arrow" href="events.html?cat=' + c.id + '">' + esc(c.name) + " events </a></div></div></article>";
     }).join("");
   });
 
