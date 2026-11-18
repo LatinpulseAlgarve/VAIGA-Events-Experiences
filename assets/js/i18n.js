@@ -1,8 +1,9 @@
 /* VAIGA – languages (EN / PT / ES / NL). Vanilla JS, no framework.
    The site is written in English. For another language this file loads assets/i18n/translations.js
    and replaces every English text (and placeholder, aria-label, title, alt) by its translation,
-   also for content that scripts add later. Choice: ?lang=xx in the address, otherwise the last
-   choice of this visitor (localStorage), otherwise English.
+   also for content that scripts add later. Choice: ?lang=xx in a link (read once, then removed from
+   the address bar), otherwise the last choice of this visitor (localStorage), otherwise English.
+   Only if the browser cannot remember it, the language is passed on in the links (?lang=xx).
    Load in <head>, before the stylesheet-dependent content is shown. */
 (function () {
   "use strict";
@@ -16,10 +17,21 @@
   var KEY = "vaiga-lang";
   var m = /[?&]lang=([a-z]{2})(&|$)/.exec(location.search);
   var fromUrl = m && LANGS[m[1]] ? m[1] : "";
+  /* the choice is remembered in the browser (localStorage, no cookie), so the address stays clean:
+     ?lang=xx is only read (e.g. from a shared link) and then removed from the address bar */
+  function saveLang(l) {
+    var ok = false;
+    try { localStorage.setItem(KEY, l); ok = localStorage.getItem(KEY) === l; } catch (e) {}
+    return ok;
+  }
   var stored = "";
   try { stored = localStorage.getItem(KEY) || ""; } catch (e) {}
   var lang = fromUrl || (LANGS[stored] ? stored : "en");
-  if (fromUrl) { try { localStorage.setItem(KEY, fromUrl); } catch (e) {} }
+  var remembered = saveLang(lang);
+  var stripLang = function (q) { return q.replace(/([?&])lang=[a-z]{2}(&|$)/, function (x, p, n) { return n ? p : ""; }).replace(/[?&]$/, ""); };
+  if (fromUrl && remembered && window.history && history.replaceState) {
+    try { history.replaceState(history.state, "", location.pathname + stripLang(location.search) + location.hash); } catch (e) {}
+  }
 
   var root = document.documentElement;
   root.lang = lang;
@@ -28,9 +40,8 @@
 
   /* ---------- language menu in the header ---------- */
   function go(to) {
-    try { localStorage.setItem(KEY, to); } catch (e) {}
-    var q = location.search.replace(/([?&])lang=[a-z]{2}(&|$)/, function (s, a, b) { return b ? a : ""; }).replace(/[?&]$/, "");
-    if (to !== "en") q += (q ? "&" : "?") + "lang=" + to;
+    var q = stripLang(location.search);
+    if (!saveLang(to) && to !== "en") q += (q ? "&" : "?") + "lang=" + to;   // only when the browser cannot remember it
     location.href = location.pathname + q + location.hash;
   }
   /* flags (English = United Kingdom flag) */
@@ -62,9 +73,9 @@
     bar.insertBefore(wrap, bar.querySelector(".menu-btn") || null);
   }
 
-  /* keep the language when following an internal link (also without localStorage) */
+  /* only when the browser cannot remember the choice: keep the language via the link */
   document.addEventListener("click", function (e) {
-    if (lang === "en") return;
+    if (lang === "en" || remembered) return;
     var a = e.target.closest && e.target.closest("a[href]");
     if (!a) return;
     var h = a.getAttribute("href");
