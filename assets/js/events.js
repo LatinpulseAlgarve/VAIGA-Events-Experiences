@@ -28,12 +28,13 @@
       (where ? '<div class="where">' + esc(where) + "</div>" : "") +
       (e.status ? '<div class="where"><b>' + esc(STATUS[e.status] || "") + "</b></div>" : "") + '<span class="go arrow" style="margin-top:auto;font-weight:800;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase">Details </span></div></a>';
   }
-  /* "new dates are coming soon" (decision 2026-11-18): no e-mail and no "Get in touch" button; on the homepage
-     (list with data-limit) also no social row, because the "Stay in the loop" block below already has it */
+  /* "new dates are coming soon" (decision 2026-11-18): no e-mail and no "Get in touch" button; social media row under
+     the text; on the homepage (list with data-limit) the "See upcoming events" button under the social row (2026-11-18) */
   function empty(catName, home) {
     return '<div class="empty reveal"><span class="eyebrow">Stay tuned</span><h3>' + (catName ? "New " + esc(catName) + " dates coming soon" : "New dates are coming soon") +
       '</h3><p class="lead" style="margin-inline:auto">We are preparing the next VAIGA events. Follow us on social media to be the first to know.</p>' +
-      (home ? "" : '<div data-social="social-only" class="social" style="justify-content:center;margin:18px 0"></div>') + "</div>";
+      '<div data-social="social-only" class="social" style="justify-content:center;margin:18px 0"></div>' +
+      (home ? '<div class="btn-row" style="justify-content:center"><a class="btn gold arrow" href="events.html">See upcoming events </a></div>' : "") + "</div>";
   }
 
   /* ---------- lists ---------- */
