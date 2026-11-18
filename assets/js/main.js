@@ -60,7 +60,7 @@
   });
 
   /* ---------- contact details (only when filled in) ---------- */
-  $$("[data-contact-email]").forEach(function (el) { el.innerHTML = C.email ? '<a href="mailto:' + esc(C.email) + '">' + esc(C.email) + "</a>" : '<span class="placeholder-note">[E-mail address]</span>'; });
+  $$("[data-contact-email]").forEach(function (el) { el.innerHTML = C.email ? '<a class="mail-btn" href="mailto:' + esc(C.email) + '"><span aria-hidden="true">✉</span> ' + esc(C.email) + "</a>" : '<span class="placeholder-note">[E-mail address]</span>'; });
   $$("[data-contact-phone]").forEach(function (el) { el.innerHTML = C.phone ? '<a href="tel:' + esc(C.phone.replace(/\s+/g, "")) + '">' + esc(C.phone) + "</a>" : '<span class="placeholder-note">[Phone number]</span>'; });
   var mapUrl = C.city ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(C.city) : "";
   $$("[data-contact-city]").forEach(function (el) { el.innerHTML = C.city ? '<a href="' + esc(mapUrl) + '" target="_blank" rel="noopener">' + esc(C.city) + " ↗</a>" : '<span class="placeholder-note">[Location]</span>'; });
@@ -82,7 +82,9 @@
       var lp = c.collab
         ? '<div class="collab">' + c.collab.map(function (x) {
             var u = C[x.urlKey];
-            return '<div class="collab-item"><b>' + esc(x.name) + "</b>" + (u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(shortUrl(u)) + " ↗</a>" : "") + "</div>";
+            return u
+              ? '<a class="collab-btn" href="' + esc(u) + '" target="_blank" rel="noopener" aria-label="' + esc(x.name) + ' – ' + esc(shortUrl(u)) + ' (opens in a new tab)"><b>' + esc(x.name) + "</b><span>" + esc(shortUrl(u)) + " ↗</span></a>"
+              : '<span class="collab-btn is-off"><b>' + esc(x.name) + "</b></span>";
           }).join("") + "</div>"
         : p
         ? '<p class="concept-note"><b>Concept:</b> ' + esc(p.name) + " – " + esc(p.tagline) + (purl ? ' · <a href="' + esc(purl) + '" target="_blank" rel="noopener">Visit ' + esc(p.name) + " ↗</a>" : "") + "</p>" : "";
