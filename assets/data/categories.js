@@ -46,18 +46,6 @@ window.VAIGA_CATEGORIES = [
     icon: "M5 4h3v7h3V8h3v3h2v3h-2v6h-3v-6H5V4Zm13 3h3v3h3v3h-3v3h-3v-3h-3v-3h3V7Z"
   },
   {
-    id: "festivals",
-    name: "Festivals",
-    styles: ["Open air", "Multi-day", "Music"],
-    short: "Festivals and open-air events where people come together to meet, celebrate and share the atmosphere.",
-    long: "Festivals and open-air events: time to celebrate together, meet new people and enjoy the atmosphere – with music and culture, from one-day events to whole weekends.",
-    // concept photo (crowd dancing on the grass in front of an open-air festival stage)
-    image: "assets/img/festivals.jpg",
-    imageAlt: "Open-air festival: people dancing on the grass in front of a big stage with lights and screens",
-    bg: "linear-gradient(140deg,#12C2B4 0%,#7B4DFF 100%)",
-    icon: "M12 2 22 20H2L12 2Zm0 5L6.5 17h11L12 7Zm-1 4h2v4h-2v-4Z"
-  },
-  {
     id: "themed",
     name: "Themed Parties",
     styles: ["Dress code", "Concepts", "Decor"],
