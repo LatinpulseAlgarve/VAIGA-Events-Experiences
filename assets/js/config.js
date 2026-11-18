@@ -6,9 +6,9 @@ window.VAIGA_CONFIG = {
   siteUrl: "https://vaiga.eu",
 
   /* Contact – [PLACEHOLDER] fill in the real public address and phone */
-  email: "",            // e.g. "hello@vaiga.eu"
-  phone: "",            // e.g. "+351 ..."
-  city: "",             // e.g. "Algarve, Portugal"
+  email: "info@vaiga.eu",
+  phone: "+351 922 034 972",
+  city: "Tavira, Portugal",
 
   /* Contact form: optional form service (e.g. Formspree, Basin, Getform).
      Empty = the form opens the visitor's e-mail program with the message (needs "email" above). */
