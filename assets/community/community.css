@@ -180,3 +180,4 @@
 .vc-hl { outline: 3px solid var(--magenta); outline-offset: 2px; transition: outline-color .6s; }
 .vc-mgmsgs { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
 .vc-mgmsgs-h { margin: 0 0 6px; font-weight: 800; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.vc-robot { display: flex; justify-content: center; min-height: 70px; margin: 14px 0 4px; }
