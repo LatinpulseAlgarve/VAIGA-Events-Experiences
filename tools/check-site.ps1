@@ -7,6 +7,9 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $fail = @()
 $pages = Get-ChildItem $root -Filter *.html | Sort-Object Name
+# number of event concepts = number of "id:" entries in categories.js (so the check follows when concepts are added or removed)
+$catCount = ([regex]::Matches([IO.File]::ReadAllText((Join-Path $root 'assets\data\categories.js')), '(?m)^\s{4}id:\s*"')).Count
+if ($catCount -lt 1) { $catCount = 1 }
 # Domain from CNAME: demo.vaiga.eu (demo, noindex) or vaiga.eu (live site)
 $domain = (Get-Content (Join-Path $root 'CNAME') -Raw).Trim()
 if ($domain -notin 'demo.vaiga.eu', 'vaiga.eu') { $fail += "CNAME is '$domain' (expected demo.vaiga.eu or vaiga.eu)" }
@@ -67,7 +70,7 @@ else {
                 $kv = @{}; foreach ($x in $res.Split('|')) { $k, $v = $x.Split('=', 2); $kv[$k] = $v }
                 if ($kv.err) { $fail += "$($p.Name)$mode`: JavaScript error: $($kv.err)" }
                 if ([int]$kv.social -lt 1) { $fail += "$($p.Name)$mode`: footer social not rendered" }
-                if ($p.Name -in 'index.html', 'categories.html' -and [int]$kv.cats -lt 7) { $fail += "$($p.Name)$mode`: concepts not rendered ($($kv.cats))" }
+                if ($p.Name -in 'index.html', 'categories.html' -and [int]$kv.cats -lt $catCount) { $fail += "$($p.Name)$mode`: concepts not rendered ($($kv.cats) of $catCount)" }
                 if ($p.Name -in 'index.html', 'events.html' -and [int]$kv.events + [int]$kv.empty -lt 1) { $fail += "$($p.Name)$mode`: events list not rendered" }
                 if ($p.Name -eq 'event.html' -and $mode -and [int]$kv.detail -lt 1) { $fail += 'event.html?preview: detail not rendered' }
                 Write-Host ("  {0,-16} {1,-11} {2}" -f $p.Name, $(if ($mode) { 'preview' } else { 'normal' }), $res)

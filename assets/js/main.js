@@ -74,6 +74,52 @@
   window.VAIGA.socialHtml = socialHtml;
   $$("[data-social]").forEach(function (box) { box.innerHTML = socialHtml(box); });
   $$("[data-contact-buttons]").forEach(function (box) { box.innerHTML = contactBtn("whatsapp") + contactBtn("mail") + contactBtn("location"); });
+
+  /* ---------- e-mail button: a small menu, so it also works without a mail program ----------
+     A plain mailto: link does nothing on many computers (no mail app set up, webmail users).
+     So the envelope opens a choice: mail program, Gmail, Outlook, or copy the address. */
+  if (C.email) {
+    var mailPanel = null;
+    var closeMail = function () { if (mailPanel) { mailPanel.parentNode.removeChild(mailPanel); mailPanel = null; } };
+    var copyText = function (t, done) {
+      var fallback = function () {
+        var ta = document.createElement("textarea"); ta.value = t; ta.setAttribute("readonly", ""); ta.style.position = "absolute"; ta.style.left = "-9999px";
+        document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (e) {} document.body.removeChild(ta); done();
+      };
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(done, fallback); else fallback();
+    };
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a.black-btn[href^="mailto:"]');
+      if (!a) { if (mailPanel && !mailPanel.contains(e.target)) closeMail(); return; }
+      e.preventDefault();
+      var again = mailPanel && mailPanel._for === a;
+      closeMail();
+      if (again) return;
+      var to = encodeURIComponent(C.email);
+      var p = document.createElement("div");
+      p.className = "mail-panel"; p.setAttribute("role", "dialog"); p.setAttribute("aria-label", "E-mail VAIGA");
+      p.innerHTML = '<b class="mp-addr">' + esc(C.email) + "</b>" +
+        '<a href="mailto:' + esc(C.email) + '">Open your e-mail program</a>' +
+        '<a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=' + to + '" target="_blank" rel="noopener">Gmail</a>' +
+        '<a href="https://outlook.live.com/mail/0/deeplink/compose?to=' + to + '" target="_blank" rel="noopener">Outlook</a>' +
+        '<button type="button" data-copy>Copy address</button>';
+      p._for = a;
+      document.body.appendChild(p);
+      var r = a.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight;
+      var left = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), window.innerWidth - w - 8);
+      var top = r.bottom + 10; if (top + h > window.innerHeight - 8) top = Math.max(8, r.top - h - 10);
+      p.style.left = (left + window.scrollX) + "px"; p.style.top = (top + window.scrollY) + "px";
+      mailPanel = p;
+      p.querySelector("a").focus();
+      p.addEventListener("click", function (ev) {
+        var b = ev.target.closest("[data-copy]");
+        if (b) { copyText(C.email, function () { b.textContent = "Address copied ✓"; }); return; }
+        if (ev.target.closest("a")) setTimeout(closeMail, 150);
+      });
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && mailPanel) { var a = mailPanel._for; closeMail(); a.focus(); } });
+    window.addEventListener("resize", closeMail);
+  }
   document.addEventListener("click", function (e) {
     var b = e.target.closest && e.target.closest("[data-soon]");
     if (!b) return;
