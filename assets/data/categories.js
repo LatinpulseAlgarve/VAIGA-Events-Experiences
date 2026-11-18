@@ -27,6 +27,9 @@ window.VAIGA_CATEGORIES = [
     styles: ["70s", "80s", "90s", "00s"],
     short: "The greatest hits of the 70s, 80s, 90s and 00s – glitter, classics and pure nostalgia.",
     long: "Back to the dance floors of the 70s, 80s, 90s and 00s. Disco classics, pop anthems and the songs everybody knows by heart, with the look and feel of each decade.",
+    // concept photo (disco ball, 70s/80s/90s/00s outfits)
+    image: "assets/img/disco-retro.jpg",
+    imageAlt: "Dancing in 70s, 80s, 90s and 00s outfits under a disco ball",
     bg: "linear-gradient(140deg,#7B4DFF 0%,#E5338C 100%)",
     icon: "M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 2a8 8 0 0 0-7.7 6h15.4A8 8 0 0 0 12 4Zm-8 8a8 8 0 0 0 .3 2h15.4a8 8 0 0 0 0-4H4.3A8 8 0 0 0 4 12Zm.9 4a8 8 0 0 0 14.2 0Z"
   },
