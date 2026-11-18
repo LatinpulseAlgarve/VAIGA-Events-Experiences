@@ -93,9 +93,8 @@
   $$("[data-categories]").forEach(function (box) {
     var full = box.getAttribute("data-categories") === "full";
     box.innerHTML = CATS.map(function (c, i) {
-      var n = ("0" + (i + 1)).slice(-2);
       if (!full) {
-        return '<a class="card cat reveal' + (c.image ? ' has-photo' : '') + '" style="--cat-bg:' + c.bg + '" href="categories.html#' + c.id + '">' + (c.image ? '<img class="cat-photo" src="' + esc(c.image) + '" alt="" loading="lazy" decoding="async" width="1000" height="1000">' : '') + '<span class="num">' + n + '</span><span class="ico">' + window.VAIGA.icon(c) + "</span><h3>" + esc(c.name) + "</h3><p>" + esc(c.short) + '</p><span class="go arrow">Discover </span></a>';
+        return '<a class="card cat reveal' + (c.image ? ' has-photo' : '') + '" style="--cat-bg:' + c.bg + '" href="categories.html#' + c.id + '">' + (c.image ? '<img class="cat-photo" src="' + esc(c.image) + '" alt="" loading="lazy" decoding="async" width="1000" height="1000">' : '') + '<span class="ico">' + window.VAIGA.icon(c) + "</span><h3>" + esc(c.name) + "</h3><p>" + esc(c.short) + '</p><span class="go arrow">Discover </span></a>';
       }
       var p = c.partner, purl = p && c.concept === "latinpulse" ? C.latinpulseUrl : "";
       var long = esc(c.long);
@@ -114,7 +113,7 @@
         ? (purl ? '<a class="frame wide partner-frame" href="' + esc(purl) + '" target="_blank" rel="noopener" aria-label="Visit ' + esc(p.name) + ' (opens in a new tab)">' : '<div class="frame wide partner-frame">') +
           '<img src="' + esc(p.image) + '" alt="' + esc(p.name) + " – " + esc(p.tagline) + '" loading="lazy" decoding="async"><span class="frame-cap">' + esc(p.name) + (purl ? " ↗" : "") + "</span>" + (purl ? "</a>" : "</div>")
         : '<div class="frame wide"><div class="ph" style="--ph-bg:' + c.bg + '"><span>Photo: ' + esc(c.name) + "</span></div></div>";
-      return '<article class="split concept reveal" id="' + c.id + '">' + photo + '<div><span class="eyebrow">' + n + " · Concept</span><h2>" + esc(c.name) + '</h2><p class="lead">' + long + '</p>' + lp + '<div class="btn-row"><a class="btn arrow" href="events.html?cat=' + c.id + '">' + esc(c.name) + (/events$/i.test(c.name) ? " " : " events ") + "</a></div></div></article>";
+      return '<article class="split concept reveal" id="' + c.id + '">' + photo + '<div><span class="eyebrow">Concept</span><h2>' + esc(c.name) + '</h2><p class="lead">' + long + '</p>' + lp + '<div class="btn-row"><a class="btn arrow" href="events.html?cat=' + c.id + '">' + esc(c.name) + (/events$/i.test(c.name) ? " " : " events ") + "</a></div></div></article>";
     }).join("");
   });
 
