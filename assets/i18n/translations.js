@@ -278,6 +278,13 @@ window.VAIGA_TRANSLATIONS = {
   "Ready to work with VAIGA?": ["Pronto para trabalhar com a VAIGA?", "¿Listo para trabajar con VAIGA?", "Klaar om met VAIGA samen te werken?"],
   "Send us a short message about your plans. We will get back to you.": ["Envie-nos uma mensagem curta sobre os seus planos. Entraremos em contacto consigo.", "Envíanos un mensaje breve sobre tus planes. Te responderemos.", "Stuur ons een kort bericht over je plannen. We nemen contact met je op."],
   "Send an enquiry": ["Enviar pedido", "Enviar solicitud", "Aanvraag versturen"],
+  "Grow together. Achieve more.": ["Crescer juntos. Alcançar mais.", "Crecer juntos. Lograr más.", "Samen groeien. Meer bereiken."],
+  "More reach": ["Mais alcance", "Más alcance", "Meer bereik"],
+  "Bring your business and services to the attention of a larger audience.": ["Dê a conhecer a sua empresa e os seus serviços a um público maior.", "Da a conocer tu empresa y tus servicios a un público más amplio.", "Breng jouw bedrijf en diensten onder de aandacht bij een groter publiek."],
+  "Strong partnerships": ["Parcerias fortes", "Colaboraciones sólidas", "Sterke samenwerkingen"],
+  "Discover new business opportunities and reach interesting audiences.": ["Descubra novas oportunidades de negócio e alcance públicos interessantes.", "Descubre nuevas oportunidades de negocio y llega a públicos interesantes.", "Ontdek nieuwe zakelijke kansen en bereik interessante doelgroepen."],
+  "Better results together": ["Mais resultados juntos", "Más resultados juntos", "Samen meer resultaat"],
+  "Strengthen your visibility and create new opportunities to grow.": ["Reforce a sua visibilidade e crie novas oportunidades para crescer.", "Refuerza tu visibilidad y crea nuevas oportunidades para crecer.", "Versterk je zichtbaarheid en creëer nieuwe mogelijkheden om te groeien."],
 
   /* ---------- legal notice ---------- */
   "Legal": ["Legal", "Legal", "Juridisch"],
