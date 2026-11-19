@@ -576,3 +576,9 @@ html.lb-open, html.lb-open body { overflow: hidden; }
   main form, main .legal-doc, #vc-app, main table { text-align: left; }
   main form .btn-row { justify-content: flex-start; }
 }
+
+/* Over ons: de naam VAIGA (2026-11-19) – gecentreerd tekstblok met slotregels */
+.about-name p { max-width: 62ch; margin-inline: auto; }
+.about-name p:not(.lead) { color: var(--muted); }
+.about-name p.about-name-claim { color: var(--on-dark, #fff); font: 900 clamp(1.1rem, 2.2vw, 1.5rem)/1.25 var(--font-display); text-transform: uppercase; letter-spacing: .02em; margin-top: 1.4em; }
+.about-name .about-name-claim + .about-name-claim { margin-top: .4em; }
