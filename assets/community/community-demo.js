@@ -11,9 +11,7 @@ window.VAIGA_COMMUNITY_CFG = { demo: true };   // preview: no server
   function iso(minAgo) { return new Date(Date.now() - minAgo * 60000).toISOString(); }
   function inDays(n) { var d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); }
   var EV = [
-    { id: "ex-latin", date: inDays(9), start: "21:00", end: "02:00", title: "Latin Parties (example event)", venue: "Example venue", city: "Tavira" },
-    { id: "ex-retro", date: inDays(16), start: "22:00", end: "03:00", title: "Disco & Retro (example event)", venue: "Example venue", city: "Faro" },
-    { id: "ex-40", date: inDays(23), start: "20:30", end: "01:00", title: "40+ Parties (example event)", venue: "Example venue", city: "Lagos" }
+    { id: "ex-latin", date: inDays(9), start: "21:00", end: "02:00", title: "Latin Parties (example event)", venue: "Example venue", city: "Tavira" }
   ];
   var seq = 100;
   /* invented example content */
