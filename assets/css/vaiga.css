@@ -531,3 +531,16 @@ main { position: relative; }
    Achtergrond van het GIF is zwart; 'screen' maakt zwart onzichtbaar op de donkere balk. */
 .site-header .bar .brand img { height: 50px; width: auto; mix-blend-mode: screen; }
 @media (max-width: 600px) { .site-header .bar .brand img { height: 44px; } }
+
+/* Partnerpagina: samenwerkingsblok in twee kolommen – links tekst + knop, rechts voordelen als losse tekst, zonder eigen kader (2026-11-19) */
+.cta-split { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 64px); align-items: center; }
+.cta-perks h3 { margin: 0 0 26px; color: var(--on-dark); font-size: clamp(1.1rem, 1.8vw, 1.4rem); }
+.cta-perks ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 24px; }
+.cta-perks li { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 16px; align-items: start; }
+.perk-ico { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; color: #FF9ACB; background: var(--celebrate-soft); border: 1px solid rgba(229,51,140,.4); }
+.perk-ico svg { width: 22px; height: 22px; }
+.cta-perks h4 { margin: 3px 0 4px; color: var(--on-dark); font: 800 .8rem/1.3 var(--font-body); letter-spacing: .14em; text-transform: uppercase; }
+.cta-perks p { margin: 0; color: var(--on-dark-muted); font-size: .95rem; line-height: 1.5; }
+/* laptop: titel rechts op dezelfde hoogte als de grote kop links (onder het gele label) */
+@media (min-width: 901px) { .cta-split { align-items: start; } .cta-perks { margin-top: calc(.8rem + 36px); } }
+@media (max-width: 900px) { .cta-split { grid-template-columns: 1fr; } }
