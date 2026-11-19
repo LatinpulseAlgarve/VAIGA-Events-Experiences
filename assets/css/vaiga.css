@@ -526,6 +526,7 @@ main { position: relative; }
 .robot-st { margin: 6px 0 0 32px; font-size: .9rem; color: var(--muted); }
 .robot-st:empty { display: none; }
 .robot-ts:not(:empty) { margin-top: 10px; display: flex; justify-content: center; }
+.robot-box, .robot-ts { max-width: 100%; min-width: 0; } .robot-ts iframe { max-width: 100%; } /* Cloudflare box never wider than the form (phone) */
 
 /* Geanimeerd logo (GIF van de gebruiker) in de menubalk naast de vlaggen (2026-11-18).
    Achtergrond van het GIF is zwart; 'screen' maakt zwart onzichtbaar op de donkere balk. */
