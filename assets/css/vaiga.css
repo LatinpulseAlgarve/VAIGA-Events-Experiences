@@ -554,3 +554,25 @@ html.lb-open, html.lb-open body { overflow: hidden; }
 /* laptop: titel rechts op dezelfde hoogte als de grote kop links (onder het gele label) */
 @media (min-width: 901px) { .cta-split { align-items: start; } .cta-perks { margin-top: calc(.8rem + 36px); } }
 @media (max-width: 900px) { .cta-split { grid-template-columns: 1fr; } }
+
+/* Telefoon (besluit gebruiker 2026-11-19): afbeeldingen en teksten netjes onder elkaar en in het midden.
+   Niet gecentreerd (blijft links, leest beter): formulieren, juridische teksten, de community-app (feed/Meet & Go)
+   en tabellen. */
+@media (max-width: 600px) {
+  main, .site-footer { text-align: center; }
+  main .lead, .hero-intro, .hero .lead, main h1, main h2, main h3, main p { margin-inline: auto; }
+  .btn-row, .hero .meta, .head-row, .social, .site-footer .bottom, .filters { justify-content: center; }
+  .eyebrow { justify-content: center; text-align: center; }
+  .head-row { flex-direction: column; align-items: center; }
+  .split, .grid, .feature, .site-footer .top { justify-items: center; }
+  .split > *, .grid > * { width: 100%; }
+  .feature .ico, .pp-card .ico, .perk-ico { margin-inline: auto; }
+  main .frame, .concept .frame, main img:not(.vc-av):not(.lb-img) { margin-inline: auto; }
+  .cta-perks li { grid-template-columns: 1fr; justify-items: center; gap: 10px; }
+  .site-footer .brand { display: inline-block; }
+  .site-footer .foot-links { justify-items: center; }
+  .social .social-soon { text-align: center; }
+  /* these stay left-aligned */
+  main form, main .legal-doc, #vc-app, main table { text-align: left; }
+  main form .btn-row { justify-content: flex-start; }
+}
