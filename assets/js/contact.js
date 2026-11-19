@@ -1,5 +1,6 @@
-/* VAIGA – contact form. Static site (GitHub Pages): sends to a form service if config.formEndpoint is set,
-   otherwise opens the visitor's e-mail program with the message (config.email). Nothing is stored by this site. */
+/* VAIGA – contact form. Static site (GitHub Pages): sends via the form gateway (config.formGateway, a Cloudflare
+   Worker that first verifies "I am not a robot" and then forwards to FormSubmit), else straight to the form service
+   (config.formEndpoint), else opens the visitor's e-mail program (config.email). Nothing is stored by this site. */
 (function () {
   "use strict";
   var C = window.VAIGA_CONFIG || {}, V = window.VAIGA;
@@ -20,8 +21,8 @@
 
   /* ---------- "I am not a robot" (same as the community sign-up): an EMPTY box the visitor ticks; only then
      Cloudflare Turnstile checks in the background (privacy-friendly, no Google, no tracking cookies).
-     Note: this site is static, so the token cannot be verified on a server of our own; it stops automatic
-     form-filling bots in the browser. The form service (FormSubmit) also filters spam itself. ---------- */
+     The token is verified on the server by the form gateway (config.formGateway, Cloudflare Worker
+     tools/cloudflare-worker/vaiga-forms.js); without a gateway it only stops bots in the browser. ---------- */
   var tsKey = C.turnstileSiteKey || "", tsId = null, tsTok = "", tsFailed = false;
   var RB = {
     robot: "I am not a robot", busy: "Checking…", ok: "Checked ✓", click: "Tick the box below to finish the check.",
@@ -93,7 +94,8 @@
     var org = F("org") ? F("org").value.trim() : "";
     var body = "Name: " + name + "\nE-mail: " + email + "\nPhone: " + phone + (org ? "\nOrganisation: " + org : "") + "\nTopic: " + topicLabel + extra + "\n\n" + text;
 
-    if (C.formEndpoint) {
+    var sendTo = C.formGateway || C.formEndpoint;
+    if (sendTo) {
       var btn = f.querySelector('button[type="submit"]'); btn.disabled = true;
       // what the form service forwards: the readable message + subject, reply-to the visitor; never the spam-trap field
       var fd = new FormData();
@@ -103,10 +105,11 @@
       fd.append("_captcha", "false");
       fd.append("name", name); fd.append("email", email); fd.append("phone", phone);
       fd.append("message", body);
-      fetch(C.formEndpoint, { method: "POST", headers: { "Accept": "application/json" }, body: fd })
-        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || (j && (j.success === false || j.success === "false"))) throw new Error(); }); })
+      if (C.formGateway && cbRobot) fd.append("cf-turnstile-response", tsTok);   // checked by the gateway with Cloudflare
+      fetch(sendTo, { method: "POST", headers: { "Accept": "application/json" }, body: fd })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || (j && (j.success === false || j.success === "false"))) { var x = new Error(); x.robot = j && j.error === "robot"; throw x; } }); })
         .then(function () { f.reset(); tsStop(); show("ok", "Thank you! Your message has been sent. We will get back to you as soon as possible."); })
-        .catch(function () { show("err", "Sending did not work. Please try again later" + (C.email ? " or e-mail " + C.email : "") + "."); })
+        .catch(function (x) { tsStop(); show("err", x && x.robot ? RB.need : "Sending did not work. Please try again later" + (C.email ? " or e-mail " + C.email : "") + "."); })
         .then(function () { btn.disabled = false; });
       return;
     }
