@@ -9,6 +9,16 @@
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   window.VAIGA = { $: $, $$: $$, esc: esc, preview: /[?&]preview=1(&|$)/.test(location.search) };
 
+  /* ---------- clean address (besluit gebruiker 2026-11-19): no ".html" in the address bar ----------
+     GitHub Pages serves vaiga.eu/contact as contact.html, so the short address also works after a reload
+     or when shared. Only the address bar changes; links in the pages stay as they are. Needed parts
+     after the "?" (event ?id=, invite ?ref=, events filter ?cat=, ?preview=1) are kept. */
+  try {
+    var p0 = location.pathname, p1 = p0.replace(/\/index\.html$/, "/").replace(/\.html$/, "");
+    if (p1 !== p0 && location.protocol !== "file:" && window.history && history.replaceState)
+      history.replaceState(history.state, "", p1 + location.search + location.hash);
+  } catch (e) {}
+
   /* ---------- mobile menu ---------- */
   var btn = $(".menu-btn"), nav = $("#nav");
   if (btn && nav) {

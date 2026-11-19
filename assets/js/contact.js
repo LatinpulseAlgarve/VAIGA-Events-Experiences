@@ -10,6 +10,9 @@
   var topic = new URLSearchParams(location.search).get("topic");
   // only accept a topic that exists in the list (no URL text in a selector, so a crafted link cannot break the form)
   if (topic && Array.prototype.some.call(F("topic").options, function (o) { return o.value === topic; })) F("topic").value = topic;
+  if (topic !== null) {   // the topic is now chosen in the form: remove "?topic=…" from the address bar (besluit gebruiker 2026-11-19)
+    try { var u = new URL(location.href); u.searchParams.delete("topic"); history.replaceState(history.state, "", u.pathname + u.search + u.hash); } catch (e) {}
+  }
   if (!C.formEndpoint && !C.email) {
     msg.innerHTML = '<p class="msg err">The contact form is not connected yet <span class="placeholder-note">[add an e-mail address or form service in assets/js/config.js]</span>.</p>';
   }
