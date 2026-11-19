@@ -562,7 +562,7 @@ html.lb-open, html.lb-open body { overflow: hidden; }
   main, .site-footer { text-align: center; }
   main .lead, .hero-intro, .hero .lead, main h1, main h2, main h3, main p { margin-inline: auto; }
   .btn-row, .hero .meta, .head-row, .social, .site-footer .bottom, .filters { justify-content: center; }
-  .eyebrow { justify-content: center; text-align: center; }
+  .eyebrow { flex-direction: column; justify-content: center; text-align: center; gap: 8px; line-height: 1.35; }   /* line above the label, also when it runs over two lines */
   .head-row { flex-direction: column; align-items: center; }
   .split, .grid, .feature, .site-footer .top { justify-items: center; }
   .split > *, .grid > * { width: 100%; }
