@@ -9,6 +9,16 @@
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   window.VAIGA = { $: $, $$: $$, esc: esc, preview: /[?&]preview=1(&|$)/.test(location.search) };
 
+  /* ---------- clean address (besluit gebruiker 2026-11-19): no ".html" in the address bar ----------
+     GitHub Pages serves vaiga.eu/contact as contact.html, so the short address also works after a reload
+     or when shared. Only the address bar changes; links in the pages stay as they are. Needed parts
+     after the "?" (event ?id=, invite ?ref=, events filter ?cat=, ?preview=1) are kept. */
+  try {
+    var p0 = location.pathname, p1 = p0.replace(/\/index\.html$/, "/").replace(/\.html$/, "");
+    if (p1 !== p0 && location.protocol !== "file:" && window.history && history.replaceState)
+      history.replaceState(history.state, "", p1 + location.search + location.hash);
+  } catch (e) {}
+
   /* ---------- mobile menu ---------- */
   var btn = $(".menu-btn"), nav = $("#nav");
   if (btn && nav) {
@@ -211,4 +221,69 @@
   }
   window.VAIGA.reveal = reveal;
   reveal();
+
+  /* ---------- photos: click / Enter = large view (besluit gebruiker 2026-11-19) ----------
+     Every photo in the page content, also the ones added later (events, community).
+     Not: logos, flags, icons (svg/gif), the header banner, photos inside a link or button
+     (those keep working as a link) and the face-photo preview in the sign-up form. */
+  var LB_TXT = { en: ["Enlarge photo", "Close"], pt: ["Ampliar foto", "Fechar"], es: ["Ampliar foto", "Cerrar"], nl: ["Foto vergroten", "Sluiten"] };
+  function lbTxt(i) { var l = (document.documentElement.lang || "en").slice(0, 2); return (LB_TXT[l] || LB_TXT.en)[i]; }
+  function zoomable(img) {
+    if (!img || img.tagName !== "IMG" || img.closest("a, button, header, nav, footer, .vc-door, .vc-face, .lb")) return false;
+    var s = img.currentSrc || img.src || "";
+    return !!s && !/\.(svg|gif)(\?|#|$)/i.test(s) && s.indexOf("data:image/svg") !== 0;
+  }
+  function bigSrc(img) {   // the largest file from srcset, otherwise the photo itself
+    var best = img.currentSrc || img.src, bw = 0;
+    (img.getAttribute("srcset") || "").split(",").forEach(function (part) {
+      var m = part.trim().split(/\s+/), w = parseInt(m[1], 10) || 0;
+      if (m[0] && w > bw) { bw = w; best = new URL(m[0], location.href).href; }
+    });
+    return best;
+  }
+  function markZoom(root) {
+    (root.querySelectorAll ? root.querySelectorAll("img") : []).forEach(function (img) {
+      if (img.classList.contains("zoomable") || !zoomable(img)) return;
+      img.classList.add("zoomable"); img.setAttribute("tabindex", "0"); img.setAttribute("role", "button");
+      if (!img.getAttribute("aria-label")) img.setAttribute("aria-label", lbTxt(0) + (img.alt ? ": " + img.alt : ""));
+    });
+  }
+  var lb = null, lbBack = null;
+  function openLb(img) {
+    if (!lb) {
+      lb = document.createElement("div"); lb.className = "lb"; lb.setAttribute("role", "dialog"); lb.setAttribute("aria-modal", "true"); lb.hidden = true;
+      lb.innerHTML = '<button class="lb-close" type="button">×</button><img class="lb-img" alt="">';
+      document.body.appendChild(lb);
+      lb.addEventListener("click", function (e) { if (e.target !== lb.querySelector(".lb-img")) closeLb(); });
+      lb.querySelector(".lb-img").addEventListener("click", closeLb);
+    }
+    var big = lb.querySelector(".lb-img");
+    big.src = bigSrc(img); big.alt = img.alt || "";
+    lb.querySelector(".lb-close").setAttribute("aria-label", lbTxt(1));
+    lb.setAttribute("aria-label", img.alt || lbTxt(0));
+    lbBack = img; lb.hidden = false; document.documentElement.classList.add("lb-open");
+    lb.querySelector(".lb-close").focus();
+  }
+  function closeLb() {
+    if (!lb || lb.hidden) return;
+    lb.hidden = true; lb.querySelector(".lb-img").removeAttribute("src"); document.documentElement.classList.remove("lb-open");
+    if (lbBack && document.contains(lbBack)) lbBack.focus({ preventScroll: true });
+  }
+  document.addEventListener("click", function (e) {
+    var img = e.target.closest && e.target.closest("img.zoomable");
+    if (img && zoomable(img)) { e.preventDefault(); openLb(img); }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (lb && !lb.hidden) {
+      if (e.key === "Escape") { e.preventDefault(); closeLb(); }
+      else if (e.key === "Tab") { e.preventDefault(); lb.querySelector(".lb-close").focus(); }   // keep focus inside
+      return;
+    }
+    var t = e.target;
+    if ((e.key === "Enter" || e.key === " ") && t && t.classList && t.classList.contains("zoomable")) { e.preventDefault(); openLb(t); }
+  });
+  markZoom(document);
+  if ("MutationObserver" in window) new MutationObserver(function (list) {
+    list.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType === 1) { if (n.tagName === "IMG") markZoom(n.parentNode || n); else markZoom(n); } }); });
+  }).observe(document.body, { childList: true, subtree: true });
 })();
