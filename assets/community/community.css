@@ -183,3 +183,4 @@
 .vc-robot { margin: 14px 0 4px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; }
 .vc-robot .vc-chk { margin: 0; } .vc-ts-st { margin: 6px 0 0 30px; } .vc-ts-st:empty { display: none; }
 .vc-robot #vc-ts:not(:empty) { margin-top: 10px; display: flex; justify-content: center; }
+.vc-robot, .vc-robot #vc-ts { max-width: 100%; min-width: 0; } .vc-robot #vc-ts iframe { max-width: 100%; } /* never wider than the form (phone) */

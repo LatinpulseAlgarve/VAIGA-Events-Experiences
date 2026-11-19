@@ -191,7 +191,7 @@
       try {
         if (tsId !== null) { window.turnstile.reset(tsId); return; }
         tsId = window.turnstile.render(el, {
-          sitekey: tsKey(), theme: "dark", appearance: "interaction-only", language: (document.documentElement.lang || "en").slice(0, 2),
+          sitekey: tsKey(), theme: "dark", appearance: "interaction-only", size: el.clientWidth < 300 ? "compact" : "normal", /* narrow phone: compact widget, stays inside the form */ language: (document.documentElement.lang || "en").slice(0, 2),
           "response-field-name": "cf-turnstile-response",
           callback: function (t) { tsTok = t; tsStatus("robot_ok"); },
           "expired-callback": function () { tsTok = ""; tsStop(); },

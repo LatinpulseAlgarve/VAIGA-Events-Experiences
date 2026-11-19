@@ -53,7 +53,7 @@
       try {
         if (tsId !== null) { window.turnstile.reset(tsId); return; }
         tsId = window.turnstile.render(el, {
-          sitekey: tsKey, theme: "dark", appearance: "interaction-only", language: (document.documentElement.lang || "en").slice(0, 2),
+          sitekey: tsKey, theme: "dark", appearance: "interaction-only", size: el.clientWidth < 300 ? "compact" : "normal", /* narrow phone: 150 px wide instead of 300 px, so it stays inside the form */ language: (document.documentElement.lang || "en").slice(0, 2),
           callback: function (t) { if (!cbRobot || !cbRobot.checked) { tsTok = ""; return; } tsTok = t; tsStatus(RB.ok); },
           "before-interactive-callback": function () { tsStatus(RB.click); },
           "expired-callback": function () { tsStop(); },
