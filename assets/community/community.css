@@ -200,3 +200,9 @@
 .vc-msearch { display: flex; gap: 8px; margin: 0 0 8px; }
 .vc-msearch input { flex: 1; min-width: 0; font: inherit; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; }
 @media (max-width: 600px) { .vc-tabs button { padding: 9px 13px; font-size: .8rem; letter-spacing: .03em; } }
+/* community page (2026-11-20): "What it is – One place for our guests" close under the buttons Become a member / Community rules,
+   and the members' key between the three blocks and the sign-up form */
+#vc-info { padding-top: clamp(14px, 2.5vw, 26px); padding-bottom: clamp(18px, 3vw, 32px); }
+#vc-keytop .vc-keybox { margin-top: 0; margin-bottom: clamp(28px, 4vw, 44px); }
+#vc-keytop .vc-note { max-width: 620px; margin: 0 auto 14px; }
+body[data-page="community"] .page-hero { padding-bottom: clamp(18px, 2.5vw, 28px); }

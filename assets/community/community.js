@@ -454,12 +454,13 @@
     if (keyTopEl) keyTopEl.innerHTML = "";
     if (!me) { app.innerHTML = ""; return; }
     if (visitor) {
-      // open sign-up: the form with the door; returning visitors get the key first (at the top of the page)
+      // open sign-up: the members' key ALWAYS between the three information blocks and the sign-up form (decision 2026-11-20,
+      // like the Latinpulse Community); open for returning visitors, closed for new ones
       var back = remembered() || state.msg === "verified";
       var invNote = REF && !back ? note("ok vc-invited", tx("invited")) : "";
       var fl = flash();
-      if (back && keyTopEl) { keyTopEl.innerHTML = fl + keyBox(true); app.innerHTML = joinForm(); }
-      else app.innerHTML = fl + invNote + joinForm() + keyBox(back);
+      if (keyTopEl) { keyTopEl.innerHTML = fl + keyBox(back); app.innerHTML = invNote + joinForm(); }
+      else app.innerHTML = fl + keyBox(back) + invNote + joinForm();
       bindJoin(); bindKey();
       return;
     }
