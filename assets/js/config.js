@@ -42,8 +42,8 @@ window.VAIGA_CONFIG = {
   },
 
   /* Latinpulse is one of the VAIGA event concepts (separate brand) */
-  // Latinpulse Algarve (partner / Latin concept). For now the Facebook group; replace with the website once it is online.
-  latinpulseUrl: "https://www.facebook.com/groups/latinpulsealgarve",
+  // Latinpulse Algarve (partner / Latin concept): website
+  latinpulseUrl: "https://latinpulse.eu",
   // Tropicaliente (partner in the Latin Parties concept)
   tropicalienteUrl: "https://tropicaliente.nl"
 };
