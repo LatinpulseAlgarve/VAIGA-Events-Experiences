@@ -57,6 +57,15 @@ window.VAIGA_COMMUNITY_CFG = { demo: true };   // preview: no server
       try { sessionStorage.setItem("vc_demo_in", "1"); } catch (e) {} INSIDE = true; return ok({ ok: true });
     }
     if (q === "logout") { INSIDE = false; try { sessionStorage.removeItem("vc_demo_in"); } catch (e) {} return ok({ ok: true }); }
+    if (q === "avatar") {   // "Change my photo": the new face photo stays in this tab only
+      var nf = get(body, "photo"); if (!nf || !nf.size) return fail("face");
+      return new Promise(function (res) {
+        var fr2 = new FileReader();
+        fr2.onload = function () { var me2 = myProfile(); me2.avatar = fr2.result; try { sessionStorage.setItem("vc_demo_me", JSON.stringify(me2)); } catch (e) {} res({ ok: true, avatar: fr2.result }); };
+        fr2.onerror = function () { res({ ok: true }); };
+        fr2.readAsDataURL(nf);
+      });
+    }
     if (q === "feed") return ok({ posts: withWho(posts), more: false });
     if (q === "posts" && method === "POST") {
       var t = String(get(body, "body") || "").trim(), ph = get(body, "photo");
