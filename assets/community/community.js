@@ -79,7 +79,26 @@
     e_public: "Meet & Go is only possible at a public place.", e_max: "Choose 2–20 people.", e_dup: "You already created a Meet & Go for this event.",
     e_full: "This Meet & Go is full.", e_creator: "As the creator you can cancel the Meet & Go instead.", e_reason: "Please give a reason.",
     e_own: "You cannot report your own contribution.", e_not_found: "This no longer exists.", e_forbidden: "Not allowed.", e_bad_parent: "You can only reply to a comment.",
-    e_generic: "Something went wrong. Please try again."
+    e_generic: "Something went wrong. Please try again.",
+    /* members bar (like the Latinpulse Community, decision 2026-11-20): Community Rules · Invite a friend · Change my photo · Log out */
+    l_rules_doc: "Community Rules", av_btn: "Change my photo", av_save: "Save photo",
+    tab_mod: "🛡 Moderation",
+    msg_verified: "Your e-mail address is confirmed. Your key is ready: log in to enter the community.",
+    msg_verify_failed: "This confirmation link is no longer valid. Log in with your key, or sign up again.",
+    msg_avatar: "Your new photo has been saved.", msg_deleted: "Your account has been deleted. Thank you for having been part of the VAIGA Community.",
+    rs_h: "Choose a new password", rs_pw: "New password (at least 10 characters)", rs_hint: "After saving you are logged out everywhere; then use your key with the new password.",
+    rs_btn: "Save new password", rs_ok: "Your new password has been saved. You can now log in with your key.",
+    e_reset_failed: "This link is no longer valid. Ask for a new link with \"Forgot your password?\".",
+    del_open: "Delete my account", del_h: "Delete my account",
+    del_p: "Your account is deleted at once, together with your face photo, posts, photos, comments and Meet & Go's. This cannot be undone.",
+    del_pw: "Your password", del_ok: "Yes, delete my account and all my community data.", del_btn: "Delete my account for good", del_cancel: "Cancel",
+    e_wrong_password: "The password is not correct.", e_confirm: "Type the community name exactly to confirm.", e_captcha: "Please confirm that you are not a robot.",
+    md_reports: "Reports", md_members: "Members", md_type_post: "Post", md_type_comment: "Comment", md_type_meetgo: "Meet & Go",
+    md_by: "reported by", md_reason: "Reason", md_gone: "already removed", md_remove: "Remove", md_keep: "Keep", md_close: "Close",
+    md_noreports: "No open reports.", md_search: "Name, e-mail or town", md_find: "Search",
+    md_total: "{n} members · {b} blocked · {u} not confirmed", md_blocked: "blocked", md_unverified: "not confirmed", md_mod: "moderator", md_active: "active",
+    md_joined: "joined", md_last: "last login", md_block: "Block", md_unblock: "Unblock", md_erase: "Delete account",
+    md_erase_q: "Type the community name to delete all data of", md_reason_ph: "Reason (sent to the member)", md_confirm: "Confirm"
   };
   function tx(k, v) { var s = TX[k] !== undefined ? TX[k] : k; if (v) for (var x in v) s = s.split("{" + x + "}").join(v[x]); return s; }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -162,7 +181,7 @@
       '<label class="vc-chk"><input type="checkbox" name="adult" value="1"> <span><span>' + esc(tx("f_adult")) + "</span> *</span></label>" +
       '<label class="vc-chk"><input type="checkbox" name="accept" value="1"> <span><span>' + esc(tx("f_accept")) + '</span> *</span></label>' +
       '<p class="vc-links"><a href="community-rules.html" target="_blank" rel="noopener">' + esc(tx("l_rules")) + '</a> · <a href="privacy.html" target="_blank" rel="noopener">' + esc(tx("l_privacy")) + "</a></p>" +
-      '<input name="website" class="vc-hp" tabindex="-1" autocomplete="off" aria-hidden="true"><input type="hidden" name="ref" value="' + esc(REF) + '">' +
+      '<input name="website" class="vc-hp" tabindex="-1" autocomplete="off" aria-hidden="true"><input type="hidden" name="ref" value="' + esc(REF) + '"><input type="hidden" name="ts" value="' + esc(C.ts || "") + '">' +
       /* "I am not a robot": an EMPTY box the visitor ticks; only then Cloudflare Turnstile checks (2026-11-18) */
       (tsKey() ? '<div class="vc-robot"><label class="vc-chk vc-notrobot"><input type="checkbox" name="not_robot" value="1"> <span><span>' + esc(tx("robot")) + '</span> *</span></label>' +
         '<p class="vc-hint vc-ts-st" aria-live="polite"></p><div id="vc-ts"></div></div>' : "") +
@@ -307,35 +326,128 @@
       b.disabled = true;
       api("POST", "login", { email: f.email.value.trim(), password: f.password.value }).then(function () {
         remember();
-        if (C.demo) { start(true); } else { location.hash = "#join"; location.reload(); }   // fresh session + nonce
+        start(true);
       }).catch(function (e) { msg.innerHTML = note("err", errText(e)); b.disabled = false; });
     };
   }
-  function rulesBox() {
-    return '<div class="vc-card vc-rules"><h3>' + esc(tx("rules_h")) + "</h3><ul>" + TX.rules.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") +
-      '</ul><p><a href="community-rules.html">' + esc(tx("rules_full")) + " →</a></p></div>";
-  }
-  function inviteBox(url) {
-    if (!url) return "";
-    var msg = tx("inv_msg") + " " + url;
-    return '<details class="vc-card vc-invite"><summary><b>✉️ ' + esc(tx("inv_h")) + '</b></summary><p class="vc-hint">' + esc(tx("inv_p")) + "</p>" +
+  /* Members bar (like the Latinpulse Community, decision 2026-11-20): Community Rules · Invite a friend · Change my photo · Log out.
+     Under it the tabs Feed · Meet & Go (· 🛡 Moderation for moderators). The rules are a button now, not a block under the feed. */
+  function membersBar(url) {
+    var msg = tx("inv_msg") + " " + url, p = (state.me && state.me.profile) || {};
+    return '<div class="vc-mbar">' +
+      '<a class="btn ghost small" href="community-rules.html">📜 <span>' + esc(tx("l_rules_doc")) + "</span></a>" +
+      '<button type="button" class="btn ghost small" data-mb="invite" aria-expanded="false" aria-controls="vc-invpanel">✉️ <span>' + esc(tx("inv_h")) + "</span></button>" +
+      '<button type="button" class="btn ghost small" data-mb="avatar" aria-expanded="false" aria-controls="vc-avpanel">📷 <span>' + esc(tx("av_btn")) + "</span></button>" +
+      '<button type="button" class="btn ghost small" data-mb="logout">' + esc(tx("logout")) + "</button></div>" +
+      '<div class="vc-card vc-invite" id="vc-invpanel" hidden><p class="vc-hint">' + esc(tx("inv_p")) + "</p>" +
       '<input class="vc-invurl" readonly value="' + esc(url) + '" aria-label="' + esc(tx("inv_h")) + '" data-no-i18n>' +
       '<div class="vc-invbtns">' + (navigator.share ? '<button type="button" class="btn small" data-inv="share">' + esc(tx("inv_share")) + "</button>" : "") +
-      '<a class="btn ghost small" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(msg) + '">WhatsApp</a>' +
-      '<button type="button" class="btn ghost small" data-inv="copy">' + esc(tx("inv_copy")) + "</button></div></details>";
+      '<a class="btn ghost small" target="_blank" rel="noopener" href="https://api.whatsapp.com/send?text=' + encodeURIComponent(msg) + '">WhatsApp</a>' +
+      '<button type="button" class="btn ghost small" data-inv="copy">' + esc(tx("inv_copy")) + "</button></div></div>" +
+      '<form class="vc-card vc-invite vc-avpanel" id="vc-avpanel" hidden novalidate><div class="vc-face"><span class="vc-face-pv" aria-hidden="true">' +
+      (p.avatar ? '<img src="' + esc(p.avatar) + '" alt="">' : "") + "</span>" +
+      '<div><p class="vc-hint">' + esc(tx("f_face_hint")) + '</p><label class="vc-face-btn"><span>' + esc(tx("f_face_change")) + '</span><input name="photo" type="file" accept="image/jpeg,image/png,image/webp" capture="user" hidden></label></div></div>' +
+      '<div class="vc-msg" role="status"></div><div class="vc-row"><button class="btn small" type="submit" disabled>' + esc(tx("av_save")) + '</button><button class="btn ghost small" type="button" data-av="cancel">' + esc(tx("del_cancel")) + "</button></div></form>";
   }
-  function bindInvite(url) {
-    var box = app.querySelector(".vc-invite"); if (!box) return;
-    box.onclick = function (ev) {
+  function bindBar(url) {
+    var bar = app.querySelector(".vc-mbar"); if (!bar) return;
+    var toggle = function (id, b) { var el = app.querySelector(id); if (!el) return; el.hidden = !el.hidden; b.setAttribute("aria-expanded", String(!el.hidden)); };
+    bar.onclick = function (ev) {
+      var b = ev.target.closest && ev.target.closest("[data-mb]"); if (!b) return;
+      if (b.dataset.mb === "invite") return toggle("#vc-invpanel", b);
+      if (b.dataset.mb === "avatar") return toggle("#vc-avpanel", b);
+      if (b.dataset.mb === "logout") { b.disabled = true; api("POST", "logout").then(function () { state.view = "feed"; start(); }, function () { start(); }); }
+    };
+    var box = app.querySelector("#vc-invpanel");
+    if (box) box.onclick = function (ev) {
       var b = ev.target.closest && ev.target.closest("[data-inv]"); if (!b) return;
       if (b.dataset.inv === "share") { navigator.share({ title: "VAIGA Community", text: tx("inv_msg"), url: url }).catch(function () {}); return; }
       var done = function () { b.textContent = tx("inv_copied"); };
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () {});
       else { var i = box.querySelector(".vc-invurl"); i.select(); try { document.execCommand("copy"); done(); } catch (e) {} }
     };
+    bindAvatar();
+  }
+  /* Change my photo: same square 600 px crop as at sign-up, made in the browser (the server removes EXIF/GPS) */
+  function bindAvatar() {
+    var f = app.querySelector("#vc-avpanel"); if (!f) return;
+    var face = null, fin = f.querySelector('input[name="photo"]'), pv = f.querySelector(".vc-face-pv"), msg = f.querySelector(".vc-msg"), save = f.querySelector('button[type="submit"]');
+    fin.onchange = function () {
+      var file = fin.files && fin.files[0]; if (!file) return;
+      var url = URL.createObjectURL(file), im = new Image(); msg.innerHTML = "";
+      im.onload = function () {
+        var sz = Math.min(im.naturalWidth, im.naturalHeight), cv = document.createElement("canvas"); cv.width = cv.height = 600;
+        cv.getContext("2d").drawImage(im, (im.naturalWidth - sz) / 2, (im.naturalHeight - sz) / 2, sz, sz, 0, 0, 600, 600);
+        URL.revokeObjectURL(url);
+        cv.toBlob(function (bl) { face = bl; pv.innerHTML = '<img src="' + cv.toDataURL("image/jpeg", 0.7) + '" alt="">'; save.disabled = false; }, "image/jpeg", 0.85);
+      };
+      im.onerror = function () { URL.revokeObjectURL(url); face = null; save.disabled = true; msg.innerHTML = note("err", tx("e_photo")); };
+      im.src = url;
+    };
+    f.querySelector('[data-av="cancel"]').onclick = function () { f.hidden = true; var b = app.querySelector('[data-mb="avatar"]'); if (b) b.setAttribute("aria-expanded", "false"); };
+    f.onsubmit = function (ev) {
+      ev.preventDefault(); if (!face) return;
+      var fd = new FormData(); fd.set("photo", face, "face.jpg"); save.disabled = true;
+      api("POST", "avatar", fd).then(function () { state.msg = "avatar"; start(); })
+        .catch(function (e) { save.disabled = false; msg.innerHTML = note("err", errText(e)); });
+    };
+  }
+  /* Delete my account (GDPR art. 17): small link at the bottom, confirmed with the password (real community only) */
+  function delBox() {
+    if (C.demo) return "";
+    return '<div class="vc-del"><button type="button" class="vc-lnk vc-delopen" aria-expanded="false" aria-controls="vc-delform">' + esc(tx("del_open")) + "</button>" +
+      '<form class="vc-card vc-join" id="vc-delform" hidden novalidate><h3>' + esc(tx("del_h")) + '</h3><p class="vc-hint">' + esc(tx("del_p")) + "</p>" +
+      "<label>" + esc(tx("del_pw")) + ' *<input name="password" type="password" maxlength="200" autocomplete="current-password" required></label>' +
+      '<label class="vc-chk"><input type="checkbox" name="confirm" value="1"> <span>' + esc(tx("del_ok")) + "</span></label>" +
+      '<div class="vc-msg" role="status"></div><div class="vc-row"><button class="btn small vc-danger" type="submit">' + esc(tx("del_btn")) + '</button><button class="btn ghost small" type="button" data-del="cancel">' + esc(tx("del_cancel")) + "</button></div></form></div>";
+  }
+  function bindDel() {
+    var o = app.querySelector(".vc-delopen"), f = app.querySelector("#vc-delform"); if (!o || !f) return;
+    var msg = f.querySelector(".vc-msg");
+    function show(on) { f.hidden = !on; o.hidden = on; o.setAttribute("aria-expanded", String(on)); if (on) f.password.focus(); else { f.reset(); msg.innerHTML = ""; } }
+    o.onclick = function () { show(true); };
+    f.querySelector('[data-del="cancel"]').onclick = function () { show(false); };
+    f.onsubmit = function (ev) {
+      ev.preventDefault();
+      if (!f.password.value || !f.confirm.checked) { msg.innerHTML = note("err", tx("e_required")); return; }
+      var b = f.querySelector('button[type="submit"]'); b.disabled = true;
+      api("DELETE", "account", { password: f.password.value, confirm: "1" }).then(function () {
+        try { localStorage.removeItem("vc_key"); } catch (e) {}
+        state.msg = "deleted"; state.view = "feed"; start(true);
+      }).catch(function (e) { b.disabled = false; msg.innerHTML = note("err", errText(e)); });
+    };
+  }
+  /* messages from e-mail links (?vc_msg=verified …): read once, then removed from the address (clean address) */
+  (function () {
+    var m = /[?&]vc_msg=([a-z_]+)/.exec(location.search); if (!m) return;
+    state.msg = m[1];
+    var q = location.search.replace(/([?&])vc_msg=[a-z_]+&?/, "$1").replace(/[?&]$/, "");
+    try { history.replaceState(history.state, "", location.pathname + q + location.hash); } catch (e) {}
+  })();
+  function flash() { var k = state.msg; state.msg = ""; return k && TX["msg_" + k] ? note("ok", tx("msg_" + k)) : ""; }
+  /* "Choose a new password" (link from the reset e-mail: /community?vc_reset=<id>.<token>) */
+  function resetForm() {
+    var m = /[?&]vc_reset=([0-9]+\.[A-Za-z0-9_-]+)/.exec(location.search);
+    if (!m || C.demo) return false;
+    if (info) info.hidden = true;
+    app.innerHTML = '<form class="vc-card vc-join" id="vc-reset" novalidate><h3>' + esc(tx("rs_h")) + "</h3><label>" + esc(tx("rs_pw")) + ' *<input name="password" type="password" minlength="10" maxlength="200" autocomplete="new-password" required></label><p class="vc-hint">' + esc(tx("rs_hint")) + '</p><div class="vc-msg" role="status"></div><button class="btn" type="submit">' + esc(tx("rs_btn")) + "</button></form>";
+    var f = document.getElementById("vc-reset");
+    f.onsubmit = function (ev) {
+      ev.preventDefault();
+      var msg = f.querySelector(".vc-msg"), b = f.querySelector("button");
+      if (f.password.value.length < 10) { msg.innerHTML = note("err", tx("e_password")); return; }
+      b.disabled = true;
+      api("POST", "resetpw", { token: m[1], password: f.password.value }).then(function () {
+        try { history.replaceState(null, "", location.pathname); } catch (x) {}
+        f.innerHTML = note("ok", tx("rs_ok")); remember();
+        setTimeout(function () { start(true); }, 2500);
+      }).catch(function (e) { b.disabled = false; msg.innerHTML = note("err", errText(e)); });
+    };
+    return true;
   }
 
   function render() {
+    if (resetForm()) return;
     var me = state.me;
     var visitor = !me || me.state === "guest";
     if (info) info.hidden = !visitor;   // public information only for visitors
@@ -343,31 +455,92 @@
     if (!me) { app.innerHTML = ""; return; }
     if (visitor) {
       // open sign-up: the form with the door; returning visitors get the key first (at the top of the page)
-      var back = remembered();
+      var back = remembered() || state.msg === "verified";
       var invNote = REF && !back ? note("ok vc-invited", tx("invited")) : "";
-      if (back && keyTopEl) { keyTopEl.innerHTML = keyBox(true); app.innerHTML = joinForm(); }
-      else app.innerHTML = invNote + joinForm() + keyBox(false);
+      var fl = flash();
+      if (back && keyTopEl) { keyTopEl.innerHTML = fl + keyBox(true); app.innerHTML = joinForm(); }
+      else app.innerHTML = fl + invNote + joinForm() + keyBox(back);
       bindJoin(); bindKey();
       return;
     }
     if (me.state !== "member") {
-      app.innerHTML = hero() + '<div class="vc-card vc-center"><p>' + esc(tx("st_" + me.state)) + "</p></div>";
+      app.innerHTML = hero() + '<div class="vc-card vc-center"><p>' + esc(tx("st_" + me.state)) + '</p><p><button type="button" class="btn ghost small vc-out">' + esc(tx("logout")) + "</button></p></div>";
+      app.querySelector(".vc-out").onclick = function () { api("POST", "logout").then(start, start); };
       return;
     }
-    var p = me.profile || {};
+    var p = me.profile || {}, url = me.invite || (location.origin + "/community");
+    if (state.view === "mod" && !me.mod) state.view = "feed";
     app.innerHTML = (C.demo ? '<div class="vc-demo" role="note">' + esc(tx("demo_banner")) + "</div>" : "") +
-      hero('<p class="vc-hello">' + (p.avatar ? '<img class="vc-av vc-av-me" src="' + esc(p.avatar) + '" alt=""> ' : "") + '<span>' + esc(tx("hello", { n: me.name })) + "</span>" + (p.country ? ' <span data-no-i18n>' + flag(p.country) + "</span>" : "") +
-        ' · <button type="button" class="vc-lnk vc-out">' + esc(tx("logout")) + "</button></p>") +
-      inviteBox(me.invite) +
-      '<div class="vc-tabs" role="tablist"><button type="button" role="tab" data-v="feed" aria-selected="' + (state.view === "feed") + '">' + esc(tx("tab_feed")) + '</button><button type="button" role="tab" data-v="mg" aria-selected="' + (state.view === "mg") + '">' + esc(tx("tab_mg")) + "</button></div>" +
-      '<div id="vc-view"></div>';
-    bindInvite(me.invite);
-    app.querySelector(".vc-out").onclick = function () {
-      if (C.logout && !C.demo) { location.href = C.logout; return; }
-      api("POST", "logout").then(function () { state.view = "feed"; start(); });
-    };
+      hero('<p class="vc-hello">' + (p.avatar ? '<img class="vc-av vc-av-me" src="' + esc(p.avatar) + '" alt=""> ' : "") + '<span>' + esc(tx("hello", { n: me.name })) + "</span>" + (p.country ? ' <span data-no-i18n>' + flag(p.country) + "</span>" : "") + "</p>") +
+      flash() + membersBar(url) +
+      '<div class="vc-tabs" role="tablist"><button type="button" role="tab" data-v="feed" aria-selected="' + (state.view === "feed") + '">' + esc(tx("tab_feed")) + '</button><button type="button" role="tab" data-v="mg" aria-selected="' + (state.view === "mg") + '">' + esc(tx("tab_mg")) + "</button>" +
+      (me.mod && !C.demo ? '<button type="button" role="tab" data-v="mod" aria-selected="' + (state.view === "mod") + '">' + esc(tx("tab_mod")) + "</button>" : "") + "</div>" +
+      '<div id="vc-view"></div>' + delBox();
+    bindBar(url); bindDel();
     app.querySelectorAll(".vc-tabs button").forEach(function (b) { b.onclick = function () { state.view = b.dataset.v; render(); load(); }; });
-    if (state.view === "feed") renderFeed(); else renderMg();
+    if (state.view === "feed") renderFeed(); else if (state.view === "mod") renderMod(); else renderMg();
+  }
+
+  /* ---------- moderation (moderators only): reports + members (block with reason, unblock, delete account) ---------- */
+  function loadMod() {
+    var sub = state.modTab || "reports";
+    var pr = sub === "reports"
+      ? api("GET", "admin/reports").then(function (j) { state.modReports = j.reports; })
+      : api("GET", "admin/members" + (state.modQ ? "?q=" + encodeURIComponent(state.modQ) : "")).then(function (j) { state.modMembers = j.members; state.modTotal = j.total; });
+    return pr.then(renderMod);
+  }
+  function renderMod() {
+    var v = document.getElementById("vc-view"); if (!v || !state.me || !state.me.mod) return;
+    var sub = state.modTab || "reports", h = '<div class="vc-card vc-mod"><div class="vc-tabs vc-subtabs" role="tablist">' +
+      '<button type="button" role="tab" data-mt="reports" aria-selected="' + (sub === "reports") + '">' + esc(tx("md_reports")) + "</button>" +
+      '<button type="button" role="tab" data-mt="members" aria-selected="' + (sub === "members") + '">' + esc(tx("md_members")) + "</button></div>";
+    if (sub === "reports") {
+      var rs = state.modReports || [];
+      h += rs.length ? rs.map(function (r) {
+        return '<div class="vc-mrow" data-rid="' + r.id + '" data-type="' + esc(r.type) + '" data-tid="' + r.target_id + '">' +
+          '<p class="vc-hint"><b>' + esc(tx("md_type_" + r.type)) + "</b> · " + esc(when(r.created)) + " · " + esc(tx("md_by")) + ' <span data-no-i18n>' + esc(r.reporter) + "</span></p>" +
+          "<p><b>" + esc(tx("md_reason")) + ':</b> <span data-no-i18n>' + esc(r.reason) + "</span></p>" + (r.author ? whoHtml(r.author) : "") +
+          '<div class="vc-mcontent" data-no-i18n>' + (r.live ? esc(r.content || "—") : "") + "</div>" + (r.live ? "" : "<p><i>" + esc(tx("md_gone")) + "</i></p>") +
+          (r.live && r.photo ? '<img class="vc-photo" src="' + esc(r.photo) + '" alt="">' : "") +
+          '<div class="vc-row">' + (r.live ? '<button type="button" class="btn small vc-danger" data-ma="remove">' + esc(tx("md_remove")) + "</button>" : "") +
+          '<button type="button" class="btn ghost small" data-ma="keep">' + esc(r.live ? tx("md_keep") : tx("md_close")) + '</button></div><div class="vc-mbox"></div></div>';
+      }).join("") : '<p class="vc-center vc-hint">' + esc(tx("md_noreports")) + "</p>";
+    } else {
+      var t = state.modTotal || {};
+      h += '<form class="vc-msearch"><input name="q" maxlength="60" placeholder="' + esc(tx("md_search")) + '" value="' + esc(state.modQ || "") + '"><button class="btn ghost small" type="submit">' + esc(tx("md_find")) + "</button></form>" +
+        '<p class="vc-hint">' + esc(tx("md_total", { n: t.n || 0, b: t.blocked || 0, u: t.unverified || 0 })) + "</p>" +
+        (state.modMembers || []).map(function (u) {
+          var st = u.status === "blocked" ? tx("md_blocked") : !u.verified ? tx("md_unverified") : u.mod ? tx("md_mod") : tx("md_active");
+          return '<div class="vc-mrow" data-mid="' + u.id + '" data-nick="' + esc(u.name) + '">' + whoHtml(u) +
+            '<p class="vc-hint"><span data-no-i18n>' + esc(u.first_name + " " + u.last_name) + " · " + esc(u.email) + "</span><br>" + esc(tx("md_joined")) + " " + esc(when(u.created)) +
+            (u.last_login ? " · " + esc(tx("md_last")) + " " + esc(when(u.last_login)) : "") + " · <b>" + esc(st) + "</b>" + (u.blocked_reason ? ' (<span data-no-i18n>' + esc(u.blocked_reason) + "</span>)" : "") + "</p>" +
+            (u.me || u.mod ? "" : '<div class="vc-row">' + (u.status === "blocked" ? '<button type="button" class="btn ghost small" data-ma="unblock">' + esc(tx("md_unblock")) + "</button>" : '<button type="button" class="btn small vc-danger" data-ma="block">' + esc(tx("md_block")) + "</button>") +
+              '<button type="button" class="btn ghost small" data-ma="erase">' + esc(tx("md_erase")) + '</button></div><div class="vc-mbox"></div>') + "</div>";
+        }).join("");
+    }
+    v.innerHTML = h + "</div>";
+    v.querySelectorAll("[data-mt]").forEach(function (b) { b.onclick = function () { state.modTab = b.dataset.mt; loadMod().catch(function (e) { v.innerHTML = note("err", errText(e)); }); }; });
+    var sf = v.querySelector(".vc-msearch");
+    if (sf) sf.onsubmit = function (ev) { ev.preventDefault(); state.modQ = sf.q.value.trim(); loadMod(); };
+    v.onclick = function (ev) {
+      var b = ev.target.closest && ev.target.closest("[data-ma]"); if (!b) return;
+      var rowEl = b.closest(".vc-mrow"), box = rowEl.querySelector(".vc-mbox"), act = b.dataset.ma;
+      var fail = function (e) { box.innerHTML = note("err", errText(e)); };
+      var done = function () { loadMod().catch(fail); };
+      var ask = function (label, ph, cb) {   // small inline form: one text field + confirm (no browser dialogs)
+        box.innerHTML = '<form class="vc-mini">' + (label ? "<p>" + esc(label) + "</p>" : "") + '<input maxlength="300" placeholder="' + esc(ph) + '" required><div class="vc-row"><button class="btn small vc-danger" type="submit">' + esc(tx("md_confirm")) + '</button><button class="btn ghost small" type="button">' + esc(tx("cancel")) + "</button></div></form>";
+        var fm = box.querySelector("form"); fm.querySelector('button[type="button"]').onclick = function () { box.innerHTML = ""; };
+        fm.onsubmit = function (e2) { e2.preventDefault(); cb(fm.querySelector("input").value.trim()); };
+      };
+      if (act === "keep") return api("POST", "admin/reports/" + rowEl.dataset.rid + "/keep", { note: "" }).then(done, fail);
+      if (act === "remove") return ask("", tx("md_reason_ph"), function (r) {
+        var path = (rowEl.dataset.type === "post" ? "posts/" : rowEl.dataset.type === "comment" ? "comments/" : "meetgo/") + rowEl.dataset.tid + "?reason=" + encodeURIComponent(r);
+        api("DELETE", path).then(done, fail);
+      });
+      if (act === "block") return ask("", tx("md_reason_ph"), function (r) { api("POST", "admin/members/" + rowEl.dataset.mid + "/block", { reason: r }).then(done, fail); });
+      if (act === "unblock") return api("POST", "admin/members/" + rowEl.dataset.mid + "/unblock", {}).then(done, fail);
+      if (act === "erase") return ask(tx("md_erase_q") + " " + rowEl.dataset.nick, rowEl.dataset.nick, function (c) { api("POST", "admin/members/" + rowEl.dataset.mid + "/delete", { confirm: c }).then(done, fail); });
+    };
   }
 
   /* ---------- feed ---------- */
@@ -418,7 +591,7 @@
     v.innerHTML = nextBox() + '<form class="vc-card vc-compose" id="vc-compose"><textarea name="body" maxlength="2000" rows="3" placeholder="' + esc(tx("ph_post")) + '"></textarea>' +
       '<div class="vc-row"><label class="btn ghost small vc-file">📷 ' + esc(tx("photo")) + '<input type="file" name="photo" accept="image/jpeg,image/png,image/webp" hidden></label><span class="vc-fname" data-no-i18n></span><button class="btn small" type="submit">' + esc(tx("post_btn")) + '</button></div><div class="vc-msg" role="status"></div></form>' +
       '<div id="vc-posts">' + (state.posts.length ? state.posts.map(postHtml).join("") : '<p class="vc-empty">' + esc(tx("empty")) + "</p>") + "</div>" +
-      (state.more ? '<p class="vc-center"><button type="button" class="btn ghost" id="vc-more">' + esc(tx("more")) + "</button></p>" : "") + rulesBox();
+      (state.more ? '<p class="vc-center"><button type="button" class="btn ghost" id="vc-more">' + esc(tx("more")) + "</button></p>" : "");   // no rules box under the feed: the Community Rules button is in the members bar (2026-11-20)
     var f = document.getElementById("vc-compose");
     var fi = f.querySelector('input[type="file"]');
     fi.onchange = function () { f.querySelector(".vc-fname").textContent = fi.files[0] ? fi.files[0].name : ""; };
@@ -554,10 +727,10 @@
   }
   function load() {
     if (!state.me || state.me.state !== "member") return;
-    (state.view === "feed" ? loadFeed() : loadMg()).catch(function (e) { var v = document.getElementById("vc-view"); if (v) v.innerHTML = note("err", errText(e)); });
+    (state.view === "feed" ? loadFeed() : state.view === "mod" ? loadMod() : loadMg()).catch(function (e) { var v = document.getElementById("vc-view"); if (v) v.innerHTML = note("err", errText(e)); });
   }
   function start(scroll) {
-    api("GET", "me").then(function (j) { state.me = j; if (j && j.state === "member") remember(); render(); load(); if (scroll) app.scrollIntoView({ behavior: "smooth", block: "start" }); })
+    api("GET", "me").then(function (j) { if (j && j.ts) C.ts = j.ts; state.me = j; if (j && j.state === "member") remember(); render(); load(); if (scroll) app.scrollIntoView({ behavior: "smooth", block: "start" }); })
       .catch(function () { state.me = { state: "guest" }; render(); });
   }
   start();
