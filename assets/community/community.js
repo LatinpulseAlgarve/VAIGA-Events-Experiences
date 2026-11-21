@@ -187,7 +187,7 @@
         '<p class="vc-hint vc-ts-st" aria-live="polite"></p><div id="vc-ts"></div></div>' : "") +
       '<div class="vc-msg" role="status"></div>' +
       /* the DOOR is the send button, directly under the sign-up form: the animated VAIGA door ("Welkom bij VAIGA – Knock here", GIF of the user) */
-      '<button class="vc-door vc-gifdoor" type="submit" aria-label="' + esc(tx("door_label")) + '"><img src="assets/community/img/vaiga-door.gif" alt="" width="414" height="414" decoding="async"></button></form>';
+      '<button class="vc-door vc-gifdoor" type="submit" aria-label="' + esc(tx("door_label")) + '"><img src="assets/community/img/vaiga-door.gif?v=20261121a" alt="" width="432" height="395" decoding="async"></button></form>';
   }
   /* "I am not a robot": Cloudflare Turnstile (privacy-friendly, no Google). The server must verify the token. */
   var TS_TEST = "1x00000000000000000000AA";   // Cloudflare's public test key: always passes (preview only)
