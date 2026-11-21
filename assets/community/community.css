@@ -187,6 +187,10 @@
 /* members bar (like the Latinpulse Community, 2026-11-20): Community Rules · Invite a friend · Change my photo · Log out */
 .vc-mbar { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 0 0 14px; }
 .vc-mbar .btn { margin: 0; }
+/* compact buttons so all four fit on one row on a laptop (2026-11-21) */
+.vc-mbar { gap: 6px; }
+.vc-mbar .btn.small { min-height: 34px; padding: 0 12px; gap: 6px; font-size: .72rem; letter-spacing: .03em; white-space: nowrap; }
+@media (min-width: 700px) { .vc-mbar { flex-wrap: nowrap; } }
 .vc-avpanel .vc-face { margin: 0 0 6px; }
 /* delete my account: small link at the bottom */
 .vc-del { text-align: center; margin: 22px 0 6px; }
