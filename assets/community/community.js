@@ -471,7 +471,7 @@
     }
     var p = me.profile || {}, url = me.invite || (location.origin + "/community");
     if (state.view === "mod" && !me.mod) state.view = "feed";
-    app.innerHTML = (C.demo ? '<div class="vc-demo" role="note">' + esc(tx("demo_banner")) + "</div>" : "") +
+    app.innerHTML =
       hero('<p class="vc-hello">' + (p.avatar ? '<img class="vc-av vc-av-me" src="' + esc(p.avatar) + '" alt=""> ' : "") + '<span>' + esc(tx("hello", { n: me.name })) + "</span>" + (p.country ? ' <span data-no-i18n>' + flag(p.country) + "</span>" : "") + "</p>") +
       flash() + membersBar(url) +
       '<div class="vc-tabs" role="tablist"><button type="button" role="tab" data-v="feed" aria-selected="' + (state.view === "feed") + '">' + esc(tx("tab_feed")) + '</button><button type="button" role="tab" data-v="mg" aria-selected="' + (state.view === "mg") + '">' + esc(tx("tab_mg")) + "</button>" +
