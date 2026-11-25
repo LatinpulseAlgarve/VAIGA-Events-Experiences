@@ -62,6 +62,7 @@
   /* contact channels as black buttons: WhatsApp (config or the phone number), e-mail, location */
   var CONTACT_ICONS = {
     mail: "M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1.4 2L12 12.2 19.6 7H4.4ZM20 8.6l-7.4 5.1a1 1 0 0 1-1.2 0L4 8.6V17h16V8.6Z",
+    close: "M6.4 5 12 10.6 17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19 5 17.6 10.6 12 5 6.4 6.4 5Z",
     pin: "M12 2a7 7 0 0 1 7 7c0 5.2-7 13-7 13S5 14.2 5 9a7 7 0 0 1 7-7Zm0 4.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z"
   };
   var waUrl = soc.whatsapp || (C.phone ? "https://wa.me/" + C.phone.replace(/\D/g, "") : "");
@@ -70,7 +71,7 @@
   function contactBtn(kind) {
     if (kind === "whatsapp" && waUrl) return '<a class="black-btn" href="' + esc(waUrl) + '" target="_blank" rel="noopener" aria-label="WhatsApp VAIGA (opens in a new tab)" title="WhatsApp VAIGA">' + ico(ICONS.whatsapp) + "</a>";
     if (kind === "mail" && C.email) return '<a class="black-btn" href="mailto:' + esc(C.email) + '" aria-label="E-mail VAIGA: ' + esc(C.email) + '" title="E-mail VAIGA: ' + esc(C.email) + '">' + ico(CONTACT_ICONS.mail) + "</a>";
-    if (kind === "location" && mapUrl) return '<a class="black-btn" href="' + esc(mapUrl) + '" target="_blank" rel="noopener" aria-label="' + esc(C.city) + ' – open in Google Maps (opens in a new tab)" title="' + esc(C.city) + '">' + ico(CONTACT_ICONS.pin) + "</a>";
+    if (kind === "location" && mapUrl) return '<button type="button" class="black-btn" data-loc aria-expanded="false" aria-haspopup="dialog" aria-label="' + esc(C.city) + ' – location info" title="' + esc(C.city) + '">' + ico(CONTACT_ICONS.pin) + "</button>";
     return "";
   }
   /* social row: Instagram, Facebook, TikTok, YouTube; then the black WhatsApp and e-mail buttons.
@@ -137,6 +138,42 @@
     });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && mailPanel) { var a = mailPanel._for; closeMail(); a.focus(); } });
     window.addEventListener("resize", closeMail);
+  }
+
+  /* ---------- location button: opens an info panel (Google Maps + website) instead of jumping straight to Maps;
+     while the panel is open the button shows a close icon (×) and is highlighted ---------- */
+  if (mapUrl) {
+    var locPanel = null, locBtn = null;
+    var closeLoc = function () {
+      if (!locPanel) return;
+      locPanel.parentNode.removeChild(locPanel);
+      locBtn.classList.remove("is-open"); locBtn.setAttribute("aria-expanded", "false"); locBtn.innerHTML = ico(CONTACT_ICONS.pin);
+      locPanel = null; locBtn = null;
+    };
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest && e.target.closest("button[data-loc]");
+      if (!b) { if (locPanel && !locPanel.contains(e.target)) closeLoc(); return; }
+      var again = locBtn === b;
+      closeLoc();
+      if (again) return;
+      var site = C.siteUrl || location.origin + "/";
+      var p = document.createElement("div");
+      p.className = "mail-panel loc-panel"; p.setAttribute("role", "dialog"); p.setAttribute("aria-label", "Location");
+      p.innerHTML = '<b class="mp-addr">' + esc(C.city) + "</b>" +
+        '<a href="' + esc(mapUrl) + '" target="_blank" rel="noopener">Open in Google Maps</a>' +
+        '<a href="' + esc(site) + '" target="_blank" rel="noopener">Go to website</a>';
+      document.body.appendChild(p);
+      b.classList.add("is-open"); b.setAttribute("aria-expanded", "true"); b.innerHTML = ico(CONTACT_ICONS.close);
+      var r = b.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight;
+      var left = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), window.innerWidth - w - 8);
+      var top = r.bottom + 10; if (top + h > window.innerHeight - 8) top = Math.max(8, r.top - h - 10);
+      p.style.left = (left + window.scrollX) + "px"; p.style.top = (top + window.scrollY) + "px";
+      locPanel = p; locBtn = b;
+      p.querySelector("a").focus();
+      p.addEventListener("click", function (ev) { if (ev.target.closest("a")) setTimeout(closeLoc, 150); });
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && locPanel) { var b = locBtn; closeLoc(); b.focus(); } });
+    window.addEventListener("resize", closeLoc);
   }
   document.addEventListener("click", function (e) {
     var b = e.target.closest && e.target.closest("[data-soon]");
