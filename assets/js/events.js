@@ -106,6 +106,8 @@
   var url = (C.siteUrl || location.origin) + "/event.html?e=" + encodeURIComponent(ev.id);
   var time = ev.start ? esc(ev.start) + (ev.end ? " – " + esc(ev.end) : "") : "";
   var place = [ev.venue, ev.address, ev.city, ev.country].filter(Boolean).join(", ");
+  // route destination: exact coordinates (lat/lng in events.js) if given, otherwise the address; none for placeholder events
+  var dest = (ev.lat && ev.lng) ? ev.lat + "," + ev.lng : (!ev.placeholder && (ev.address || ev.venue) ? place : "");
 
   document.title = ev.title + " – VAIGA Events & Experiences";
   setMeta("description", (ev.description || "").slice(0, 155) || ev.title + " – an event by VAIGA.");
@@ -132,7 +134,7 @@
     '<aside class="sticky-box"><div class="card"><ul class="facts">' +
     '<li><span class="i" aria-hidden="true">📅</span><div><b>Date</b>' + longDate(d) + "</div></li>" +
     (time ? '<li><span class="i" aria-hidden="true">🕘</span><div><b>Time</b>' + time + "</div></li>" : "") +
-    '<li><span class="i" aria-hidden="true">📍</span><div><b>Location</b>' + (place ? esc(place) : '<span class="placeholder-note">[Venue]</span>') + "</div></li>" +
+    '<li><span class="i" aria-hidden="true">📍</span><div><b>Location</b>' + (place ? esc(place) : '<span class="placeholder-note">[Venue]</span>') + (dest ? '<br><a class="chip" style="display:inline-block;text-decoration:none;margin-top:8px" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=' + encodeURIComponent(dest) + '">🚗 Navigate</a>' : "") + "</div></li>" +
     (ev.price ? '<li><span class="i" aria-hidden="true">🎟️</span><div><b>Price</b>' + esc(ev.price) + "</div></li>" : "") +
     (ev.status ? '<li><span class="i" aria-hidden="true">✦</span><div><b>Status</b>' + esc(STATUS[ev.status] || ev.status) + "</div></li>" : "") +
     '</ul><div class="btn-row">' + ticket + "</div>" +

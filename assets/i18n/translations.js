@@ -259,6 +259,7 @@ window.VAIGA_TRANSLATIONS = {
   "Price": ["Preço", "Precio", "Prijs"],
   "Status": ["Estado", "Estado", "Status"],
   "Open in maps": ["Abrir no mapa", "Abrir en el mapa", "Openen in kaarten"],
+  "🚗 Navigate": ["🚗 Navegar", "🚗 Navegar", "🚗 Route"],
   "Get tickets": ["Comprar bilhetes", "Comprar entradas", "Tickets kopen"],
   "Share this event": ["Partilhar este evento", "Compartir este evento", "Deel dit evenement"],
   "Copy link": ["Copiar link", "Copiar enlace", "Link kopiëren"],
