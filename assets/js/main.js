@@ -72,7 +72,7 @@
   var mapUrl = C.city ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(C.city) : "";
   var ico = function (d) { return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + d + '"/></svg>'; };
   function contactBtn(kind) {
-    if (kind === "whatsapp" && waUrl) return '<a class="black-btn" href="' + esc(waUrl) + '" target="_blank" rel="noopener" aria-label="WhatsApp VAIGA (opens in a new tab)" title="WhatsApp VAIGA">' + ico(ICONS.whatsapp) + "</a>";
+    if (kind === "whatsapp" && waUrl) return '<a class="black-btn" href="' + esc(waUrl) + '" rel="noopener" aria-label="WhatsApp VAIGA" title="WhatsApp VAIGA">' + ico(ICONS.whatsapp) + "</a>";
     if (kind === "mail" && C.email) return '<a class="black-btn" href="mailto:' + esc(C.email) + '" aria-label="E-mail VAIGA: ' + esc(C.email) + '" title="E-mail VAIGA: ' + esc(C.email) + '">' + ico(CONTACT_ICONS.mail) + "</a>";
     if (kind === "location" && mapUrl) return '<a class="black-btn" href="' + esc(mapUrl) + '" target="_blank" rel="noopener" aria-label="' + esc(C.city) + ' – open in Google Maps (opens in a new tab)" title="' + esc(C.city) + '">' + ico(CONTACT_ICONS.pin) + "</a>";
     return "";

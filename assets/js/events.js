@@ -147,7 +147,7 @@
   var enc = encodeURIComponent;
   var share = $("[data-share]");
   share.innerHTML = (navigator.share ? '<button type="button" data-native>Share…</button>' : "") +
-    '<a target="_blank" rel="noopener" href="https://wa.me/?text=' + enc(text + " " + url) + '">WhatsApp</a>' +
+    '<a rel="noopener" href="https://wa.me/?text=' + enc(text + " " + url) + '">WhatsApp</a>' +
     '<a target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=' + enc(url) + '">Facebook</a>' +
     '<a target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?text=' + enc(text) + "&url=" + enc(url) + '">X</a>' +
     '<a href="mailto:?subject=' + enc(ev.title) + "&body=" + enc(text + "\n" + url) + '">E-mail</a>' +
