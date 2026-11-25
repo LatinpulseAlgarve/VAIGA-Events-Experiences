@@ -74,7 +74,7 @@
   function contactBtn(kind) {
     if (kind === "whatsapp" && waUrl) return '<a class="black-btn" href="' + esc(waUrl) + '" rel="noopener" aria-label="WhatsApp VAIGA" title="WhatsApp VAIGA">' + ico(ICONS.whatsapp) + "</a>";
     if (kind === "mail" && C.email) return '<a class="black-btn" href="mailto:' + esc(C.email) + '" aria-label="E-mail VAIGA: ' + esc(C.email) + '" title="E-mail VAIGA: ' + esc(C.email) + '">' + ico(CONTACT_ICONS.mail) + "</a>";
-    if (kind === "location" && mapUrl) return '<a class="black-btn" href="' + esc(mapUrl) + '" target="_blank" rel="noopener" aria-label="' + esc(C.city) + ' – open in Google Maps (opens in a new tab)" title="' + esc(C.city) + '">' + ico(CONTACT_ICONS.pin) + "</a>";
+    if (kind === "location" && mapUrl) return '<a class="black-btn" href="' + esc(mapUrl) + '" rel="noopener" aria-label="' + esc(C.city) + ' – open in Google Maps" title="' + esc(C.city) + '">' + ico(CONTACT_ICONS.pin) + "</a>";
     return "";
   }
   /* social row: Instagram, Facebook, TikTok, YouTube; then the black WhatsApp and e-mail buttons.
@@ -152,7 +152,7 @@
   /* ---------- contact details (only when filled in) ---------- */
   $$("[data-contact-email]").forEach(function (el) { el.innerHTML = C.email ? '<a href="mailto:' + esc(C.email) + '">' + esc(C.email) + "</a>" : '<span class="placeholder-note">[E-mail address]</span>'; });
   $$("[data-contact-phone]").forEach(function (el) { el.innerHTML = C.phone ? '<a href="tel:' + esc(C.phone.replace(/\s+/g, "")) + '">' + esc(C.phone) + "</a>" : '<span class="placeholder-note">[Phone number]</span>'; });
-  $$("[data-contact-city]").forEach(function (el) { el.innerHTML = C.city ? '<a href="' + esc(mapUrl) + '" target="_blank" rel="noopener">' + esc(C.city) + " ↗</a>" : '<span class="placeholder-note">[Location]</span>'; });
+  $$("[data-contact-city]").forEach(function (el) { el.innerHTML = C.city ? '<a href="' + esc(mapUrl) + '" rel="noopener">' + esc(C.city) + " ↗</a>" : '<span class="placeholder-note">[Location]</span>'; });
   $$("[data-map-link]").forEach(function (a) { if (mapUrl) a.setAttribute("href", mapUrl); });
 
   /* ---------- event concepts ---------- */
