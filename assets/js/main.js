@@ -22,11 +22,15 @@
   /* ---------- mobile menu ---------- */
   var btn = $(".menu-btn"), nav = $("#nav");
   if (btn && nav) {
+    var savedY = 0;
     var setOpen = function (open) {
+      var was = document.body.classList.contains("menu-open");
+      if (open && !was) savedY = window.pageYOffset;
       btn.setAttribute("aria-expanded", String(open));
       btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       nav.classList.toggle("open", open);
       document.body.classList.toggle("menu-open", open);
+      if (!open && was) window.scrollTo({ top: savedY, left: 0, behavior: "instant" });
     };
     btn.addEventListener("click", function () { setOpen(btn.getAttribute("aria-expanded") !== "true"); });
     $$("a", nav).forEach(function (a) { a.addEventListener("click", function () { setOpen(false); }); });
