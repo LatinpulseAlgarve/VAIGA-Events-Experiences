@@ -342,7 +342,7 @@
       '<div class="vc-card vc-invite" id="vc-invpanel" hidden><p class="vc-hint">' + esc(tx("inv_p")) + "</p>" +
       '<input class="vc-invurl" readonly value="' + esc(url) + '" aria-label="' + esc(tx("inv_h")) + '" data-no-i18n>' +
       '<div class="vc-invbtns">' + (navigator.share ? '<button type="button" class="btn small" data-inv="share">' + esc(tx("inv_share")) + "</button>" : "") +
-      '<a class="btn ghost small" target="_blank" rel="noopener" href="https://api.whatsapp.com/send?text=' + encodeURIComponent(msg) + '">WhatsApp</a>' +
+      '<a class="btn ghost small" rel="noopener" href="https://api.whatsapp.com/send?text=' + encodeURIComponent(msg) + '">WhatsApp</a>' +
       '<button type="button" class="btn ghost small" data-inv="copy">' + esc(tx("inv_copy")) + "</button></div></div>" +
       '<form class="vc-card vc-invite vc-avpanel" id="vc-avpanel" hidden novalidate><div class="vc-face"><span class="vc-face-pv" aria-hidden="true">' +
       (p.avatar ? '<img src="' + esc(p.avatar) + '" alt="">' : "") + "</span>" +
