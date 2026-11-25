@@ -11,6 +11,7 @@
    //   date: "2027-07-10",                    // YYYY-MM-DD
    //   start: "21:00", end: "03:00",          // optional
    //   venue: "Venue name", address: "Street 1", city: "City", country: "Portugal",
+   //   lat: 37.0194, lng: -7.9304,            // optional: exact coordinates for the "Navigate" button (otherwise the address is used)
    //   price: "",                             // text as published by the organiser, e.g. "€15 / €20 at the door"
    //   ticketUrl: "https://...",              // ticket shop link (leave "" if not on sale yet)
    //   image: "assets/img/events/summer-latin-night.jpg",  // poster/photo, ideally 1200x900 or larger
