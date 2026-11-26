@@ -595,3 +595,6 @@ html.lb-open, html.lb-open body { overflow: hidden; }
 .about-name p:not(.lead) { color: var(--muted); }
 .about-name p.about-name-claim { color: var(--on-dark, #fff); font: 900 clamp(1.1rem, 2.2vw, 1.5rem)/1.25 var(--font-display); text-transform: uppercase; letter-spacing: .02em; margin-top: 1.4em; }
 .about-name .about-name-claim + .about-name-claim { margin-top: .4em; }
+
+.black-btn.is-open, .social a.black-btn.is-open, .contact-btns .black-btn.is-open { background: var(--celebrate); border-color: transparent; cursor: pointer; }
+button.black-btn { font: inherit; padding: 0; cursor: pointer; }

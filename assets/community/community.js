@@ -58,7 +58,7 @@
     mg_public: "This is a public place.", mg_max: "Maximum number of people", mg_create: "Create Meet & Go",
     mg_none: "No Meet & Go's yet for upcoming events.", mg_join: "Join", mg_leave: "Leave", mg_cancel: "Cancel this Meet & Go",
     mg_joined: "You are going", mg_full: "Full", mg_who: "Who is going (only visible to participants)",
-    mg_meet_at: "Meet at", mg_noevents: "There are no upcoming events at the moment.",
+    mg_meet_at: "Meet at", mg_loc: "Location", mg_loc_hide: "Hide location", mg_maps: "Open in Google Maps", mg_site: "Go to website", mg_noevents: "There are no upcoming events at the moment.",
     mg_rule_time: "At most {h} hours before the event starts.",
     mg_next: "Coming up: Meet & Go", mg_all: "All Meet & Go's", mg_add: "+ New Meet & Go",
     mg_order: "Always in date order: the first meeting is at the top. Past meetings disappear automatically.",
@@ -656,7 +656,11 @@
   function whoList(m) { return m.participants ? '<div class="vc-who"><b>' + esc(tx("mg_who")) + "</b><ul>" + m.participants.map(function (n) { return "<li>" + whoHtml(n) + "</li>"; }).join("") + "</ul></div>" : ""; }
   function mgHtml(m) {
     var e = m.event, h = '<article class="vc-card vc-mg" data-kind="meetgo" data-id="' + m.id + '"><div class="vc-mg-ev"><b>' + esc(e.title) + "</b><span>" + esc(day(e.date)) + " · " + esc(e.start) + " · " + esc(e.venue) + ", " + esc(e.city) + "</span></div>" +
-      '<p class="vc-mg-meet">🕒 <span>' + esc(tx("mg_meet_at")) + "</span> " + esc(m.meet_time) + ' · <span>' + esc(m.meeting_point) + "</span></p>";
+      '<p class="vc-mg-meet">🕒 <span>' + esc(tx("mg_meet_at")) + "</span> " + esc(m.meet_time) + ' · <span>' + esc(m.meeting_point) + "</span></p>" +
+      '<button type="button" class="btn ghost small vc-locbtn" data-loc aria-expanded="false"><span aria-hidden="true">📍</span> <span>' + esc(tx("mg_loc")) + "</span></button>" +
+      '<div class="vc-locinfo" hidden><p><b>' + esc(m.meeting_point) + "</b><br>" + esc(e.venue) + ", " + esc(e.city) + '</p><div class="vc-row">' +
+      '<a class="btn small" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([m.meeting_point, e.venue, e.city].filter(Boolean).join(", ")) + '">' + esc(tx("mg_maps")) + "</a>" +
+      '<a class="btn ghost small" target="_blank" rel="noopener" href="' + esc(((window.VAIGA_CONFIG || {}).websiteUrl) || "index.html") + '">' + esc(tx("mg_site")) + "</a></div></div>";
     if (m.joined) {
       h += '<p class="vc-badge">✓ ' + esc(tx("mg_joined")) + "</p>" + whoList(m);
       h += '<div class="vc-row">' + (m.mine ? "" : '<button type="button" class="btn ghost small" data-mg="leave">' + esc(tx("mg_leave")) + "</button>") + "</div>";
@@ -709,6 +713,13 @@
       b.onclick = function () {
         var card = b.closest(".vc-mg");
         api("POST", "meetgo/" + card.dataset.id + "/" + b.dataset.mg).then(loadMg).catch(function (e) { card.querySelector(".vc-msg").innerHTML = note("err", errText(e)); });
+      };
+    });
+    v.querySelectorAll("[data-loc]").forEach(function (b) {   // location button: opens the info (Maps + website); the button turns into "Hide location" while open
+      b.onclick = function () {
+        var box = b.nextElementSibling, open = box.hidden;
+        box.hidden = !open; b.setAttribute("aria-expanded", open ? "true" : "false"); b.classList.toggle("vc-open", open);
+        b.innerHTML = open ? '<span aria-hidden="true">✕</span> <span>' + esc(tx("mg_loc_hide")) + "</span>" : '<span aria-hidden="true">📍</span> <span>' + esc(tx("mg_loc")) + "</span>";
       };
     });
     bindItems(v);
