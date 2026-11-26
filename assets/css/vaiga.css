@@ -598,3 +598,12 @@ html.lb-open, html.lb-open body { overflow: hidden; }
 
 .black-btn.is-open, .social a.black-btn.is-open, .contact-btns .black-btn.is-open { background: var(--celebrate); border-color: transparent; cursor: pointer; }
 button.black-btn { font: inherit; padding: 0; cursor: pointer; }
+
+/* Telefoon: kleinere zwevende knoppen (2026-11-26) */
+@media (max-width: 600px) {
+  .fab { right: 12px; bottom: 12px; gap: 8px; }
+  .fab .black-btn, .to-top { width: 40px; height: 40px; }
+  .fab .black-btn svg { width: 19px; height: 19px; }
+  .to-top { right: 12px; bottom: 12px; }
+  .fab .to-top svg, .to-top svg { width: 19px; height: 19px; }
+}
