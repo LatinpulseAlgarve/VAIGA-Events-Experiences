@@ -134,12 +134,12 @@
     '<aside class="sticky-box"><div class="card"><ul class="facts">' +
     '<li><span class="i" aria-hidden="true">📅</span><div><b>Date</b>' + longDate(d) + "</div></li>" +
     (time ? '<li><span class="i" aria-hidden="true">🕘</span><div><b>Time</b>' + time + "</div></li>" : "") +
-    '<li><span class="i" aria-hidden="true">📍</span><div><b>Location</b>' + (place ? esc(place) : '<span class="placeholder-note">[Venue]</span>') + (dest ? '<br><a class="chip" style="display:inline-block;text-decoration:none;margin-top:8px" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=' + encodeURIComponent(dest) + '">🚗 Navigate</a>' : "") + "</div></li>" +
+    '<li><span class="i" aria-hidden="true">📍</span><div><b>Location</b>' + (place ? esc(place) : '<span class="placeholder-note">[Venue]</span>') + (dest ? '<br><a class="chip" style="display:inline-block;text-decoration:none;margin-top:8px" rel="noopener" href="https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=' + encodeURIComponent(dest) + '">🚗 Navigate</a>' : "") + "</div></li>" +
     (ev.price ? '<li><span class="i" aria-hidden="true">🎟️</span><div><b>Price</b>' + esc(ev.price) + "</div></li>" : "") +
     (ev.status ? '<li><span class="i" aria-hidden="true">✦</span><div><b>Status</b>' + esc(STATUS[ev.status] || ev.status) + "</div></li>" : "") +
     '</ul><div class="btn-row">' + ticket + "</div>" +
     (d && !past ? '<p style="margin:14px 0 0"><button type="button" class="chip" data-ics>+ Add to calendar</button></p>' : "") +
-    (place ? '<p style="margin:10px 0 0"><a class="chip" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(place) + '">Open in maps</a></p>' : "") +
+    (place ? '<p style="margin:10px 0 0"><a class="chip" style="display:inline-block;text-decoration:none" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(place) + '">Open in maps</a></p>' : "") +
     '<h3 style="margin:24px 0 6px;font-size:.9rem;letter-spacing:.16em">Share this event</h3><div class="share" data-share></div></div></aside>';
 
   /* sharing */
@@ -147,7 +147,7 @@
   var enc = encodeURIComponent;
   var share = $("[data-share]");
   share.innerHTML = (navigator.share ? '<button type="button" data-native>Share…</button>' : "") +
-    '<a target="_blank" rel="noopener" href="https://wa.me/?text=' + enc(text + " " + url) + '">WhatsApp</a>' +
+    '<a rel="noopener" href="https://wa.me/?text=' + enc(text + " " + url) + '">WhatsApp</a>' +
     '<a target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=' + enc(url) + '">Facebook</a>' +
     '<a target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?text=' + enc(text) + "&url=" + enc(url) + '">X</a>' +
     '<a href="mailto:?subject=' + enc(ev.title) + "&body=" + enc(text + "\n" + url) + '">E-mail</a>' +

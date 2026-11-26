@@ -342,7 +342,7 @@
       '<div class="vc-card vc-invite" id="vc-invpanel" hidden><p class="vc-hint">' + esc(tx("inv_p")) + "</p>" +
       '<input class="vc-invurl" readonly value="' + esc(url) + '" aria-label="' + esc(tx("inv_h")) + '" data-no-i18n>' +
       '<div class="vc-invbtns">' + (navigator.share ? '<button type="button" class="btn small" data-inv="share">' + esc(tx("inv_share")) + "</button>" : "") +
-      '<a class="btn ghost small" target="_blank" rel="noopener" href="https://api.whatsapp.com/send?text=' + encodeURIComponent(msg) + '">WhatsApp</a>' +
+      '<a class="btn ghost small" rel="noopener" href="https://api.whatsapp.com/send?text=' + encodeURIComponent(msg) + '">WhatsApp</a>' +
       '<button type="button" class="btn ghost small" data-inv="copy">' + esc(tx("inv_copy")) + "</button></div></div>" +
       '<form class="vc-card vc-invite vc-avpanel" id="vc-avpanel" hidden novalidate><div class="vc-face"><span class="vc-face-pv" aria-hidden="true">' +
       (p.avatar ? '<img src="' + esc(p.avatar) + '" alt="">' : "") + "</span>" +
@@ -659,7 +659,7 @@
       '<p class="vc-mg-meet">🕒 <span>' + esc(tx("mg_meet_at")) + "</span> " + esc(m.meet_time) + ' · <span>' + esc(m.meeting_point) + "</span></p>" +
       '<button type="button" class="btn ghost small vc-locbtn" data-loc aria-expanded="false"><span aria-hidden="true">📍</span> <span>' + esc(tx("mg_loc")) + "</span></button>" +
       '<div class="vc-locinfo" hidden><p><b>' + esc(m.meeting_point) + "</b><br>" + esc(e.venue) + ", " + esc(e.city) + '</p><div class="vc-row">' +
-      '<a class="btn small" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([m.meeting_point, e.venue, e.city].filter(Boolean).join(", ")) + '">' + esc(tx("mg_maps")) + "</a>" +
+      '<a class="btn small" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([m.meeting_point, e.venue, e.city].filter(Boolean).join(", ")) + '">' + esc(tx("mg_maps")) + "</a>" +
       '<a class="btn ghost small" target="_blank" rel="noopener" href="' + esc(((window.VAIGA_CONFIG || {}).websiteUrl) || "index.html") + '">' + esc(tx("mg_site")) + "</a></div></div>";
     if (m.joined) {
       h += '<p class="vc-badge">✓ ' + esc(tx("mg_joined")) + "</p>" + whoList(m);

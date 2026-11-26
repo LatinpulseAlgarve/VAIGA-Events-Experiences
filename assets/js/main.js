@@ -22,11 +22,15 @@
   /* ---------- mobile menu ---------- */
   var btn = $(".menu-btn"), nav = $("#nav");
   if (btn && nav) {
+    var savedY = 0;
     var setOpen = function (open) {
+      var was = document.body.classList.contains("menu-open");
+      if (open && !was) savedY = window.pageYOffset;
       btn.setAttribute("aria-expanded", String(open));
       btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       nav.classList.toggle("open", open);
       document.body.classList.toggle("menu-open", open);
+      if (!open && was) window.scrollTo({ top: savedY, left: 0, behavior: "instant" });
     };
     btn.addEventListener("click", function () { setOpen(btn.getAttribute("aria-expanded") !== "true"); });
     $$("a", nav).forEach(function (a) { a.addEventListener("click", function () { setOpen(false); }); });
@@ -69,7 +73,7 @@
   var mapUrl = C.city ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(C.city) : "";
   var ico = function (d) { return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + d + '"/></svg>'; };
   function contactBtn(kind) {
-    if (kind === "whatsapp" && waUrl) return '<a class="black-btn" href="' + esc(waUrl) + '" target="_blank" rel="noopener" aria-label="WhatsApp VAIGA (opens in a new tab)" title="WhatsApp VAIGA">' + ico(ICONS.whatsapp) + "</a>";
+    if (kind === "whatsapp" && waUrl) return '<a class="black-btn" href="' + esc(waUrl) + '" rel="noopener" aria-label="WhatsApp VAIGA" title="WhatsApp VAIGA">' + ico(ICONS.whatsapp) + "</a>";
     if (kind === "mail" && C.email) return '<a class="black-btn" href="mailto:' + esc(C.email) + '" aria-label="E-mail VAIGA: ' + esc(C.email) + '" title="E-mail VAIGA: ' + esc(C.email) + '">' + ico(CONTACT_ICONS.mail) + "</a>";
     if (kind === "location" && mapUrl) return '<button type="button" class="black-btn" data-loc aria-expanded="false" aria-haspopup="dialog" aria-label="' + esc(C.city) + ' – location info" title="' + esc(C.city) + '">' + ico(CONTACT_ICONS.pin) + "</button>";
     return "";
@@ -160,7 +164,7 @@
       var p = document.createElement("div");
       p.className = "mail-panel loc-panel"; p.setAttribute("role", "dialog"); p.setAttribute("aria-label", "Location");
       p.innerHTML = '<b class="mp-addr">' + esc(C.city) + "</b>" +
-        '<a href="' + esc(mapUrl) + '" target="_blank" rel="noopener">Open in Google Maps</a>' +
+        '<a href="' + esc(mapUrl) + '" rel="noopener">Open in Google Maps</a>' +
         '<a href="' + esc(site) + '" target="_blank" rel="noopener">Go to website</a>';
       document.body.appendChild(p);
       b.classList.add("is-open"); b.setAttribute("aria-expanded", "true"); b.innerHTML = ico(CONTACT_ICONS.close);
@@ -185,7 +189,7 @@
   /* ---------- contact details (only when filled in) ---------- */
   $$("[data-contact-email]").forEach(function (el) { el.innerHTML = C.email ? '<a href="mailto:' + esc(C.email) + '">' + esc(C.email) + "</a>" : '<span class="placeholder-note">[E-mail address]</span>'; });
   $$("[data-contact-phone]").forEach(function (el) { el.innerHTML = C.phone ? '<a href="tel:' + esc(C.phone.replace(/\s+/g, "")) + '">' + esc(C.phone) + "</a>" : '<span class="placeholder-note">[Phone number]</span>'; });
-  $$("[data-contact-city]").forEach(function (el) { el.innerHTML = C.city ? '<a href="' + esc(mapUrl) + '" target="_blank" rel="noopener">' + esc(C.city) + " ↗</a>" : '<span class="placeholder-note">[Location]</span>'; });
+  $$("[data-contact-city]").forEach(function (el) { el.innerHTML = C.city ? '<a href="' + esc(mapUrl) + '" rel="noopener">' + esc(C.city) + " ↗</a>" : '<span class="placeholder-note">[Location]</span>'; });
   $$("[data-map-link]").forEach(function (a) { if (mapUrl) a.setAttribute("href", mapUrl); });
 
   /* ---------- event concepts ---------- */
