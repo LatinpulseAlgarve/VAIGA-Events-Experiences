@@ -206,3 +206,6 @@
 #vc-keytop .vc-keybox { margin-top: 0; margin-bottom: clamp(28px, 4vw, 44px); }
 #vc-keytop .vc-note { max-width: 620px; margin: 0 auto 14px; }
 body[data-page="community"] .page-hero { padding-bottom: clamp(18px, 2.5vw, 28px); }
+
+.vc-locbtn { margin: 4px 0; } .vc-locbtn.vc-open { background: var(--celebrate); border-color: transparent; color: #fff; }
+.vc-locinfo { margin: 6px 0 10px; padding: 12px; border-radius: 14px; border: 1px solid var(--line); } .vc-locinfo p { margin: 0 0 10px; }

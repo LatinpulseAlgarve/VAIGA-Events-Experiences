@@ -32,6 +32,7 @@ window.VAIGA_TRANSLATIONS = {
   "{x} – location info": ["{x} – informação da localização", "{x} – información de la ubicación", "{x} – locatie-informatie"],
   "Open in Google Maps": ["Abrir no Google Maps", "Abrir en Google Maps", "Openen in Google Maps"],
   "Go to website": ["Ir para o website", "Ir al sitio web", "Naar de website"],
+  "Hide location": ["Ocultar localização", "Ocultar ubicación", "Locatie verbergen"],
   "Open your e-mail program": ["Abrir o programa de e-mail", "Abrir tu programa de correo", "Open je e-mailprogramma"],
   "Copy address": ["Copiar endereço", "Copiar dirección", "Adres kopiëren"],
   "Address copied ✓": ["Endereço copiado ✓", "Dirección copiada ✓", "Adres gekopieerd ✓"],
