@@ -7,7 +7,7 @@ window.VAIGA_CONFIG = {
   siteUrl: "",
 
   /* Website shown behind the "Go to website" buttons (location info on the contact page and in the community app). */
-  websiteUrl: "https://www.vaiga.eu",
+  websiteUrl: "https://vaiga.eu",
 
   /* Contact – [PLACEHOLDER] fill in the real public address and phone */
   email: "info@vaiga.eu",
