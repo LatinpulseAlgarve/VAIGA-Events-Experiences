@@ -242,7 +242,13 @@
   toTop.type = "button"; toTop.className = "to-top";
   toTop.setAttribute("aria-label", "Back to top"); toTop.title = "Back to top";
   toTop.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
-  document.body.appendChild(toTop);
+  /* floating contact buttons (besluit gebruiker 2026-11-26): WhatsApp and e-mail stacked above the
+     back-to-top button, bottom right, always visible (no longer in the footer). The e-mail button keeps the choice menu. */
+  var fab = document.createElement("div");
+  fab.className = "fab";
+  fab.innerHTML = contactBtn("whatsapp") + contactBtn("mail");
+  fab.appendChild(toTop);
+  document.body.appendChild(fab);
   var showTop = function () { toTop.classList.toggle("show", window.scrollY > 500); };
   window.addEventListener("scroll", showTop, { passive: true }); showTop();
   toTop.addEventListener("click", function () {
