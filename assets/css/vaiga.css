@@ -381,6 +381,14 @@ a.collab-btn:hover, a.collab-btn:focus-visible { transform: translateY(-2px); bo
 .to-top:hover, .to-top:focus-visible { transform: translateY(-3px); }
 .to-top svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 body.menu-open .to-top { display: none; }
+/* floating contact stack: WhatsApp, e-mail, back to top (2026-11-26) */
+.fab { position: fixed; right: 18px; bottom: 18px; z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.fab .to-top { position: static; }
+.fab .to-top:not(.show) { display: none; }
+.fab .black-btn { width: 52px; height: 52px; border-radius: 50%; background: var(--ink-2); border: 1px solid var(--ink-3); color: #fff; box-shadow: var(--shadow); }
+.fab .black-btn:hover, .fab .black-btn:focus-visible { background: var(--celebrate); border-color: transparent; }
+body.menu-open .fab { display: none; }
+@media print { .fab { display: none !important; } }
 @media print { .to-top { display: none !important; } }
 /* Latin Parties artwork: cut off along its own rounded gold border, so the black corners outside it disappear */
 .concept .frame.wide.concept-photo { background: transparent; box-shadow: none; border-radius: 0; overflow: visible; filter: drop-shadow(0 14px 22px rgba(14,10,36,.22)); }
