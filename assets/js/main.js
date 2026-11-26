@@ -156,7 +156,7 @@
       var again = locBtn === b;
       closeLoc();
       if (again) return;
-      var site = C.siteUrl || location.origin + "/";
+      var site = C.websiteUrl || C.siteUrl || location.origin + "/";
       var p = document.createElement("div");
       p.className = "mail-panel loc-panel"; p.setAttribute("role", "dialog"); p.setAttribute("aria-label", "Location");
       p.innerHTML = '<b class="mp-addr">' + esc(C.city) + "</b>" +

@@ -660,7 +660,7 @@
       '<button type="button" class="btn ghost small vc-locbtn" data-loc aria-expanded="false"><span aria-hidden="true">📍</span> <span>' + esc(tx("mg_loc")) + "</span></button>" +
       '<div class="vc-locinfo" hidden><p><b>' + esc(m.meeting_point) + "</b><br>" + esc(e.venue) + ", " + esc(e.city) + '</p><div class="vc-row">' +
       '<a class="btn small" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([m.meeting_point, e.venue, e.city].filter(Boolean).join(", ")) + '">' + esc(tx("mg_maps")) + "</a>" +
-      '<a class="btn ghost small" target="_blank" rel="noopener" href="event.html?e=' + encodeURIComponent(e.id || "") + '">' + esc(tx("mg_site")) + "</a></div></div>";
+      '<a class="btn ghost small" target="_blank" rel="noopener" href="' + esc(((window.VAIGA_CONFIG || {}).websiteUrl) || "index.html") + '">' + esc(tx("mg_site")) + "</a></div></div>";
     if (m.joined) {
       h += '<p class="vc-badge">✓ ' + esc(tx("mg_joined")) + "</p>" + whoList(m);
       h += '<div class="vc-row">' + (m.mine ? "" : '<button type="button" class="btn ghost small" data-mg="leave">' + esc(tx("mg_leave")) + "</button>") + "</div>";

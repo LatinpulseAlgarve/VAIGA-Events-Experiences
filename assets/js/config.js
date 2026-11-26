@@ -6,9 +6,12 @@ window.VAIGA_CONFIG = {
   /* Empty = the address the site is opened on (vaiga.eu), so share links always work. */
   siteUrl: "",
 
+  /* Website shown behind the "Go to website" buttons (location info on the contact page and in the community app). */
+  websiteUrl: "https://www.vaiga.eu",
+
   /* Contact – [PLACEHOLDER] fill in the real public address and phone */
   email: "info@vaiga.eu",
-  phone: "+351 922 034 972",
+  phone: "+351 968 046 741",
   city: "Tavira, Portugal",
 
   /* Contact form + Plan your party: form service FormSubmit (formsubmit.co, no account; the first message sends an
