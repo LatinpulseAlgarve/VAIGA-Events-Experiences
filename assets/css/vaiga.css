@@ -599,12 +599,13 @@ html.lb-open, html.lb-open body { overflow: hidden; }
 .black-btn.is-open, .social a.black-btn.is-open, .contact-btns .black-btn.is-open { background: var(--celebrate); border-color: transparent; cursor: pointer; }
 button.black-btn { font: inherit; padding: 0; cursor: pointer; }
 
-/* floating buttons smaller + lower (2026-11-27) */
-.fab { right: 10px; bottom: 6px; gap: 6px; }
-.fab .black-btn, .fab .to-top { width: 34px; height: 34px; padding: 0; }
-.fab .black-btn svg, .fab .to-top svg { width: 16px; height: 16px; }
+/* floating buttons: three identical round buttons (2026-11-27) */
+.fab { right: 12px; bottom: 6px; gap: 8px; }
+.fab .black-btn, .fab .to-top { width: 42px; height: 42px; padding: 0; border-radius: 50%; background: var(--ink-2); border: 1px solid var(--ink-3); color: #fff; box-shadow: var(--shadow); }
+.fab .black-btn:hover, .fab .black-btn:focus-visible, .fab .to-top:hover, .fab .to-top:focus-visible { background: var(--celebrate); border-color: transparent; transform: none; }
+.fab .black-btn svg, .fab .to-top svg { width: 20px; height: 20px; }
 @media (max-width: 600px) {
-  .fab { right: 8px; bottom: 6px; gap: 5px; }
-  .fab .black-btn, .fab .to-top { width: 30px; height: 30px; }
-  .fab .black-btn svg, .fab .to-top svg { width: 14px; height: 14px; }
+  .fab { right: 10px; bottom: 6px; gap: 7px; }
+  .fab .black-btn, .fab .to-top { width: 38px; height: 38px; }
+  .fab .black-btn svg, .fab .to-top svg { width: 18px; height: 18px; }
 }
