@@ -382,7 +382,7 @@ a.collab-btn:hover, a.collab-btn:focus-visible { transform: translateY(-2px); bo
 .to-top svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 body.menu-open .to-top { display: none; }
 /* floating contact stack: WhatsApp, e-mail, back to top (2026-11-26) */
-.fab { position: fixed; right: 18px; bottom: 18px; z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.fab { position: fixed; right: 14px; bottom: 6px; z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .fab .to-top { position: static; }
 .fab .to-top:not(.show) { display: none; }
 .fab .black-btn { width: 52px; height: 52px; border-radius: 50%; background: var(--ink-2); border: 1px solid var(--ink-3); color: #fff; box-shadow: var(--shadow); }
