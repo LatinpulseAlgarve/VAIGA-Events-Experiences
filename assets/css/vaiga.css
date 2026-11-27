@@ -598,3 +598,14 @@ html.lb-open, html.lb-open body { overflow: hidden; }
 
 .black-btn.is-open, .social a.black-btn.is-open, .contact-btns .black-btn.is-open { background: var(--celebrate); border-color: transparent; cursor: pointer; }
 button.black-btn { font: inherit; padding: 0; cursor: pointer; }
+
+/* floating buttons smaller (2026-11-27): were too large on phones */
+.fab { right: 12px; bottom: 12px; gap: 8px; }
+.fab .black-btn, .fab .to-top { width: 40px; height: 40px; padding: 0; }
+.fab .black-btn svg { width: 18px; height: 18px; }
+.fab .to-top svg { width: 18px; height: 18px; }
+@media (max-width: 600px) {
+  .fab { right: 8px; bottom: 8px; gap: 6px; }
+  .fab .black-btn, .fab .to-top { width: 34px; height: 34px; }
+  .fab .black-btn svg, .fab .to-top svg { width: 16px; height: 16px; }
+}
