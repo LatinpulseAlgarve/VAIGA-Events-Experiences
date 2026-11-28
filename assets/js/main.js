@@ -204,12 +204,9 @@
       }
       var p = c.partner, purl = p && c.concept === "latinpulse" ? C.latinpulseUrl : "";
       var long = esc(c.long);
-      (c.collab || []).forEach(function (x) {
-        var u = C[x.urlKey], nm = esc(x.name);
-        if (u && long.indexOf(nm) >= 0) long = long.replace(nm, '<a class="collab-link" href="' + esc(u) + '" target="_blank" rel="noopener" aria-label="' + nm + ' (opens in a new tab)">' + nm + '</a>');
-      });
-      var lp = c.collab ? ""
-        : p
+      var by = "";
+      if (c.byline && C[c.byline.urlKey]) by = '<p class="concept-by"><a class="collab-link" href="' + esc(C[c.byline.urlKey]) + '" target="_blank" rel="noopener" aria-label="' + esc(c.byline.name) + ' (opens in a new tab)">' + esc(c.byline.name) + '</a></p>';
+      var lp = p
         ? '<p class="concept-note"><b>Concept:</b> ' + esc(p.name) + " – " + esc(p.tagline) + (purl ? ' · <a href="' + esc(purl) + '" target="_blank" rel="noopener">Visit ' + esc(p.name) + " ↗</a>" : "") + "</p>" : "";
       var photo = c.image
         ? '<div class="frame wide concept-photo"><img src="' + esc(c.image) + '" alt="' + esc(c.imageAlt || c.name) + '" loading="lazy" decoding="async" width="1000" height="1000"></div>'
@@ -219,7 +216,7 @@
         ? (purl ? '<a class="frame wide partner-frame" href="' + esc(purl) + '" target="_blank" rel="noopener" aria-label="Visit ' + esc(p.name) + ' (opens in a new tab)">' : '<div class="frame wide partner-frame">') +
           '<img src="' + esc(p.image) + '" alt="' + esc(p.name) + " – " + esc(p.tagline) + '" loading="lazy" decoding="async"><span class="frame-cap">' + esc(p.name) + (purl ? " ↗" : "") + "</span>" + (purl ? "</a>" : "</div>")
         : '<div class="frame wide"><div class="ph" style="--ph-bg:' + c.bg + '"><span>Photo: ' + esc(c.name) + "</span></div></div>";
-      return '<article class="split concept reveal" id="' + c.id + '">' + photo + '<div><span class="eyebrow">Concept</span><h2>' + esc(c.name) + '</h2><p class="lead">' + long + '</p>' + lp + '<div class="btn-row"><a class="btn arrow" href="events.html?cat=' + c.id + '">' + esc(c.name) + (/events$/i.test(c.name) ? " " : " events ") + "</a></div></div></article>";
+      return '<article class="split concept reveal" id="' + c.id + '">' + photo + '<div><span class="eyebrow">Concept</span><h2>' + esc(c.name) + '</h2>' + by + '<p class="lead">' + long + '</p>' + lp + '<div class="btn-row"><a class="btn arrow" href="events.html?cat=' + c.id + '">' + esc(c.name) + (/events$/i.test(c.name) ? " " : " events ") + "</a></div></div></article>";
     }).join("");
   });
 
