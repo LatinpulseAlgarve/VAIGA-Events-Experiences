@@ -623,3 +623,19 @@ button.black-btn { font: inherit; padding: 0; cursor: pointer; }
 /* the page always fits the screen width and stays centred: decorative glows/bands never widen it (phone and tablet) */
 html, body { width: 100%; max-width: 100%; }
 main, .site-footer { overflow-x: clip; max-width: 100%; }
+/* very narrow / strongly zoomed screens and large phone font sizes: columns and headings never get wider than the screen */
+.split > *, .grid > *, .feature > *, .site-footer .top > *, .site-footer .foot-links > * { min-width: 0; }
+main h1, main h2, main h3, main .lead, main p, .site-footer h4, .site-footer a { overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  .concept.split { grid-template-columns: minmax(0, 1fr); }
+  .concept .frame, .concept .frame.wide.concept-photo { max-width: min(240px, 100%); }
+}
+@media (max-width: 600px) {
+  .site-footer .top { grid-template-columns: minmax(0, 1fr); }
+  .site-footer .foot-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 340px) {
+  main h1 { font-size: clamp(1.5rem, 9vw, 2rem); }
+  main h2 { font-size: clamp(1.4rem, 8.5vw, 1.8rem); }
+  .btn, .black-btn { max-width: 100%; white-space: normal; text-align: center; }
+}
