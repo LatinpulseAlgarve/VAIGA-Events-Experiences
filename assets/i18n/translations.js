@@ -197,6 +197,7 @@ window.VAIGA_TRANSLATIONS = {
   "40+ Party – dance, meet, enjoy: people in their forties and fifties dancing and celebrating": ["Festa 40+ – dançar, conhecer, desfrutar: pessoas na casa dos quarenta e cinquenta a dançar e a celebrar", "Fiesta 40+ – bailar, conocer, disfrutar: personas de cuarenta y cincuenta años bailando y celebrando", "40+ Feest – dansen, ontmoeten, genieten: veertigers en vijftigers die dansen en feestvieren"],
   "Dancing in 70s, 80s, 90s and 00s outfits under a disco ball": ["A dançar com roupas dos anos 70, 80, 90 e 00 debaixo de uma bola de espelhos", "Bailando con ropa de los años 70, 80, 90 y 00 bajo una bola de discoteca", "Dansen in outfits uit de jaren 70, 80, 90 en 00 onder een discobal"],
   "Tropicaliente in collaboration with Latinpulse Algarve – music, dance, events, community": ["Tropicaliente em colaboração com a Latinpulse Algarve – música, dança, eventos, comunidade", "Tropicaliente en colaboración con Latinpulse Algarve – música, baile, eventos, comunidad", "Tropicaliente in samenwerking met Latinpulse Algarve – muziek, dans, evenementen, community"],
+  "Latinpulse Algarve – music, dance, events, community": ["Latinpulse Algarve – música, dança, eventos, comunidade", "Latinpulse Algarve – música, baile, eventos, comunidad", "Latinpulse Algarve – muziek, dans, evenementen, community"],
 
   /* ---------- contact ---------- */
   "contact|Let's": ["Vamos", "Vamos a", "Laten we"],
