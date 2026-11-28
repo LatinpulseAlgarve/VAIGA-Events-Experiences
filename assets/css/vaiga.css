@@ -611,10 +611,12 @@ button.black-btn { font: inherit; padding: 0; cursor: pointer; }
 }
 /* link line above a concept description (e.g. Latinpulse Algarve) */
 .concept-by { margin: 0 0 8px; font-size: 1.1rem; }
-/* phone: concept cards on the homepage show the whole photo (no zoom/crop), with the text underneath */
+/* phone: concept cards on the homepage show the whole photo (no zoom/crop) in its own rounded frame, text underneath */
 @media (max-width: 600px) {
-  .cat.has-photo, a.cat.has-photo { padding: 0 0 26px; min-height: 0; justify-content: flex-start; }
+  .cat.has-photo, a.cat.has-photo { padding: 12px 12px 26px; min-height: 0; justify-content: flex-start; border-radius: 32px; border: 1px solid rgba(255,255,255,.16); }
   .cat.has-photo::before, .cat.has-photo::after { display: none; }
-  .cat.has-photo .cat-photo, a.cat.has-photo:hover .cat-photo { position: static; z-index: auto; display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: contain; margin: 0 0 18px; transform: none; }
-  .cat.has-photo h3, .cat.has-photo p, .cat.has-photo .go { padding-inline: 22px; }
+  .cat.has-photo .cat-photo, a.cat.has-photo:hover .cat-photo { position: static; z-index: auto; display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: contain; border-radius: 6.5%; margin: 0 0 18px; transform: none; }
+  .cat.has-photo h3, .cat.has-photo p, .cat.has-photo .go { padding-inline: 10px; }
 }
+/* concept page: whole picture with a rounded edge on all four sides (nothing cut off at the bottom) */
+.concept-photo img { clip-path: inset(0 round 6.5%); }
