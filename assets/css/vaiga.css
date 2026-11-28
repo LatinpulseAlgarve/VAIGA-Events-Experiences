@@ -620,3 +620,6 @@ button.black-btn { font: inherit; padding: 0; cursor: pointer; }
 }
 /* concept page: whole picture with a rounded edge on all four sides (nothing cut off at the bottom) */
 .concept-photo img { clip-path: inset(0 round 6.5%); }
+/* the page always fits the screen width and stays centred: decorative glows/bands never widen it (phone and tablet) */
+html, body { width: 100%; max-width: 100%; }
+main, .site-footer { overflow-x: clip; max-width: 100%; }
