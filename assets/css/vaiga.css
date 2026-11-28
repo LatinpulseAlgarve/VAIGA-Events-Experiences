@@ -609,3 +609,5 @@ button.black-btn { font: inherit; padding: 0; cursor: pointer; }
   .fab .black-btn, .fab .to-top { width: 38px; height: 38px; }
   .fab .black-btn svg, .fab .to-top svg { width: 18px; height: 18px; }
 }
+/* link line above a concept description (e.g. Latinpulse Algarve) */
+.concept-by { margin: 0 0 8px; font-size: 1.1rem; }
